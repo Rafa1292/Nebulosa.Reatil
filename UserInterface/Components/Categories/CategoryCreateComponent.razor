@@ -1,0 +1,47 @@
+﻿@using Business.Categories
+@using Business.ModelsDTO
+
+@inject NavigationManager NavManager
+@inject CategoryRouter router
+
+<span class="col-12 h4 text-center font-weight-bolder mt-5 mb-5">
+    Agregar nueva categoria
+</span>
+<span class="col-12 text-danger text-center h5">@Message</span>
+<EditForm class="col-4 p-2" Model="@oProductCategory">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <label for="name" class="font-weight-bolder">Nombre de la categoría:</label>
+        <InputText id="name" @bind-Value="oProductCategory.Name" class="form-control" />
+        <ValidationMessage For="@(() => oProductCategory.Name)" class="text-danger" />
+    </div>
+    <div class="form-group justify-content-center d-flex flex-wrap">
+        <input type="button" value="Agregar categoría" @onclick="Save" class="form-control btn btn-dark" />
+        <a href="Categories/Index" class="btn btn-outline-secondary m-3">Volver</a>
+
+    </div>
+</EditForm>
+
+@code {
+    ProductCategoryDTO oProductCategory = new ProductCategoryDTO();
+    public string Message;
+
+    private void Save()
+    {
+
+        var response = router.Insert(oProductCategory);
+        if (response.IsSuccess)
+        {
+            NavManager.NavigateTo("Categories/Index");
+        }
+        else
+        {
+            Message = response.Message;
+        }
+    }
+
+    private void HandleValidSubmit()
+    {
+        Console.WriteLine("OnValidSubmit");
+    }
+}

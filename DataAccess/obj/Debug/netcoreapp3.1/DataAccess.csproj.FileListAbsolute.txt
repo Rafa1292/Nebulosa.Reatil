@@ -1,0 +1,15 @@
+C:\Users\rvill\source\repos\Nebulosa\DataAccess\bin\Debug\netcoreapp3.1\DataAccess.deps.json
+C:\Users\rvill\source\repos\Nebulosa\DataAccess\bin\Debug\netcoreapp3.1\DataAccess.runtimeconfig.json
+C:\Users\rvill\source\repos\Nebulosa\DataAccess\bin\Debug\netcoreapp3.1\DataAccess.runtimeconfig.dev.json
+C:\Users\rvill\source\repos\Nebulosa\DataAccess\bin\Debug\netcoreapp3.1\DataAccess.dll
+C:\Users\rvill\source\repos\Nebulosa\DataAccess\bin\Debug\netcoreapp3.1\DataAccess.pdb
+C:\Users\rvill\source\repos\Nebulosa\DataAccess\bin\Debug\netcoreapp3.1\Business.dll
+C:\Users\rvill\source\repos\Nebulosa\DataAccess\bin\Debug\netcoreapp3.1\Common.dll
+C:\Users\rvill\source\repos\Nebulosa\DataAccess\bin\Debug\netcoreapp3.1\Business.pdb
+C:\Users\rvill\source\repos\Nebulosa\DataAccess\bin\Debug\netcoreapp3.1\Common.pdb
+C:\Users\rvill\source\repos\Nebulosa\DataAccess\obj\Debug\netcoreapp3.1\DataAccess.csprojAssemblyReference.cache
+C:\Users\rvill\source\repos\Nebulosa\DataAccess\obj\Debug\netcoreapp3.1\DataAccess.AssemblyInfoInputs.cache
+C:\Users\rvill\source\repos\Nebulosa\DataAccess\obj\Debug\netcoreapp3.1\DataAccess.AssemblyInfo.cs
+C:\Users\rvill\source\repos\Nebulosa\DataAccess\obj\Debug\netcoreapp3.1\DataAccess.csproj.CopyComplete
+C:\Users\rvill\source\repos\Nebulosa\DataAccess\obj\Debug\netcoreapp3.1\DataAccess.dll
+C:\Users\rvill\source\repos\Nebulosa\DataAccess\obj\Debug\netcoreapp3.1\DataAccess.pdb

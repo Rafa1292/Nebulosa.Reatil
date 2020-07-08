@@ -1,0 +1,8 @@
+C:\Users\rvill\source\repos\Nebulosa\Common\bin\Debug\netcoreapp3.1\Common.deps.json
+C:\Users\rvill\source\repos\Nebulosa\Common\bin\Debug\netcoreapp3.1\Common.dll
+C:\Users\rvill\source\repos\Nebulosa\Common\bin\Debug\netcoreapp3.1\Common.pdb
+C:\Users\rvill\source\repos\Nebulosa\Common\obj\Debug\netcoreapp3.1\Common.csprojAssemblyReference.cache
+C:\Users\rvill\source\repos\Nebulosa\Common\obj\Debug\netcoreapp3.1\Common.AssemblyInfoInputs.cache
+C:\Users\rvill\source\repos\Nebulosa\Common\obj\Debug\netcoreapp3.1\Common.AssemblyInfo.cs
+C:\Users\rvill\source\repos\Nebulosa\Common\obj\Debug\netcoreapp3.1\Common.dll
+C:\Users\rvill\source\repos\Nebulosa\Common\obj\Debug\netcoreapp3.1\Common.pdb

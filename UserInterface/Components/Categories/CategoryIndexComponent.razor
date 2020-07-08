@@ -1,0 +1,49 @@
+﻿@using Business.Categories
+@using Business.ModelsDTO
+
+@inject CategoryRouter router
+
+<span class="col-12 h4 text-center font-weight-bolder mt-5 mb-5">
+    Categorias
+</span>
+<p class="col-12 p-1 d-flex justify-content-center">
+    <a class="btn btn-primary " href="Categories/Create">Agregar Nueva Categoría</a>
+</p>
+<label class="text-danger h5 ">@message</label>
+
+<div class="col-12 p-0 d-flex flex-wrap justify-content-center">
+    <table id="categoriesTable" class="display col-6 table text-center table-hover">
+
+        <tbody>
+            @foreach (var category in categories)
+            {
+                <tr>
+                    <td>@category.Name</td>
+                    <td>
+                        <a class="btn btn-secondary" href="Categories/Update/@category.ProductCategoryId">Editar</a>
+                        <a class="btn btn-outline-danger" href="Categories/Delete/@category.ProductCategoryId">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+@code {
+    private List<ProductCategoryDTO> categories = new List<ProductCategoryDTO>();
+    private string message;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = router.GetAll(false);
+        if (response.IsSuccess)
+        {
+            categories = response.Data.ToList();
+        }
+        else
+        {
+            message = response.Message;
+        }
+    }
+}

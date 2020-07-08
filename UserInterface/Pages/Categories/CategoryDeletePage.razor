@@ -1,0 +1,14 @@
+﻿@page "/Categories/Delete/{CategoryId}"
+
+
+<CategoryDeleteComponent CategoryId="@CategoryId" />
+
+@code {
+    [Parameter]
+    public string CategoryId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        CategoryId = CategoryId;
+    }
+}
