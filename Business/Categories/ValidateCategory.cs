@@ -17,6 +17,7 @@ namespace Business.Categories
                 return new ObjectResponse<bool>(false, "El nombre no puede ser nulo");
 
             bool NameExist = categories
+                .Where(x => x.ProductCategoryId != category.ProductCategoryId)
                 .Select(x => x.Name.ToLower())
                 .Contains(category.Name.ToLower());
 

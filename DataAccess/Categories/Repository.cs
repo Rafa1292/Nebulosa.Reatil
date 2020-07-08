@@ -54,7 +54,7 @@ namespace DataAccess.Categories
             }
         }
 
-        public static ObjectResponse<IEnumerable<ProductCategory>> GetAll(bool deleteItems)
+        public static ObjectResponse<IEnumerable<ProductCategory>> GetAll()
         {
             using (var db = new DataContext())
             {

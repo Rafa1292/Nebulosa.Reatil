@@ -20,45 +20,32 @@ namespace DataAccess.Categories
 
         public ObjectResponse<bool> Update(ProductCategory productCategory)
         {
-            using (var db = new DataContext())
-            {
-                db.Entry(productCategory).State = EntityState.Modified;
-                db.SaveChanges();
-                return new ObjectResponse<bool>(true, "Categoria actualizada");
-            }
+            return Repository.Update(productCategory);
         }
 
         public ObjectResponse<bool> Delete(int productCategoryId)
         {
-            using (var db = new DataContext())
-            {
-                var category = db.ProductCategories.Find(productCategoryId);
-                if (category == null)
-                    return new ObjectResponse<bool>(false, "No se encontro la categoria");
-                category.Delete = true;
-                db.Entry(category).State = EntityState.Modified;
-                db.SaveChanges();
-                return new ObjectResponse<bool>(true, "Categoria eliminada");
-            }
+            return Repository.Delete(productCategoryId);
         }
 
         public ObjectResponse<ProductCategory> Get(int productCategoryId)
         {
-            using (var db = new DataContext())
-            {
-                var category = db.ProductCategories.Find(productCategoryId);
-                return new ObjectResponse<ProductCategory>(true, "Consulta exitosa", category);
-            }
+            return Repository.Get(productCategoryId);
         }
 
         public ObjectResponse<IEnumerable<ProductCategory>> GetAll(bool deleteItems)
         {
             using (var db = new DataContext())
             {
-                var categories = db.ProductCategories.ToList();
+                var categories = Repository.GetAll();
+
+                if (!categories.IsSuccess)
+                    return categories;
+
                 if (!deleteItems)
-                    categories = categories.Where(x => !x.Delete).ToList();
-                return new ObjectResponse<IEnumerable<ProductCategory>>(true, "Consulta exitosa", categories);
+                    categories.Data = categories.Data.ToList().Where(x => !x.Delete).ToList();
+
+                return  categories;
             }
         }
 

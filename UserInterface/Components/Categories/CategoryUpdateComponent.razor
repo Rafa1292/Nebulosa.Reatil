@@ -51,6 +51,10 @@
             {
                 NavManager.NavigateTo("Categories/Index");
             }
+            else
+            {
+                Message = response.Message;
+            }
         }
         catch (Exception e)
         {
