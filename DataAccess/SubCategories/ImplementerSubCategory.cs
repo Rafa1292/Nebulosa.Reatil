@@ -9,7 +9,7 @@ using System.Text;
 
 namespace DataAccess.SubCategories
 {
-    public class SubCategoryImplementer : ISubCategory
+    public class ImplementerSubCategory : ISubCategory
     {
         #region Metodos
         public ObjectResponse<bool> Insert(ProductSubCategory productSubCategory)

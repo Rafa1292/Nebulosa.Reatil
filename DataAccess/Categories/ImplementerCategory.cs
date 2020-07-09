@@ -10,7 +10,7 @@ using System.Text;
 
 namespace DataAccess.Categories
 {
-    public class CategoryImplementer : ICategory
+    public class ImplementerCategory : ICategory
     {
         #region Metodos
         public ObjectResponse<bool> Insert(ProductCategory productCategory)
@@ -35,18 +35,15 @@ namespace DataAccess.Categories
 
         public ObjectResponse<IEnumerable<ProductCategory>> GetAll(bool deleteItems)
         {
-            using (var db = new DataContext())
-            {
-                var categories = Repository.GetAll();
+            var categories = Repository.GetAll();
 
-                if (!categories.IsSuccess)
-                    return categories;
+            if (!categories.IsSuccess)
+                return categories;
 
-                if (!deleteItems)
-                    categories.Data = categories.Data.ToList().Where(x => !x.Delete).ToList();
+            if (!deleteItems)
+                categories.Data = categories.Data.ToList().Where(x => !x.Delete).ToList();
 
-                return  categories;
-            }
+            return categories;
         }
 
         #endregion

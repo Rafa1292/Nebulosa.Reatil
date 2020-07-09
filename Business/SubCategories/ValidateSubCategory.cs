@@ -22,7 +22,7 @@ namespace Business.SubCategories
                 return new ObjectResponse<bool>(false, "La categoria no puede ser nula");
 
             bool NameExist = subCategories
-                .Where(x => x.ProductSubCategoryId != subCategory.ProductSubCategoryId)
+                .Where(x => x.ProductSubCategoryId != subCategory.ProductSubCategoryId && x.ProductCategoryId == subCategory.ProductCategoryId)
                 .Select(x => x.Name.ToLower())
                 .Contains(subCategory.Name.ToLower());
 

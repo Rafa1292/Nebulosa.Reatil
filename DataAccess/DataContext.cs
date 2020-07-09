@@ -10,6 +10,12 @@ namespace DataAccess
 
         public DbSet<ProductSubCategory> ProductSubCategories { get; set; }
 
+        public DbSet<Product> Products { get; set; }
+
+        public DbSet<Tax> Taxes { get; set; }
+
+        public DbSet<ProductTax> ProductTaxes { get; set; }
+
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)

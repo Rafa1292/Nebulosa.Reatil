@@ -34,8 +34,8 @@ namespace UserInterface
             services.AddServerSideBlazor();
             services.AddScoped<RouterCategory>();
             services.AddScoped<RouterSubCategory>();
-            services.AddScoped<ICategory, CategoryImplementer>();
-            services.AddScoped<ISubCategory, SubCategoryImplementer>();
+            services.AddScoped<ICategory, ImplementerCategory>();
+            services.AddScoped<ISubCategory, ImplementerSubCategory>();
 
         }
 
