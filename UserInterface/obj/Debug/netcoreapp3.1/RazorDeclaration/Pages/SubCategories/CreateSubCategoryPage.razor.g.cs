@@ -90,6 +90,13 @@ using UserInterface.Components.SubCategories;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 12 "C:\Users\rvill\source\repos\Nebulosa\UserInterface\_Imports.razor"
+using UserInterface.Components.Taxes;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/SubCategories/Create")]
     public partial class CreateSubCategoryPage : Microsoft.AspNetCore.Components.ComponentBase
     {

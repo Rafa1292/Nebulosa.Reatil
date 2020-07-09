@@ -1,0 +1,14 @@
+﻿@page "/Taxes/Delete/{TaxId}"
+
+
+<DeleteTaxComponent TaxId="@TaxId" />
+
+@code {
+    [Parameter]
+    public string TaxId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        TaxId = TaxId;
+    }
+}

@@ -91,6 +91,13 @@ using UserInterface.Components.SubCategories;
 #line hidden
 #nullable disable
 #nullable restore
+#line 12 "C:\Users\rvill\source\repos\Nebulosa\UserInterface\_Imports.razor"
+using UserInterface.Components.Taxes;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
 #line 1 "C:\Users\rvill\source\repos\Nebulosa\UserInterface\Components\Taxes\UpdateTaxComponent.razor"
 using Business.Taxes;
 

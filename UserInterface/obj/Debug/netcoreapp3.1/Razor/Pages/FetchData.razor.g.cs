@@ -87,6 +87,13 @@ using UserInterface.Components.SubCategories;
 #line hidden
 #nullable disable
 #nullable restore
+#line 12 "C:\Users\rvill\source\repos\Nebulosa\UserInterface\_Imports.razor"
+using UserInterface.Components.Taxes;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
 #line 3 "C:\Users\rvill\source\repos\Nebulosa\UserInterface\Pages\FetchData.razor"
 using UserInterface.Data;
 
