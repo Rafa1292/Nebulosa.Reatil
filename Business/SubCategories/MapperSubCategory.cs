@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Business.SubCategories
 {
-    public class Mapper
+    public class MapperSubCategory
     {
         public static ProductSubCategory MapFromDTO(ProductSubCategoryDTO productSubCategoryDTO, ProductSubCategory productSubCategory)
         {

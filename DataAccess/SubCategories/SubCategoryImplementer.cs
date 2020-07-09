@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using Business.SubCategories;
+using Common;
 using Common.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,7 +9,7 @@ using System.Text;
 
 namespace DataAccess.SubCategories
 {
-    public class SubCategoryImplementer
+    public class SubCategoryImplementer : ISubCategory
     {
         #region Metodos
         public ObjectResponse<bool> Insert(ProductSubCategory productSubCategory)

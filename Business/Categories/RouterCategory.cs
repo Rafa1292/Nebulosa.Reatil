@@ -19,7 +19,7 @@ namespace Business.Categories
 
         public ObjectResponse<bool> Insert(ProductCategoryDTO productCategoryDTO)
         {
-            var category = Mapper.MapFromDTO(productCategoryDTO, new ProductCategory());
+            var category = MapperCategory.MapFromDTO(productCategoryDTO, new ProductCategory());
             category = Finisher.FinishToInsert(category);
             var validation = ValidateCategory.ValidateToInsert(category, _category.GetAll(false).Data.ToList());
 
@@ -35,7 +35,7 @@ namespace Business.Categories
             if (!currentCategory.IsSuccess)
                 return new ObjectResponse<bool>(false, currentCategory.Message);
 
-            var category = Mapper.MapFromDTO(productCategoryDTO , currentCategory.Data);
+            var category = MapperCategory.MapFromDTO(productCategoryDTO , currentCategory.Data);
             category = Finisher.FinishToUpdate(category);
             var validation = ValidateCategory.ValidateToInsert(category, _category.GetAll(false).Data.ToList());
             if (!validation.IsSuccess)
@@ -56,7 +56,7 @@ namespace Business.Categories
             if (!productCategoryResponse.IsSuccess)
                 return new ObjectResponse<ProductCategoryDTO>(false, productCategoryResponse.Message);
 
-            var productCategoryDTO = Mapper.MapToDTO(productCategoryResponse.Data);
+            var productCategoryDTO = MapperCategory.MapToDTO(productCategoryResponse.Data);
 
             return new ObjectResponse<ProductCategoryDTO>(true, productCategoryResponse.Message, productCategoryDTO);
         }
@@ -68,7 +68,7 @@ namespace Business.Categories
             if (!productCategoriesResponse.IsSuccess)
                 return new ObjectResponse<List<ProductCategoryDTO>>(false, productCategoriesResponse.Message);
 
-            var productCategoriesDTO = Mapper.MapToDTO(productCategoriesResponse.Data.ToList());
+            var productCategoriesDTO = MapperCategory.MapToDTO(productCategoriesResponse.Data.ToList());
 
             return new ObjectResponse<List<ProductCategoryDTO>>(true, productCategoriesResponse.Message, productCategoriesDTO);
         }

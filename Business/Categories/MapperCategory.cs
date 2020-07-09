@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Business.Categories
 {
-    public class Mapper
+    public class MapperCategory
     {
         public static ProductCategory MapFromDTO(ProductCategoryDTO productCategoryDTO, ProductCategory productCategory)
         {
