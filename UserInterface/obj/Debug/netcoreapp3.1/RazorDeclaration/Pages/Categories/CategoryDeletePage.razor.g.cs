@@ -83,6 +83,13 @@ using UserInterface.Components.Categories;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 11 "C:\Users\rvill\source\repos\Nebulosa\UserInterface\_Imports.razor"
+using UserInterface.Components.SubCategories;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/Categories/Delete/{CategoryId}")]
     public partial class CategoryDeletePage : Microsoft.AspNetCore.Components.ComponentBase
     {

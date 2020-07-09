@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Business.Categories;
+using Business.SubCategories;
 using DataAccess.Categories;
+using DataAccess.SubCategories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
@@ -32,6 +34,8 @@ namespace UserInterface
             services.AddServerSideBlazor();
             services.AddScoped<CategoryRouter>();
             services.AddScoped<ICategory, CategoryImplementer>();
+            services.AddScoped<ISubCategory, SubCategoryImplementer>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

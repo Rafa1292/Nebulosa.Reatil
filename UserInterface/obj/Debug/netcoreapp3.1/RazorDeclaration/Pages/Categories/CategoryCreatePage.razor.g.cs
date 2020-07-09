@@ -77,6 +77,13 @@ using UserInterface.Shared;
 #line hidden
 #nullable disable
 #nullable restore
+#line 11 "C:\Users\rvill\source\repos\Nebulosa\UserInterface\_Imports.razor"
+using UserInterface.Components.SubCategories;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
 #line 1 "C:\Users\rvill\source\repos\Nebulosa\UserInterface\Pages\Categories\CategoryCreatePage.razor"
 using UserInterface.Components.Categories;
 

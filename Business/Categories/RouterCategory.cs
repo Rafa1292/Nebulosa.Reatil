@@ -8,11 +8,11 @@ using System.Text;
 
 namespace Business.Categories
 {
-    public class CategoryRouter
+    public class RouterCategory
     {
         private readonly ICategory _category;
 
-        public CategoryRouter(ICategory category)
+        public RouterCategory(ICategory category)
         {
             _category = category;
         }
