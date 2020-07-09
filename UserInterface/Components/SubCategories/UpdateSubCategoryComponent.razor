@@ -1,0 +1,107 @@
+﻿@using Business.SubCategories
+@using Business.ModelsDTO
+@using Business.Categories
+
+@inject NavigationManager NavManager
+@inject RouterSubCategory router
+@inject RouterCategory routerCategory
+
+
+<span class="col-12 h4 text-center font-weight-bolder mt-5 mb-5">
+    Actualizar subCategoria
+</span>
+<span class="col-12 text-danger text-center h5">@Message</span>
+<EditForm class="col-4 p-2" Model="@oProductSubCategory">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <label class="font-weight-bolder">Subcategoria:</label>
+        <InputSelect @bind-Value="CategoryId" class="form-control">
+            @foreach (var Category in Categories)
+            {
+                <option value="@Category.ProductCategoryId">@Category.Name</option>
+            }
+        </InputSelect>
+    </div>
+    <div class="form-group">
+        <label for="name" class="font-weight-bolder">Nombre de la subCategoría:</label>
+        <InputText id="name" @bind-Value="oProductSubCategory.Name" class="form-control" />
+        <ValidationMessage For="@(() => oProductSubCategory.Name)" class="text-danger" />
+    </div>
+    <div class="form-group justify-content-center d-flex flex-wrap">
+        <input type="button" value="Actualizar subCategoría" @onclick="Save" class="form-control btn btn-dark col-12" />
+        <a href="SubCategories/Index" class="btn btn-outline-secondary m-3">Volver</a>
+    </div>
+
+</EditForm>
+
+@code {
+    [Parameter]
+    public string SubCategoryId { get; set; }
+    public string CategoryId;
+
+
+    public string Message { get; set; }
+    ProductSubCategoryDTO oProductSubCategory = new ProductSubCategoryDTO();
+    List<ProductCategoryDTO> Categories = new List<ProductCategoryDTO>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            SetSubCategory();
+            GetCategories();
+        }
+        catch (Exception e)
+        {
+
+            Message = e.InnerException.ToString();
+        }
+
+    }
+
+    private void SetSubCategory()
+    {
+        var response = router.Get(Int32.Parse(SubCategoryId));
+        if (response.IsSuccess)
+        {
+            oProductSubCategory = response.Data;
+            CategoryId = oProductSubCategory.ProductCategoryId.ToString();
+        }
+        else
+        {
+            Message = response.Message;
+        }
+    }
+
+    private void GetCategories()
+    {
+        var response = routerCategory.GetAll(false);
+        if (response.IsSuccess)
+        {
+            Categories = response.Data.ToList();
+        }
+        else
+        {
+            Message = response.Message;
+        }
+    }
+
+    private void Save()
+    {
+        oProductSubCategory.ProductCategoryId = Int32.Parse(CategoryId);
+        var response = router.Update(oProductSubCategory);
+        if (response.IsSuccess)
+        {
+            NavManager.NavigateTo("SubCategories/Index");
+        }
+        else
+        {
+            Message = response.Message;
+        }
+    }
+
+    private void HandleValidSubmit()
+    {
+        Console.WriteLine("OnValidSubmit");
+    }
+}

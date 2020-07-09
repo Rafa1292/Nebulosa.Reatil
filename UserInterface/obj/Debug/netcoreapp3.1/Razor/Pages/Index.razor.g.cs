@@ -79,6 +79,13 @@ using UserInterface.Components.Categories;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 11 "C:\Users\rvill\source\repos\Nebulosa\UserInterface\_Imports.razor"
+using UserInterface.Components.SubCategories;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/")]
     public partial class Index : Microsoft.AspNetCore.Components.ComponentBase
     {

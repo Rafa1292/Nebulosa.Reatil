@@ -1,0 +1,14 @@
+﻿@page "/SubCategories/Delete/{SubCategoryId}"
+
+
+<DeleteSubCategoryComponent SubCategoryId="@SubCategoryId" />
+
+@code {
+    [Parameter]
+    public string SubCategoryId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        SubCategoryId = SubCategoryId;
+    }
+}
