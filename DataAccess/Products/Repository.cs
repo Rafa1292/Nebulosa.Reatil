@@ -51,7 +51,7 @@ namespace DataAccess.Products
             using (var db = new DataContext())
             {
                 var product = db.Products.Find(productId);
-                return new ObjectResponse<ProductCategory>(true, "Consulta exitosa", product);
+                return new ObjectResponse<Product>(true, "Consulta exitosa", product);
             }
         }
 

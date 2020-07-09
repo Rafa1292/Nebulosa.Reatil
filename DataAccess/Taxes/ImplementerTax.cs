@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using Business.Taxes;
+using Common;
 using Common.Models;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace DataAccess.Taxes
 {
-    public class ImplementerTaxes
+    public class ImplementerTax : ITax
     {
         #region Metodos
         public ObjectResponse<bool> Insert(Tax tax)

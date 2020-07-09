@@ -51,7 +51,7 @@ namespace DataAccess.ProductTaxes
             using (var db = new DataContext())
             {
                 var productTax = db.ProductTaxes.Find(productTaxId);
-                return new ObjectResponse<ProductCategory>(true, "Consulta exitosa", productTax);
+                return new ObjectResponse<ProductTax>(true, "Consulta exitosa", productTax);
             }
         }
 
