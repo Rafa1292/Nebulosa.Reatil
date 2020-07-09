@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Business.Categories;
+using Business.ProductTaxes;
 using Business.SubCategories;
 using Business.Taxes;
 using DataAccess.Categories;
+using DataAccess.ProductTaxes;
 using DataAccess.SubCategories;
 using DataAccess.Taxes;
 using Microsoft.AspNetCore.Builder;
@@ -35,11 +37,14 @@ namespace UserInterface
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddScoped<RouterTax>();
+            services.AddScoped<RouterProductTax>();
             services.AddScoped<RouterCategory>();
             services.AddScoped<RouterSubCategory>();
             services.AddScoped<ICategory, ImplementerCategory>();
             services.AddScoped<ISubCategory, ImplementerSubCategory>();
             services.AddScoped<ITax, ImplementerTax>();
+            services.AddScoped<IProductTax, ImplementerProductTax>();
+
 
         }
 
