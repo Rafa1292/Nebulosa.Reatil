@@ -115,3 +115,11 @@ C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor
 C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\SubCategories\UpdateSubCategoryPage.razor.g.cs
 C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor\Pages\SubCategories\DeleteSubCategoryPage.razor.g.cs
 C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor\Pages\SubCategories\UpdateSubCategoryPage.razor.g.cs
+C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\RazorDeclaration\Components\Taxes\CreateTaxComponent.razor.g.cs
+C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\RazorDeclaration\Components\Taxes\DeleteTaxComponent.razor.g.cs
+C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\RazorDeclaration\Components\Taxes\IndexTaxComponent.razor.g.cs
+C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\RazorDeclaration\Components\Taxes\UpdateTaxComponent.razor.g.cs
+C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor\Components\Taxes\CreateTaxComponent.razor.g.cs
+C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor\Components\Taxes\DeleteTaxComponent.razor.g.cs
+C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor\Components\Taxes\IndexTaxComponent.razor.g.cs
+C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor\Components\Taxes\UpdateTaxComponent.razor.g.cs
