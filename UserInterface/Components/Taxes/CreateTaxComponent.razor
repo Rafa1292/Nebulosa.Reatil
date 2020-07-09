@@ -11,7 +11,7 @@
 <EditForm class="col-4 p-2" Model="@oTax">
     <DataAnnotationsValidator />
     <div class="form-group">
-        <label for="name">Nombre de la categoría:</label>
+        <label for="name">Nombre del impuesto:</label>
         <InputText id="name" @bind-Value="oTax.Name" class="form-control" />
         <ValidationMessage For="@(() => oTax.Name)" class="text-danger" />
     </div>
