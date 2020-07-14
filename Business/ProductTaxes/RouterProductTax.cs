@@ -17,48 +17,45 @@ namespace Business.ProductTaxes
             _productTax = productTax;
         }
 
-        public ObjectResponse<bool> Insert(ProductTaxDTO productTaxDTO)
+        public ObjectResponse<bool> Insert(List<ProductTaxDTO> productTaxesDTO, int productId)
         {
-            var productTax = MapperProductTax.MapFromDTO(productTaxDTO, new ProductTax());
-            productTax = Finisher.FinishToInsert(productTax);
-            var validation = ValidateProductTax.ValidateToInsert(productTax);
+            var productTaxList = MapperProductTax.MapFromDTO(productTaxesDTO);
+            productTaxList = Finisher.FinishToInsert(productTaxList);
+            var validation = ValidateProductTax.ValidateToInsert(productTaxList);
 
             if (!validation.IsSuccess)
                 return validation;
 
-            return _productTax.Insert(productTax);
+            return _productTax.Insert(productTaxList, productId);
         }
 
-        public ObjectResponse<bool> Update(ProductTaxDTO productTaxDTO)
+        public ObjectResponse<bool> Update(List<ProductTaxDTO> productTaxesDTO, int productId)
         {
-            var currentProductTax = _productTax.Get(productTaxDTO.ProductTaxId);
-            if (!currentProductTax.IsSuccess)
-                return new ObjectResponse<bool>(false, currentProductTax.Message);
+            var productTaxList = MapperProductTax.MapFromDTO(productTaxesDTO);
+            productTaxList = Finisher.FinishToUpdate(productTaxList);
+            var validation = ValidateProductTax.ValidateToInsert(productTaxList);
 
-            var productTax = MapperProductTax.MapFromDTO(productTaxDTO, currentProductTax.Data);
-            productTax = Finisher.FinishToUpdate(productTax);
-            var validation = ValidateProductTax.ValidateToInsert(productTax);
             if (!validation.IsSuccess)
                 return validation;
 
-            return _productTax.Update(productTax);
+            return _productTax.Update(productTaxList, productId);
         }
 
-        public ObjectResponse<bool> Delete(int productTaxId)
+        public ObjectResponse<bool> Delete(List<ProductTax> productTaxes)
         {
-            return _productTax.Delete(productTaxId);
+            return _productTax.Delete(productTaxes);
         }
 
-        public ObjectResponse<ProductTaxDTO> Get(int productTaxID)
+        public ObjectResponse<List<ProductTaxDTO>> Get(int productID)
         {
-            var productTax = _productTax.Get(productTaxID);
+            var productTax = _productTax.Get(productID, false);
 
             if (!productTax.IsSuccess)
-                return new ObjectResponse<ProductTaxDTO>(false, productTax.Message);
+                return new ObjectResponse<List<ProductTaxDTO>>(false, productTax.Message);
 
             var productTaxDTO = MapperProductTax.MapToDTO(productTax.Data);
-            
-            return new ObjectResponse<ProductTaxDTO>(true, productTax.Message, productTaxDTO);
+
+            return new ObjectResponse<List<ProductTaxDTO>>(true, productTax.Message, productTaxDTO);
         }
 
         public ObjectResponse<List<ProductTaxDTO>> GetAll(bool deleteItems)

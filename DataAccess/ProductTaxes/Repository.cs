@@ -46,21 +46,21 @@ namespace DataAccess.ProductTaxes
             }
         }
 
-        public static ObjectResponse<ProductTax> Get(int productTaxId)
+        public static ObjectResponse<List<ProductTax>> Get(int productId)
         {
             using (var db = new DataContext())
             {
-                var productTax = db.ProductTaxes.Find(productTaxId);
-                return new ObjectResponse<ProductTax>(true, "Consulta exitosa", productTax);
+                var productTaxes = db.ProductTaxes.ToList().Where(x => x.ProductId == productId).ToList();
+                return new ObjectResponse<List<ProductTax>>(true, "Consulta exitosa", productTaxes);
             }
         }
 
-        public static ObjectResponse<IEnumerable<ProductTax>> GetAll()
+        public static ObjectResponse<List<ProductTax>> GetAll()
         {
             using (var db = new DataContext())
             {
                 var productTaxes = db.ProductTaxes.ToList();
-                return new ObjectResponse<IEnumerable<ProductTax>>(true, "Consulta exitosa", productTaxes);
+                return new ObjectResponse<List<ProductTax>>(true, "Consulta exitosa", productTaxes);
             }
         }
 

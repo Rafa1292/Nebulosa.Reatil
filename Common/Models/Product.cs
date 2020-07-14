@@ -24,6 +24,8 @@ namespace Common.Models
 
         public int WarehouseQuantity { get; set; }
 
+        public int ProductSubCategoryId { get; set; }
+
         public bool Delete { get; set; }
 
         public string UserCreate { get; set; }

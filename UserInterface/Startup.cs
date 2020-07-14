@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Business.Categories;
 using Business.ProductTaxes;
+using Business.Proucts;
 using Business.SubCategories;
 using Business.Taxes;
 using DataAccess.Categories;
+using DataAccess.Products;
 using DataAccess.ProductTaxes;
 using DataAccess.SubCategories;
 using DataAccess.Taxes;
@@ -33,7 +35,7 @@ namespace UserInterface
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
-        {
+        {            
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddScoped<RouterTax>();
@@ -44,6 +46,7 @@ namespace UserInterface
             services.AddScoped<ISubCategory, ImplementerSubCategory>();
             services.AddScoped<ITax, ImplementerTax>();
             services.AddScoped<IProductTax, ImplementerProductTax>();
+            services.AddScoped<IProduct, ImplementerProduct>();
 
 
         }

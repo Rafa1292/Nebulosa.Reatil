@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using Business.Proucts;
+using Common;
 using Common.Models;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace DataAccess.Products
 {
-    public class ImplementerProduct
+    public class ImplementerProduct : IProduct
     {
         #region Metodos
         public ObjectResponse<bool> Insert(Product product)

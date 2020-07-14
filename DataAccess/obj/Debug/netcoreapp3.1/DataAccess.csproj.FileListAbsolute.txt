@@ -13,3 +13,4 @@ C:\Users\rvill\source\repos\Nebulosa\DataAccess\obj\Debug\netcoreapp3.1\DataAcce
 C:\Users\rvill\source\repos\Nebulosa\DataAccess\obj\Debug\netcoreapp3.1\DataAccess.csproj.CopyComplete
 C:\Users\rvill\source\repos\Nebulosa\DataAccess\obj\Debug\netcoreapp3.1\DataAccess.dll
 C:\Users\rvill\source\repos\Nebulosa\DataAccess\obj\Debug\netcoreapp3.1\DataAccess.pdb
+C:\Users\rvill\source\repos\Nebulosa\DataAccess\obj\Debug\netcoreapp3.1\DataAccess.csproj.CoreCompileInputs.cache

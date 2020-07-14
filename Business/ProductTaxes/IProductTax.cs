@@ -8,14 +8,14 @@ namespace Business.ProductTaxes
 {
     public interface IProductTax
     {
-        public ObjectResponse<bool> Insert(ProductTax productTax);
+        public ObjectResponse<bool> Insert(List<ProductTax> productTaxes, int productId);
 
-        public ObjectResponse<bool> Update(ProductTax productTax);
+        public ObjectResponse<bool> Update(List<ProductTax> productTaxes, int productId);
 
-        public ObjectResponse<bool> Delete(int productTaxId);
+        public ObjectResponse<bool> Delete(List<ProductTax> productTaxes);
 
-        public ObjectResponse<ProductTax> Get(int productTaxId);
+        public ObjectResponse<List<ProductTax>> Get(int productId, bool deleteItems);
 
-        public ObjectResponse<IEnumerable<ProductTax>> GetAll(bool deleteItems);
+        public ObjectResponse<List<ProductTax>> GetAll(bool deleteItems);
     }
 }

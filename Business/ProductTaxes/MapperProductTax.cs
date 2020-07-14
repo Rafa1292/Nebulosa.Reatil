@@ -8,38 +8,39 @@ namespace Business.ProductTaxes
 {
     class MapperProductTax
     {
-        public static ProductTax MapFromDTO(ProductTaxDTO productTaxDTO, ProductTax productTax)
+        //mapear  en lista
+        public static List<ProductTax> MapFromDTO(List<ProductTaxDTO> productTaxesDTO)
         {
-            productTax.ProductTaxId = productTaxDTO.ProductTaxId;
-            productTax.ProductId = productTaxDTO.ProductId;
-            productTax.TaxId = productTaxDTO.TaxId;
+            List<ProductTax> productTaxes = new List<ProductTax>();
 
-            return productTax;
-        }
-
-        public static ProductTaxDTO MapToDTO(ProductTax productTax)
-        {
-            ProductTaxDTO productTaxDTO = new ProductTaxDTO()
+            foreach (var productTaxDTO in productTaxesDTO)
             {
-                ProductTaxId = productTax.ProductTaxId,
-                TaxId = productTax.TaxId,
-                ProductId = productTax.ProductId
-            };
+                ProductTax productTax = new ProductTax()
+                {
+                    ProductTaxId = productTaxDTO.ProductTaxId,
+                    ProductId = productTaxDTO.ProductId,
+                    TaxId = productTaxDTO.TaxId
+                };
+                productTaxes.Add(productTax);
+            }
 
-            return productTaxDTO;
+            return productTaxes;
         }
 
-        public static List<ProductTaxDTO> MapToDTO(List<ProductTax> productTax)
+        public static List<ProductTaxDTO> MapToDTO(List<ProductTax> productTaxes)
         {
             List<ProductTaxDTO> productTaxesDTO = new List<ProductTaxDTO>();
 
-            productTax.ForEach(x => productTaxesDTO.Add(
-                new ProductTaxDTO()
+            foreach (var productTax in productTaxes)
+            {
+                ProductTaxDTO productTaxDTO = new ProductTaxDTO()
                 {
-                    ProductTaxId = x.ProductTaxId,
-                    ProductId = x.ProductId,
-                    TaxId = x.TaxId
-                }));
+                    ProductTaxId = productTax.ProductTaxId,
+                    ProductId = productTax.ProductId,
+                    TaxId = productTax.TaxId
+                };
+                productTaxesDTO.Add(productTaxDTO);
+            }
 
             return productTaxesDTO;
         }

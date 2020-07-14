@@ -8,17 +8,21 @@ namespace Business.ProductTaxes
 {
     public class ValidateProductTax
     {
-        public static ObjectResponse<bool> ValidateToInsert(ProductTax productTax)
+        public static ObjectResponse<bool> ValidateToInsert(List<ProductTax> productTaxes)
         {
-            bool validateNullTaxId = productTax.TaxId > 0 ? true : false;
+            foreach (var productTax in productTaxes)
+            {
+                bool validateNullTaxId = productTax.TaxId > 0 ? true : false;
 
-            if (!validateNullTaxId)
-                return new ObjectResponse<bool>(false, "El impuesto no puede ser nulo");
+                if (!validateNullTaxId)
+                    return new ObjectResponse<bool>(false, "El impuesto no puede ser nulo");
 
-            bool validateNullProductId = productTax.ProductId > 0 ? true : false;
+                bool validateNullProductId = productTax.ProductId > 0 ? true : false;
 
-            if (!validateNullProductId)
-                return new ObjectResponse<bool>(false, "El producto no puede ser nulo");
+                if (!validateNullProductId)
+                    return new ObjectResponse<bool>(false, "El producto no puede ser nulo");
+            }
+
 
             return new ObjectResponse<bool>(true, "Impuesto validado");
         }

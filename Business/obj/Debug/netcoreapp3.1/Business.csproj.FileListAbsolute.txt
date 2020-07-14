@@ -9,3 +9,4 @@ C:\Users\rvill\source\repos\Nebulosa\Business\obj\Debug\netcoreapp3.1\Business.A
 C:\Users\rvill\source\repos\Nebulosa\Business\obj\Debug\netcoreapp3.1\Business.csproj.CopyComplete
 C:\Users\rvill\source\repos\Nebulosa\Business\obj\Debug\netcoreapp3.1\Business.dll
 C:\Users\rvill\source\repos\Nebulosa\Business\obj\Debug\netcoreapp3.1\Business.pdb
+C:\Users\rvill\source\repos\Nebulosa\Business\obj\Debug\netcoreapp3.1\Business.csproj.CoreCompileInputs.cache
