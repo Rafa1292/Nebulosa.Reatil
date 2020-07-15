@@ -40,6 +40,7 @@ namespace UserInterface
             services.AddServerSideBlazor();
             services.AddScoped<RouterTax>();
             services.AddScoped<RouterProductTax>();
+            services.AddScoped<RouterProduct>();
             services.AddScoped<RouterCategory>();
             services.AddScoped<RouterSubCategory>();
             services.AddScoped<ICategory, ImplementerCategory>();

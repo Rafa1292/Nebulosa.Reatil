@@ -9,7 +9,7 @@ namespace Business.ProductTaxes
     class MapperProductTax
     {
         //mapear  en lista
-        public static List<ProductTax> MapFromDTO(List<ProductTaxDTO> productTaxesDTO)
+        public static List<ProductTax> MapFromDTO(List<ProductTaxDTO> productTaxesDTO, int productId)
         {
             List<ProductTax> productTaxes = new List<ProductTax>();
 
@@ -18,7 +18,7 @@ namespace Business.ProductTaxes
                 ProductTax productTax = new ProductTax()
                 {
                     ProductTaxId = productTaxDTO.ProductTaxId,
-                    ProductId = productTaxDTO.ProductId,
+                    ProductId = productId,
                     TaxId = productTaxDTO.TaxId
                 };
                 productTaxes.Add(productTax);

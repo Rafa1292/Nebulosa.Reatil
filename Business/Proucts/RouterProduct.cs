@@ -5,6 +5,7 @@ using Common;
 using Common.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 
 namespace Business.Proucts
 {
@@ -12,7 +13,7 @@ namespace Business.Proucts
     {
         private readonly IProduct _product;
         private readonly RouterProductTax _routerProductTax;
-        private readonly RouterSubCategory _routerSubCategory
+        private readonly RouterSubCategory _routerSubCategory;
 
         public RouterProduct(IProduct product, RouterSubCategory routerSubCategory, RouterProductTax routerProductTax)
         {
@@ -23,23 +24,30 @@ namespace Business.Proucts
 
         public ObjectResponse<bool> Insert(ProductDTO productDTO)
         {
-            var product = MapperProduct.MapFromDTO(productDTO, new Product());
-            product = Finisher.FinishToInsert(product);
-            var validation = ValidateProduct.ValidateToInsert(product, _product.GetAll(false).Data.ToList());
+            using (var scope = new TransactionScope())
+            {
+                var product = MapperProduct.MapFromDTO(productDTO, new Product());
+                product = Finisher.FinishToInsert(product);
+                var validation = ValidateProduct.ValidateToInsert(product, _product.GetAll(false).Data.ToList());
 
-            if (!validation.IsSuccess)
-                return validation;
+                if (!validation.IsSuccess)
+                    return validation;
 
-            var productId = _product.Insert(product);
+                var productId = _product.Insert(product);
 
-            if (!productId.IsSuccess)
-                return new ObjectResponse<bool>(false, "Error al obtener el Id del producto");
+                if (!productId.IsSuccess)
+                    return new ObjectResponse<bool>(false, "Error al obtener el Id del producto");
 
-            var productTaxRealationship = _routerProductTax.Insert(productDTO.Taxes, productId.Data);
-            if (!productTaxRealationship.IsSuccess)
-                return productTaxRealationship;
+                var productTaxRealationship = _routerProductTax.Insert(productDTO.Taxes, productId.Data);
+                if (!productTaxRealationship.IsSuccess)
+                {
+                    scope.Dispose();
+                    return productTaxRealationship;
+                }
 
-            return new ObjectResponse<bool>(true, "Producto creado y relacionado correctamente");
+                scope.Complete();
+                return new ObjectResponse<bool>(true, "Producto creado y relacionado correctamente");
+            }
         }
 
         public ObjectResponse<bool> Update(ProductDTO productDTO)
@@ -63,13 +71,13 @@ namespace Business.Proucts
             return new ObjectResponse<bool>(true, "Producto actualizado correctamente");
         }
 
-        public ObjectResponse<bool> Delete(int productId)
+        public ObjectResponse<bool> Delete(int productId, List<ProductTax> productTaxes)
         {
             var tryDeleteProduct = _product.Delete(productId);
             if (!tryDeleteProduct.IsSuccess)
                 return tryDeleteProduct;
 
-            var tryDeleteRelationship = _routerProductTax.Delete(productId);
+            var tryDeleteRelationship = _routerProductTax.Delete(productTaxes);
 
             if (!tryDeleteRelationship.IsSuccess)
                 return tryDeleteRelationship;

@@ -57,11 +57,9 @@ namespace DataAccess.ProductTaxes
             return new ObjectResponse<bool>(true, "Relacion actualizada");
         }
 
-        public ObjectResponse<bool> Delete(int productId)
+        public ObjectResponse<bool> Delete(List<ProductTax> productTaxes)
         {
-            var productTaxes = Get(productId, false);
-
-            foreach (var productTax in productTaxes.Data)
+            foreach (var productTax in productTaxes)
             {
                 var response = Repository.Delete(productTax.ProductTaxId);
                 if (!response.IsSuccess)

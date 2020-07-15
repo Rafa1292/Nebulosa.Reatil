@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Business.ModelsDTO
@@ -8,6 +9,7 @@ namespace Business.ModelsDTO
     {
         public int ProductId { get; set; }
 
+        [Required]
         public string Name { get; set; }
 
         public decimal Cost { get; set; }
@@ -22,6 +24,8 @@ namespace Business.ModelsDTO
 
         public int WarehouseQuantity { get; set; }
 
+        [Required]
+        [Range(1,10000000,ErrorMessage = "Debe seleccionar una subcategoria")]
         public int ProductSubCategoryId { get; set; }
 
         public virtual ProductSubCategoryDTO ProductSubCategoryDTO { get; set; }

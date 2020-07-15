@@ -47,6 +47,9 @@ namespace DataAccess.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int>("ProductSubCategoryId")
+                        .HasColumnType("int");
+
                     b.Property<int>("SidesQuantity")
                         .HasColumnType("int");
 

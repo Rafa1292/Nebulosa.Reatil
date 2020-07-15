@@ -1,6 +1,8 @@
-﻿using Common.Models;
+﻿using Business.ModelsDTO;
+using Common.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Business.Categories
@@ -23,6 +25,19 @@ namespace Business.Categories
             productCategory.UserUpdate = "";//pendiente de implementar
 
             return productCategory;
+        }
+
+        public static ProductCategoryDTO FinishToGet(ProductCategoryDTO productCategoryDTO, List<ProductSubCategoryDTO> productSubCategoriesDTO)
+        {
+            productCategoryDTO.SubCategoriesDTO = productSubCategoriesDTO.Where(x => x.ProductCategoryId == productCategoryDTO.ProductCategoryId).ToList();
+
+            return productCategoryDTO;
+        }
+
+        public static List<ProductCategoryDTO> FinishToGetAll(List<ProductCategoryDTO> productCategoriesDTO, List<ProductSubCategoryDTO> productSubCategoriesDTO)
+        {
+            productCategoriesDTO.ForEach(x => x.SubCategoriesDTO = productSubCategoriesDTO.Where(y => y.ProductCategoryId == x.ProductCategoryId).ToList());
+            return productCategoriesDTO;
         }
     }
 }

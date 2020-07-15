@@ -19,7 +19,7 @@ namespace Business.ProductTaxes
 
         public ObjectResponse<bool> Insert(List<ProductTaxDTO> productTaxesDTO, int productId)
         {
-            var productTaxList = MapperProductTax.MapFromDTO(productTaxesDTO);
+            var productTaxList = MapperProductTax.MapFromDTO(productTaxesDTO, productId);
             productTaxList = Finisher.FinishToInsert(productTaxList);
             var validation = ValidateProductTax.ValidateToInsert(productTaxList);
 
@@ -31,7 +31,7 @@ namespace Business.ProductTaxes
 
         public ObjectResponse<bool> Update(List<ProductTaxDTO> productTaxesDTO, int productId)
         {
-            var productTaxList = MapperProductTax.MapFromDTO(productTaxesDTO);
+            var productTaxList = MapperProductTax.MapFromDTO(productTaxesDTO, productId);
             productTaxList = Finisher.FinishToUpdate(productTaxList);
             var validation = ValidateProductTax.ValidateToInsert(productTaxList);
 
@@ -41,9 +41,9 @@ namespace Business.ProductTaxes
             return _productTax.Update(productTaxList, productId);
         }
 
-        public ObjectResponse<bool> Delete(int productID)
+        public ObjectResponse<bool> Delete(List<ProductTax> productTaxes)
         {
-            return _productTax.Delete(productID);
+            return _productTax.Delete(productTaxes);
         }
 
         public ObjectResponse<List<ProductTaxDTO>> Get(int productID)

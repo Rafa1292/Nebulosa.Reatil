@@ -1,4 +1,5 @@
 ﻿using Business.ModelsDTO;
+using Business.SubCategories;
 using Common;
 using Common.Models;
 using System;
@@ -11,10 +12,12 @@ namespace Business.Categories
     public class RouterCategory
     {
         private readonly ICategory _category;
-
-        public RouterCategory(ICategory category)
+        private readonly RouterSubCategory _subCategory;
+ 
+        public RouterCategory(ICategory category, RouterSubCategory routerSubCategory)
         {
             _category = category;
+            _subCategory = routerSubCategory;
         }
 
         public ObjectResponse<bool> Insert(ProductCategoryDTO productCategoryDTO)
@@ -57,6 +60,7 @@ namespace Business.Categories
                 return new ObjectResponse<ProductCategoryDTO>(false, productCategoryResponse.Message);
 
             var productCategoryDTO = MapperCategory.MapToDTO(productCategoryResponse.Data);
+            productCategoryDTO = Finisher.FinishToGet(productCategoryDTO, _subCategory.GetAll(false).Data);
 
             return new ObjectResponse<ProductCategoryDTO>(true, productCategoryResponse.Message, productCategoryDTO);
         }
@@ -64,11 +68,15 @@ namespace Business.Categories
         public ObjectResponse<List<ProductCategoryDTO>> GetAll(bool deleteItems)
         {
             var productCategoriesResponse = _category.GetAll(deleteItems);
-
             if (!productCategoriesResponse.IsSuccess)
                 return new ObjectResponse<List<ProductCategoryDTO>>(false, productCategoriesResponse.Message);
 
+            var productSubCategoriesResponse = _subCategory.GetAll(deleteItems);
+            if (!productSubCategoriesResponse.IsSuccess)
+                return new ObjectResponse<List<ProductCategoryDTO>>(false, productSubCategoriesResponse.Message);
+
             var productCategoriesDTO = MapperCategory.MapToDTO(productCategoriesResponse.Data.ToList());
+            productCategoriesDTO = Finisher.FinishToGetAll(productCategoriesDTO, productSubCategoriesResponse.Data);
 
             return new ObjectResponse<List<ProductCategoryDTO>>(true, productCategoriesResponse.Message, productCategoriesDTO);
         }

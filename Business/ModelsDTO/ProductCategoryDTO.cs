@@ -9,5 +9,7 @@ namespace Business.ModelsDTO
         public int ProductCategoryId { get; set; }
 
         public string Name { get; set; }
+
+        public List<ProductSubCategoryDTO> SubCategoriesDTO { get; set; }
     }
 }

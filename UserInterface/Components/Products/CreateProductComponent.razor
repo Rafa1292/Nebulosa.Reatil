@@ -1,0 +1,217 @@
+﻿@using Business.Proucts
+@using Business.ModelsDTO
+@using Business.Categories
+@using Business.SubCategories
+@using Business.Taxes
+@using System.Linq
+
+@inject NavigationManager NavManager
+@inject RouterCategory RouterCategory
+@inject RouterSubCategory RouterSubCategory
+@inject RouterProduct RouterProduct
+@inject RouterTax RouterTax
+
+
+
+
+<span class="col-12 h4 text-center font-weight-bolder mt-5 mb-5">
+    Agregar nuevo producto
+</span>
+<EditForm class="col-md-4" Model="@oProduct" OnValidSubmit="@Save">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <label for="name" class="font-weight-bolder">Nombre</label>
+        <InputText id="name" @bind-Value="oProduct.Name" class="form-control" />
+        <ValidationMessage For="@(() => oProduct.Name)" class="text-danger" />
+    </div>
+    <div class="form-group">
+        <label for="cost" class="font-weight-bolder">Costo</label>
+        <InputNumber id="cost" @bind-Value="oProduct.Cost" class="form-control" />
+        <ValidationMessage For="@(() => oProduct.Cost)" class="text-danger" />
+    </div>
+    <div class="form-group">
+        <label for="price" class="font-weight-bolder">Precio</label>
+        <InputNumber id="price" @bind-Value="oProduct.Price" class="form-control" />
+        <ValidationMessage For="@(() => oProduct.Price)" class="text-danger" />
+    </div>
+    <div class="form-group">
+        <label for="kitchenMessage" class="font-weight-bolder">Comanda</label>
+        <InputCheckbox id="kitchenMessage" @bind-Value="oProduct.KitchenMessage" class="form-control col-1" />
+        <ValidationMessage For="@(() => oProduct.KitchenMessage)" class="text-danger" />
+    </div>
+    <div class="form-group">
+        <label for="sidesQuantity" class="font-weight-bolder">Cantidad de acompañamientos</label>
+        <InputNumber id="sidesQuantity" @bind-Value="oProduct.SidesQuantity" class="form-control" />
+        <ValidationMessage For="@(() => oProduct.SidesQuantity)" class="text-danger" />
+    </div>
+    <div class="form-group">
+        <label class="font-weight-bolder">Categoria:</label>
+        <select @onchange="SetSubCategories" class="form-control">
+            <option value="0" selected disabled>Seleccione una Categoria...</option>
+            @foreach (var category in Categories)
+            {
+                <option value="@category.ProductCategoryId">@category.Name</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label class="font-weight-bolder">Subcategoria:</label>
+        <select @onchange="BindSubCategoryId"  class="form-control">
+            <option value="0" selected disabled>Seleccione una subCategoria...</option>
+            @foreach (var subCategory in subCategoriesTmp)
+            {
+                <option value="@subCategory.ProductSubCategoryId">@subCategory.Name</option>
+            }
+        </select>
+        <ValidationMessage For="@(() => oProduct.ProductSubCategoryId)" class="text-danger" />
+    </div>
+    <div class="form-group">
+        <label class="font-weight-bolder col-12 p-0">Impuestos:</label>
+        @foreach (var tax in taxes)
+        {
+            <label>@tax.Name</label>
+            <input type="checkbox" @onclick="@(() => ClickTax(tax))" class="form-control col-1" />
+        }
+    </div>
+    <div class="form-group justify-content-center d-flex flex-wrap">
+        <span class="col-12 text-danger text-center h5">@Message</span>
+        <input type="submit" value="Agregar producto" class="form-control btn btn-dark" />
+        <a href="Products/Index" class="btn btn-outline-secondary m-3">Volver</a>
+
+    </div>
+</EditForm>
+
+@code {
+
+    #region Variables
+
+    ProductDTO oProduct = new ProductDTO();
+    public string Message;
+    private EditContext editContext;
+
+    List<ProductCategoryDTO> Categories = new List<ProductCategoryDTO>();
+    List<ProductSubCategoryDTO> subCategoriesTmp = new List<ProductSubCategoryDTO>();
+
+    List<TaxDTO> taxes = new List<TaxDTO>();
+    List<ProductTaxDTO> selectedTaxes = new List<ProductTaxDTO>();
+
+    #endregion
+
+    #region| Metodos
+
+    protected override async Task OnInitializedAsync()
+    {
+        editContext = new EditContext(oProduct);
+        SetCategories();
+        SetTaxes();
+    }
+
+    private void SetCategories()
+    {
+
+        var response = RouterCategory.GetAll(false);
+        if (response.IsSuccess)
+        {
+            Categories = response.Data.ToList();
+        }
+        else
+        {
+            Message = response.Message;
+            Categories = new List<ProductCategoryDTO>();
+        }
+    }
+
+    private void BindSubCategoryId(ChangeEventArgs e)
+    {
+        var subCategoryId = Int32.Parse(e.Value.ToString());
+         oProduct.ProductSubCategoryId = subCategoryId;
+    }
+
+    private void SetSubCategories(ChangeEventArgs e)
+    {
+        var CategoryId = e.Value.ToString();
+        try
+        {
+            subCategoriesTmp = Categories.Find(x => x.ProductCategoryId == Int32.Parse(CategoryId)).SubCategoriesDTO.ToList();
+        }
+        catch (Exception ex)
+        {
+            Message = "Agregue subcategorias a la categoria seleccionada para poder cargar la lista";
+            subCategoriesTmp = new List<ProductSubCategoryDTO>();
+        }
+
+    }
+
+    private void SetTaxes()
+    {
+        var response = RouterTax.GetAll(false);
+        if (response.IsSuccess)
+        {
+            taxes = response.Data.ToList();
+        }
+        else
+        {
+            Message = response.Message;
+            taxes = new List<TaxDTO>();
+        }
+
+    }
+
+    private void Save()
+    {
+
+        oProduct.Taxes = selectedTaxes;
+        var response = RouterProduct.Insert(oProduct);
+
+        if (response.IsSuccess)
+        {
+            NavManager.NavigateTo("Products/Index");
+        }
+        else
+        {
+            Message = response.Message;
+        }
+    }
+
+    private void ClickTax(TaxDTO tax)
+    {
+
+        if (selectedTaxes.Select(x => x.TaxId).ToList().Contains(tax.TaxId))
+        {
+            RemoveTax(tax.TaxId);
+        }
+        else
+        {
+            AddTax(tax.TaxId);
+        }
+    }
+
+    private void AddTax(int taxId)
+    {
+        selectedTaxes.Add(new ProductTaxDTO()
+        {
+            TaxId = taxId
+        });
+    }
+
+    private void RemoveTax(int taxId)
+    {
+        var productTax = selectedTaxes.Find(x => x.TaxId == taxId);
+        if (productTax == null)
+        {
+            Message = "Imposible interactuar con esta casilla en este momento";
+        }
+        else
+        {
+            selectedTaxes.Remove(productTax);
+        }
+    }
+
+    private void HandleValidSubmit()
+    {
+        Console.WriteLine("OnValidSubmit");
+    }
+
+    #endregion
+}

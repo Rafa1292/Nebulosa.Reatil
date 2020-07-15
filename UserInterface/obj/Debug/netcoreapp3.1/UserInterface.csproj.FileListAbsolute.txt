@@ -132,3 +132,12 @@ C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor
 C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor\Pages\Taxes\IndexTaxPage.razor.g.cs
 C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor\Pages\Taxes\UpdateTaxPage.razor.g.cs
 C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\UserInterface.csproj.CoreCompileInputs.cache
+C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\RazorDeclaration\Components\Products\IndexProductComponent.razor.g.cs
+C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\Products\IndexProductPage.razor.g.cs
+C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor\Components\Products\IndexProductComponent.razor.g.cs
+C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor\Pages\Products\IndexProductPage.razor.g.cs
+C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\UserInterface.genruntimeconfig.cache
+C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\RazorDeclaration\Components\Products\CreateProductComponent.razor.g.cs
+C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor\Components\Products\CreateProductComponent.razor.g.cs
+C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\Products\CreateProductPage.razor.g.cs
+C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor\Pages\Products\CreateProductPage.razor.g.cs

@@ -1,0 +1,59 @@
+﻿@using Business.Proucts
+@using Business.ModelsDTO
+
+@inject RouterProduct routerProduct
+
+<span class="col-12 h4 text-center font-weight-bolder mt-5 mb-5">
+    Productos
+</span>
+<p class="col-12 p-1 d-flex justify-content-center">
+    <a class="btn btn-primary " href="Products/Create">Agregar nuevo producto</a>
+</p>
+<label class="text-danger h5 ">@Message</label>
+
+<div class="col-12 p-0 d-flex flex-wrap justify-content-center">
+    <table id="productsTable" class="display col-6 table text-center table-hover">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Costo</th>
+                <th>Precio</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in products)
+            {
+                <tr>
+                    <td>@product.Name</td>
+                    <td>@product.Cost</td>
+                    <td>@product.Price</td>
+
+                    <td>
+                        <a class="btn btn-secondary" href="Products/Update/@product.ProductId">Editar</a>
+                        <a class="btn btn-outline-danger" href="Products/Delete/@product.ProductId">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+@code {
+    private List<ProductDTO> products = new List<ProductDTO>();
+    private string Message;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = routerProduct.GetAll(false);
+        if (response.IsSuccess)
+        {
+            products = response.Data;
+        }
+        else
+        {
+            Message = response.Message;
+        }
+    }
+}

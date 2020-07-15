@@ -93,6 +93,13 @@ using UserInterface.Components.Taxes;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 13 "C:\Users\rvill\source\repos\Nebulosa\UserInterface\_Imports.razor"
+using UserInterface.Components.Products;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/Categories/Update/{CategoryId}")]
     public partial class UpdateCategoryPage : Microsoft.AspNetCore.Components.ComponentBase
     {
