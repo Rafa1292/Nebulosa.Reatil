@@ -41,9 +41,9 @@ namespace Business.ProductTaxes
             return _productTax.Update(productTaxList, productId);
         }
 
-        public ObjectResponse<bool> Delete(List<ProductTax> productTaxes)
+        public ObjectResponse<bool> Delete(int productID)
         {
-            return _productTax.Delete(productTaxes);
+            return _productTax.Delete(productID);
         }
 
         public ObjectResponse<List<ProductTaxDTO>> Get(int productID)

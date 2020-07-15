@@ -11,7 +11,7 @@ namespace DataAccess.Products
     public class ImplementerProduct : IProduct
     {
         #region Metodos
-        public ObjectResponse<bool> Insert(Product product)
+        public ObjectResponse<int> Insert(Product product)
         {
             return Repository.Insert(product);
         }
@@ -31,7 +31,7 @@ namespace DataAccess.Products
             return Repository.Get(productId);
         }
 
-        public ObjectResponse<IEnumerable<Product>> GetAll(bool deleteItems)
+        public ObjectResponse<List<Product>> GetAll(bool deleteItems)
         {
             var products = Repository.GetAll();
 

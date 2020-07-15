@@ -3,19 +3,16 @@ using Business.ProductTaxes;
 using Business.SubCategories;
 using Common;
 using Common.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Business.Proucts
 {
     public class RouterProduct
     {
         private readonly IProduct _product;
-        private readonly RouterSubCategory _routerSubCategory;
         private readonly RouterProductTax _routerProductTax;
-
+        private readonly RouterSubCategory _routerSubCategory
 
         public RouterProduct(IProduct product, RouterSubCategory routerSubCategory, RouterProductTax routerProductTax)
         {
@@ -36,70 +33,90 @@ namespace Business.Proucts
             var productId = _product.Insert(product);
 
             if (!productId.IsSuccess)
-                return productId;
+                return new ObjectResponse<bool>(false, "Error al obtener el Id del producto");
 
-            _routerProductTax.Insert();
+            var productTaxRealationship = _routerProductTax.Insert(productDTO.Taxes, productId.Data);
+            if (!productTaxRealationship.IsSuccess)
+                return productTaxRealationship;
 
-            return ;
+            return new ObjectResponse<bool>(true, "Producto creado y relacionado correctamente");
         }
 
         public ObjectResponse<bool> Update(ProductDTO productDTO)
         {
-            var currentSubCategory = _subCategory.Get(productDTO.ProductSubCategoryId);
-            if (!currentSubCategory.IsSuccess)
-                return new ObjectResponse<bool>(false, currentSubCategory.Message);
+            var product = MapperProduct.MapFromDTO(productDTO, new Product());
+            product = Finisher.FinishToUpdate(product);
+            var validation = ValidateProduct.ValidateToInsert(product, _product.GetAll(false).Data.ToList());
 
-            var subCategory = MapperSubCategory.MapFromDTO(productDTO, currentSubCategory.Data);
-            subCategory = Finisher.FinishToUpdate(subCategory);
-            var validation = ValidateSubCategory.ValidateToInsert(subCategory, _subCategory.GetAll(false).Data.ToList());
             if (!validation.IsSuccess)
                 return validation;
 
-            return _subCategory.Update(subCategory);
+            var updateProduct = _product.Update(product);
+
+            if (!updateProduct.IsSuccess)
+                return new ObjectResponse<bool>(false, "Error al actualizar el producto");
+
+            var editRealationship = _routerProductTax.Update(productDTO.Taxes, productDTO.ProductId);
+            if (!editRealationship.IsSuccess)
+                return editRealationship;
+
+            return new ObjectResponse<bool>(true, "Producto actualizado correctamente");
         }
 
         public ObjectResponse<bool> Delete(int productId)
         {
-            return _subCategory.Delete(productId);
+            var tryDeleteProduct = _product.Delete(productId);
+            if (!tryDeleteProduct.IsSuccess)
+                return tryDeleteProduct;
+
+            var tryDeleteRelationship = _routerProductTax.Delete(productId);
+
+            if (!tryDeleteRelationship.IsSuccess)
+                return tryDeleteRelationship;
+
+
+            return tryDeleteProduct;
         }
 
         public ObjectResponse<ProductDTO> Get(int productId)
         {
-            var productSubCategory = _subCategory.Get(productId);
-
+            var productSubCategory = _routerSubCategory.Get(productId);
             if (!productSubCategory.IsSuccess)
-                return new ObjectResponse<ProductSubCategoryDTO>(false, productSubCategory.Message);
+                return new ObjectResponse<ProductDTO>(false, productSubCategory.Message);
 
-            var productSubCategoryDTO = MapperSubCategory.MapToDTO(productSubCategory.Data);
-            var productCategory = _category.Get(productSubCategoryDTO.ProductCategoryId);
+            var productTaxes = _routerProductTax.Get(productId);
+            if (!productTaxes.IsSuccess)
+                return new ObjectResponse<ProductDTO>(false, productTaxes.Message);
 
-            if (!productCategory.IsSuccess)
-                return new ObjectResponse<ProductSubCategoryDTO>(false, "No se pudo obtener la categoria asociada");
+            var product = _product.Get(productId);
+            if (!product.IsSuccess)
+                return new ObjectResponse<ProductDTO>(false, product.Message);
 
-            var productCategoryDTO = MapperCategory.MapToDTO(productCategory.Data);
-            productSubCategoryDTO = Finisher.FinishToGet(productSubCategoryDTO, productCategoryDTO);
+            var productDTO = MapperProduct.MapToDTO(product.Data);
+            productDTO = Finisher.FinishToGet(productDTO, productSubCategory.Data, productTaxes.Data);
 
-            return new ObjectResponse<ProductSubCategoryDTO>(true, productSubCategory.Message, productSubCategoryDTO);
+            return new ObjectResponse<ProductDTO>(true, product.Message, productDTO);
         }
 
         public ObjectResponse<List<ProductDTO>> GetAll(bool deleteItems)
         {
-            var productSubCategories = _subCategory.GetAll(deleteItems);
-
+            var productSubCategories = _routerSubCategory.GetAll(deleteItems);
             if (!productSubCategories.IsSuccess)
-                return new ObjectResponse<List<ProductSubCategoryDTO>>(false, productSubCategories.Message);
+                return new ObjectResponse<List<ProductDTO>>(false, productSubCategories.Message);
 
-            var productSubCategoriesDTO = MapperSubCategory.MapToDTO(productSubCategories.Data.ToList());
+            var productTaxes = _routerProductTax.GetAll(deleteItems);
+            if (!productTaxes.IsSuccess)
+                return new ObjectResponse<List<ProductDTO>>(false, productTaxes.Message);
 
-            var productCategories = _category.GetAll(deleteItems);
 
-            if (!productCategories.IsSuccess)
-                return new ObjectResponse<List<ProductSubCategoryDTO>>(false, "No se pudieron obtener las categorias asociadas");
+            var products = _product.GetAll(deleteItems);
+            if (!products.IsSuccess)
+                return new ObjectResponse<List<ProductDTO>>(false, products.Message);
 
-            var productCategoriesDTO = MapperCategory.MapToDTO(productCategories.Data.ToList());
-            productSubCategoriesDTO = Finisher.FinishToGetAll(productSubCategoriesDTO, productCategoriesDTO);
+            var productsDTO = MapperProduct.MapToDTO(products.Data);
+            productsDTO = Finisher.FinishToGetAll(productsDTO, productSubCategories.Data, productTaxes.Data);
 
-            return new ObjectResponse<List<ProductSubCategoryDTO>>(true, productSubCategories.Message, productSubCategoriesDTO);
+            return new ObjectResponse<List<ProductDTO>>(true, products.Message, productsDTO);
         }
     }
 }

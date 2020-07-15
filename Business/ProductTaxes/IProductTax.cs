@@ -12,7 +12,7 @@ namespace Business.ProductTaxes
 
         public ObjectResponse<bool> Update(List<ProductTax> productTaxes, int productId);
 
-        public ObjectResponse<bool> Delete(List<ProductTax> productTaxes);
+        public ObjectResponse<bool> Delete(int productId);
 
         public ObjectResponse<List<ProductTax>> Get(int productId, bool deleteItems);
 

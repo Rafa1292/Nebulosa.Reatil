@@ -11,13 +11,13 @@ namespace DataAccess.Products
     public class Repository
     {
         #region Metodos
-        public static ObjectResponse<bool> Insert(Product product)
+        public static ObjectResponse<int> Insert(Product product)
         {
             using (var db = new DataContext())
             {
                 db.Products.Add(product);
                 db.SaveChanges();
-                return new ObjectResponse<bool>(true, "Producto agregado");
+                return new ObjectResponse<int>(true, "Producto agregado", product.ProductId);
             }
 
         }
@@ -55,12 +55,12 @@ namespace DataAccess.Products
             }
         }
 
-        public static ObjectResponse<IEnumerable<Product>> GetAll()
+        public static ObjectResponse<List<Product>> GetAll()
         {
             using (var db = new DataContext())
             {
                 var products = db.Products.ToList();
-                return new ObjectResponse<IEnumerable<Product>>(true, "Consulta exitosa", products);
+                return new ObjectResponse<List<Product>>(true, "Consulta exitosa", products);
             }
         }
 

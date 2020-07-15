@@ -8,7 +8,7 @@ namespace Business.Proucts
 {
     public interface IProduct
     {
-        public ObjectResponse<bool> Insert(Product product);
+        public ObjectResponse<int> Insert(Product product);
 
         public ObjectResponse<bool> Update(Product product);
 
@@ -16,6 +16,6 @@ namespace Business.Proucts
 
         public ObjectResponse<Product> Get(int productId);
 
-        public ObjectResponse<IEnumerable<Product>> GetAll(bool deleteItems);
+        public ObjectResponse<List<Product>> GetAll(bool deleteItems);
     }
 }
