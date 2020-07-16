@@ -5,6 +5,7 @@
 @using Business.Taxes
 @using System.Linq
 
+
 @inject NavigationManager NavManager
 @inject RouterCategory RouterCategory
 @inject RouterSubCategory RouterSubCategory
@@ -15,7 +16,7 @@
 
 
 <span class="col-12 h4 text-center font-weight-bolder mt-5 mb-5">
-    Agregar nuevo producto
+    Actualizar producto
 </span>
 <EditForm class="col-md-4" Model="@oProduct" OnValidSubmit="@Save">
     <DataAnnotationsValidator />
@@ -51,17 +52,31 @@
             <option value="0" selected disabled>Seleccione una Categoria...</option>
             @foreach (var category in Categories)
             {
-                <option value="@category.ProductCategoryId">@category.Name</option>
+                if (category.ProductCategoryId == oProduct.ProductSubCategoryDTO.ProductCategoryId)
+                {
+                    <option selected value="@category.ProductCategoryId">@category.Name</option>
+                }
+                else
+                {
+                    <option value="@category.ProductCategoryId">@category.Name</option>
+                }
             }
         </select>
     </div>
     <div class="form-group">
         <label class="font-weight-bolder">Subcategoria:</label>
         <select @onchange="BindSubCategoryId" class="form-control">
-            <option value="0" selected disabled>Seleccione una subCategoria...</option>
+            <option value="0" selected>Seleccione una subCategoria...</option>
             @foreach (var subCategory in subCategoriesTmp)
             {
-                <option value="@subCategory.ProductSubCategoryId">@subCategory.Name</option>
+                if (subCategory.ProductSubCategoryId == oProduct.ProductSubCategoryId)
+                {
+                    <option selected value="@subCategory.ProductSubCategoryId">@subCategory.Name</option>
+                }
+                else
+                {
+                    <option value="@subCategory.ProductSubCategoryId">@subCategory.Name</option>
+                }
             }
         </select>
         <ValidationMessage For="@(() => oProduct.ProductSubCategoryId)" class="text-danger" />
@@ -71,12 +86,21 @@
         @foreach (var tax in taxes)
         {
             <label>@tax.Name</label>
-            <input type="checkbox" @onclick="@(() => ClickTax(tax))" class="form-control col-1" />
+
+            var contains = oProduct.Taxes.Select(x => x.TaxId).ToList().Contains(tax.TaxId);
+            if (contains)
+            {
+                <input type="checkbox" checked @onclick="@(() => ClickTax(tax))" class="form-control col-1" />
+            }
+            else
+            {
+                <input type="checkbox" @onclick="@(() => ClickTax(tax))" class="form-control col-1" />
+            }
         }
     </div>
     <div class="form-group justify-content-center d-flex flex-wrap">
         <span class="col-12 text-danger text-center h5">@Message</span>
-        <input type="submit" value="Agregar producto" class="form-control btn btn-dark" />
+        <input type="submit" value="Actualizar producto" class="form-control btn btn-dark" />
         <a href="Products/Index" class="btn btn-outline-secondary m-3">Volver</a>
 
     </div>
@@ -84,11 +108,14 @@
 
 @code {
 
-    #region Variables
+    #region
 
+    [Parameter]
+    public string ProductId { get; set; }
     ProductDTO oProduct = new ProductDTO();
     public string Message;
     private EditContext editContext;
+
 
     List<ProductCategoryDTO> Categories = new List<ProductCategoryDTO>();
     List<ProductSubCategoryDTO> subCategoriesTmp = new List<ProductSubCategoryDTO>();
@@ -104,13 +131,29 @@
     {
         try
         {
+            SetProduct();
             SetCategories();
             SetTaxes();
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
 
-            Message = e.Message;
+            Message = ex.Message;
+        }
+
+    }
+
+    private void SetProduct()
+    {
+        var tryGet = RouterProduct.Get(Int32.Parse(ProductId));
+
+        if (tryGet.IsSuccess)
+        {
+            oProduct = tryGet.Data;
+        }
+        else
+        {
+            Message = tryGet.Message;
         }
     }
 
@@ -121,6 +164,7 @@
         if (response.IsSuccess)
         {
             Categories = response.Data.ToList();
+            subCategoriesTmp = Categories.Find(x => x.ProductCategoryId == oProduct.ProductSubCategoryDTO.ProductCategoryId).SubCategoriesDTO.ToList();
         }
         else
         {
@@ -146,11 +190,11 @@
 
     private void SetSubCategories(ChangeEventArgs e)
     {
-
         var CategoryId = e.Value.ToString();
         try
         {
             subCategoriesTmp = Categories.Find(x => x.ProductCategoryId == Int32.Parse(CategoryId)).SubCategoriesDTO.ToList();
+            oProduct.ProductSubCategoryId = 0;
         }
         catch (Exception ex)
         {
@@ -165,6 +209,7 @@
         var response = RouterTax.GetAll(false);
         if (response.IsSuccess)
         {
+            selectedTaxes = oProduct.Taxes;
             taxes = response.Data.ToList();
         }
         else
@@ -180,7 +225,7 @@
         try
         {
             oProduct.Taxes = selectedTaxes;
-            var response = RouterProduct.Insert(oProduct);
+            var response = RouterProduct.Update(oProduct);
 
             if (response.IsSuccess)
             {
@@ -216,6 +261,8 @@
 
             Message = exep.Message;
         }
+
+
     }
 
     private void AddTax(int taxId)

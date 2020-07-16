@@ -44,7 +44,6 @@ namespace Business.Proucts
                     scope.Dispose();
                     return productTaxRealationship;
                 }
-
                 scope.Complete();
                 return new ObjectResponse<bool>(true, "Producto creado y relacionado correctamente");
             }
@@ -71,11 +70,13 @@ namespace Business.Proucts
             return new ObjectResponse<bool>(true, "Producto actualizado correctamente");
         }
 
-        public ObjectResponse<bool> Delete(int productId, List<ProductTax> productTaxes)
+        public ObjectResponse<bool> Delete(int productId, List<ProductTaxDTO> productTaxesDTO)
         {
             var tryDeleteProduct = _product.Delete(productId);
             if (!tryDeleteProduct.IsSuccess)
                 return tryDeleteProduct;
+
+            var productTaxes = MapperProductTax.MapFromDTO(productTaxesDTO, productId);
 
             var tryDeleteRelationship = _routerProductTax.Delete(productTaxes);
 
@@ -88,17 +89,17 @@ namespace Business.Proucts
 
         public ObjectResponse<ProductDTO> Get(int productId)
         {
-            var productSubCategory = _routerSubCategory.Get(productId);
+            var product = _product.Get(productId);
+            if (!product.IsSuccess)
+                return new ObjectResponse<ProductDTO>(false, product.Message);
+
+            var productSubCategory = _routerSubCategory.Get(product.Data.ProductSubCategoryId);
             if (!productSubCategory.IsSuccess)
                 return new ObjectResponse<ProductDTO>(false, productSubCategory.Message);
 
             var productTaxes = _routerProductTax.Get(productId);
             if (!productTaxes.IsSuccess)
                 return new ObjectResponse<ProductDTO>(false, productTaxes.Message);
-
-            var product = _product.Get(productId);
-            if (!product.IsSuccess)
-                return new ObjectResponse<ProductDTO>(false, product.Message);
 
             var productDTO = MapperProduct.MapToDTO(product.Data);
             productDTO = Finisher.FinishToGet(productDTO, productSubCategory.Data, productTaxes.Data);

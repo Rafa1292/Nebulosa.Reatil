@@ -19,10 +19,14 @@ namespace DataAccess.ProductTaxes
                 if (CheckPreviousRelationship.IsSuccess)
                 {
                     var currentTax = CheckPreviousRelationship.Data;
+                    currentTax.DateUpdate = productTax.DateUpdate;
+                    currentTax.UserUpdate = productTax.UserUpdate;
                     currentTax.Delete = false;
                     return Repository.Update(currentTax);
                 }
 
+                productTax.DateCreate = DateTime.Now;
+                productTax.UserCreate = "";
                 var response = Repository.Insert(productTax);
                 if (!response.IsSuccess)
                     return response;

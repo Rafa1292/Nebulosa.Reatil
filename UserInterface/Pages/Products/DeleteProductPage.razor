@@ -1,0 +1,14 @@
+﻿@page "/Products/Delete/{ProductId}"
+
+
+<DeleteProductComponent ProductId="@ProductId" />
+
+@code {
+    [Parameter]
+    public string ProductId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        ProductId = ProductId;
+    }
+}

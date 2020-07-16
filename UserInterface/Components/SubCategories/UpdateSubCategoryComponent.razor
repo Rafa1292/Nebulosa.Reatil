@@ -11,16 +11,23 @@
     Actualizar subCategoria
 </span>
 <span class="col-12 text-danger text-center h5">@Message</span>
-<EditForm class="col-4 p-2" Model="@oProductSubCategory">
+<EditForm class="col-4 p-2" OnValidSubmit="@Save" Model="@oProductSubCategory">
     <DataAnnotationsValidator />
     <div class="form-group">
         <label class="font-weight-bolder">Categoria:</label>
-        <InputSelect @bind-Value="CategoryId" class="form-control">
+        <select @onchange="BindCategoryId" class="form-control">
             @foreach (var Category in Categories)
             {
-                <option value="@Category.ProductCategoryId">@Category.Name</option>
+                if (Category.ProductCategoryId == oProductSubCategory.ProductCategoryId)
+                {
+                    <option selected value="@Category.ProductCategoryId">@Category.Name</option>
+                }
+                else
+                {
+                    <option value="@Category.ProductCategoryId">@Category.Name</option>
+                }
             }
-        </InputSelect>
+        </select>
     </div>
     <div class="form-group">
         <label for="name" class="font-weight-bolder">Nombre de la subCategoría:</label>
@@ -28,7 +35,7 @@
         <ValidationMessage For="@(() => oProductSubCategory.Name)" class="text-danger" />
     </div>
     <div class="form-group justify-content-center d-flex flex-wrap">
-        <input type="button" value="Actualizar subCategoría" @onclick="Save" class="form-control btn btn-dark col-12" />
+        <input type="submit" value="Actualizar subCategoría" class="form-control btn btn-dark col-12" />
         <a href="SubCategories/Index" class="btn btn-outline-secondary m-3">Volver</a>
     </div>
 
@@ -86,17 +93,37 @@
         }
     }
 
+    private void BindCategoryId(ChangeEventArgs e)
+    {
+        try
+        {
+            var categoryId = Int32.Parse(e.Value.ToString());
+            oProductSubCategory.ProductCategoryId = categoryId;
+        }
+        catch (Exception ex)
+        {
+            Message = ex.Message;
+        }
+
+    }
+
     private void Save()
     {
-        oProductSubCategory.ProductCategoryId = Int32.Parse(CategoryId);
-        var response = router.Update(oProductSubCategory);
-        if (response.IsSuccess)
+        try
         {
-            NavManager.NavigateTo("SubCategories/Index");
+            var response = router.Update(oProductSubCategory);
+            if (response.IsSuccess)
+            {
+                NavManager.NavigateTo("SubCategories/Index");
+            }
+            else
+            {
+                Message = response.Message;
+            }
         }
-        else
+        catch (Exception exe)
         {
-            Message = response.Message;
+            Message = exe.Message;
         }
     }
 

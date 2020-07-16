@@ -9,7 +9,7 @@
 <p class="col-12 p-1 d-flex justify-content-center">
     <a class="btn btn-primary " href="Categories/Create">Agregar Nueva Categoría</a>
 </p>
-<label class="text-danger h5 ">@message</label>
+<label class="text-danger h5 ">@Message</label>
 
 <div class="col-12 p-0 d-flex flex-wrap justify-content-center">
     <table id="categoriesTable" class="display col-6 table text-center table-hover">
@@ -32,18 +32,26 @@
 
 @code {
     private List<ProductCategoryDTO> categories = new List<ProductCategoryDTO>();
-    private string message;
+    private string Message;
 
     protected override async Task OnInitializedAsync()
     {
-        var response = router.GetAll(false);
-        if (response.IsSuccess)
+        try
         {
-            categories = response.Data.ToList();
+            var response = router.GetAll(false);
+            if (response.IsSuccess)
+            {
+                categories = response.Data.ToList();
+            }
+            else
+            {
+                Message = response.Message;
+            }
         }
-        else
+        catch (Exception e)
         {
-            message = response.Message;
+
+            Message = e.Message;
         }
     }
 }

@@ -9,11 +9,13 @@ namespace Business.ModelsDTO
     {
         public int ProductId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Campo obligatorio")]
         public string Name { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public decimal Cost { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:C}", ApplyFormatInEditMode = true)]
         public decimal Price { get; set; }
 
         public bool KitchenMessage { get; set; }
@@ -24,8 +26,7 @@ namespace Business.ModelsDTO
 
         public int WarehouseQuantity { get; set; }
 
-        [Required]
-        [Range(1,10000000,ErrorMessage = "Debe seleccionar una subcategoria")]
+        [Range(1,10000000,ErrorMessage = "Debe seleccionar una subCategoria")]
         public int ProductSubCategoryId { get; set; }
 
         public virtual ProductSubCategoryDTO ProductSubCategoryDTO { get; set; }
