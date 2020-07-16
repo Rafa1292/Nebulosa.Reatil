@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Transactions;
 
 namespace Business.ProductTaxes
 {
@@ -19,31 +20,52 @@ namespace Business.ProductTaxes
 
         public ObjectResponse<bool> Insert(List<ProductTaxDTO> productTaxesDTO, int productId)
         {
-            var productTaxList = MapperProductTax.MapFromDTO(productTaxesDTO, productId);
-            productTaxList = Finisher.FinishToInsert(productTaxList);
-            var validation = ValidateProductTax.ValidateToInsert(productTaxList);
+            using (var scope = new TransactionScope())
+            {
+                var productTaxList = MapperProductTax.MapFromDTO(productTaxesDTO, productId);
+                productTaxList = Finisher.FinishToInsert(productTaxList);
+                var validation = ValidateProductTax.ValidateToInsert(productTaxList);
 
-            if (!validation.IsSuccess)
-                return validation;
+                if (!validation.IsSuccess)
+                    return validation;
 
-            return _productTax.Insert(productTaxList, productId);
+                var actionResponse = _productTax.Insert(productTaxList, productId);
+                if (actionResponse.IsSuccess)
+                    scope.Complete();
+
+                return actionResponse;
+            }
         }
 
         public ObjectResponse<bool> Update(List<ProductTaxDTO> productTaxesDTO, int productId)
         {
-            var productTaxList = MapperProductTax.MapFromDTO(productTaxesDTO, productId);
-            productTaxList = Finisher.FinishToUpdate(productTaxList);
-            var validation = ValidateProductTax.ValidateToInsert(productTaxList);
+            using (var scope = new TransactionScope())
+            {
+                var productTaxList = MapperProductTax.MapFromDTO(productTaxesDTO, productId);
+                productTaxList = Finisher.FinishToUpdate(productTaxList);
+                var validation = ValidateProductTax.ValidateToInsert(productTaxList);
 
-            if (!validation.IsSuccess)
-                return validation;
+                if (!validation.IsSuccess)
+                    return validation;
 
-            return _productTax.Update(productTaxList, productId);
+                var actionResponse = _productTax.Update(productTaxList, productId);
+                if (actionResponse.IsSuccess)
+                    scope.Complete();
+
+                return actionResponse;
+            }
         }
 
         public ObjectResponse<bool> Delete(List<ProductTax> productTaxes)
         {
-            return _productTax.Delete(productTaxes);
+            using (var scope = new TransactionScope())
+            { 
+                var actionResponse = _productTax.Delete(productTaxes);
+                if (actionResponse.IsSuccess)
+                    scope.Complete();
+
+                return actionResponse;
+            }
         }
 
         public ObjectResponse<List<ProductTaxDTO>> Get(int productID)

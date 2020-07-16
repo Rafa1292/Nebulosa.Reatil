@@ -44,6 +44,7 @@ namespace Business.Proucts
                     scope.Dispose();
                     return productTaxRealationship;
                 }
+
                 scope.Complete();
                 return new ObjectResponse<bool>(true, "Producto creado y relacionado correctamente");
             }
@@ -51,40 +52,53 @@ namespace Business.Proucts
 
         public ObjectResponse<bool> Update(ProductDTO productDTO)
         {
-            var product = MapperProduct.MapFromDTO(productDTO, new Product());
-            product = Finisher.FinishToUpdate(product);
-            var validation = ValidateProduct.ValidateToInsert(product, _product.GetAll(false).Data.ToList());
+            using (var scope = new TransactionScope())
+            {
+                var product = MapperProduct.MapFromDTO(productDTO, new Product());
+                product = Finisher.FinishToUpdate(product);
+                var validation = ValidateProduct.ValidateToInsert(product, _product.GetAll(false).Data.ToList());
 
-            if (!validation.IsSuccess)
-                return validation;
+                if (!validation.IsSuccess)
+                    return validation;
 
-            var updateProduct = _product.Update(product);
+                var updateProduct = _product.Update(product);
 
-            if (!updateProduct.IsSuccess)
-                return new ObjectResponse<bool>(false, "Error al actualizar el producto");
+                if (!updateProduct.IsSuccess)
+                    return new ObjectResponse<bool>(false, "Error al actualizar el producto");
 
-            var editRealationship = _routerProductTax.Update(productDTO.Taxes, productDTO.ProductId);
-            if (!editRealationship.IsSuccess)
-                return editRealationship;
+                var editRealationship = _routerProductTax.Update(productDTO.Taxes, productDTO.ProductId);
+                if (!editRealationship.IsSuccess)
+                {
+                    scope.Dispose();
+                    return editRealationship;
+                }
 
-            return new ObjectResponse<bool>(true, "Producto actualizado correctamente");
+                scope.Complete();
+                return new ObjectResponse<bool>(true, "Producto actualizado correctamente");
+            }
         }
 
         public ObjectResponse<bool> Delete(int productId, List<ProductTaxDTO> productTaxesDTO)
         {
-            var tryDeleteProduct = _product.Delete(productId);
-            if (!tryDeleteProduct.IsSuccess)
+            using (var scope = new TransactionScope())
+            {
+                var tryDeleteProduct = _product.Delete(productId);
+                if (!tryDeleteProduct.IsSuccess)
+                    return tryDeleteProduct;
+
+                var productTaxes = MapperProductTax.MapFromDTO(productTaxesDTO, productId);
+
+                var tryDeleteRelationship = _routerProductTax.Delete(productTaxes);
+
+                if (!tryDeleteRelationship.IsSuccess)
+                {
+                    scope.Dispose();
+                    return tryDeleteRelationship;
+                }
+
+                scope.Complete();
                 return tryDeleteProduct;
-
-            var productTaxes = MapperProductTax.MapFromDTO(productTaxesDTO, productId);
-
-            var tryDeleteRelationship = _routerProductTax.Delete(productTaxes);
-
-            if (!tryDeleteRelationship.IsSuccess)
-                return tryDeleteRelationship;
-
-
-            return tryDeleteProduct;
+            }
         }
 
         public ObjectResponse<ProductDTO> Get(int productId)

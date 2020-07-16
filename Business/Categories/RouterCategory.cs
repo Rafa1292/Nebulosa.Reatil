@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Transactions;
 
 namespace Business.Categories
 {
@@ -22,34 +23,55 @@ namespace Business.Categories
 
         public ObjectResponse<bool> Insert(ProductCategoryDTO productCategoryDTO)
         {
-            var category = MapperCategory.MapFromDTO(productCategoryDTO, new ProductCategory());
-            category = Finisher.FinishToInsert(category);
-            var validation = ValidateCategory.ValidateToInsert(category, _category.GetAll(false).Data.ToList());
+            using (var scope = new TransactionScope())
+            {
+                var category = MapperCategory.MapFromDTO(productCategoryDTO, new ProductCategory());
+                category = Finisher.FinishToInsert(category);
+                var validation = ValidateCategory.ValidateToInsert(category, _category.GetAll(false).Data.ToList());
 
-            if (!validation.IsSuccess)
-                return validation;
+                if (!validation.IsSuccess)
+                    return validation;
 
-            return _category.Insert(category);
+                var actionResponse = _category.Insert(category);
+                if(actionResponse.IsSuccess)
+                scope.Complete();
+
+                return actionResponse;
+            }            
         }
 
         public ObjectResponse<bool> Update(ProductCategoryDTO productCategoryDTO)
         {
-            var currentCategory = _category.Get(productCategoryDTO.ProductCategoryId);
-            if (!currentCategory.IsSuccess)
-                return new ObjectResponse<bool>(false, currentCategory.Message);
+            using (var scope = new TransactionScope())
+            {
+                var currentCategory = _category.Get(productCategoryDTO.ProductCategoryId);
+                if (!currentCategory.IsSuccess)
+                    return new ObjectResponse<bool>(false, currentCategory.Message);
 
-            var category = MapperCategory.MapFromDTO(productCategoryDTO , currentCategory.Data);
-            category = Finisher.FinishToUpdate(category);
-            var validation = ValidateCategory.ValidateToInsert(category, _category.GetAll(false).Data.ToList());
-            if (!validation.IsSuccess)
-                return validation;
+                var category = MapperCategory.MapFromDTO(productCategoryDTO, currentCategory.Data);
+                category = Finisher.FinishToUpdate(category);
+                var validation = ValidateCategory.ValidateToInsert(category, _category.GetAll(false).Data.ToList());
+                if (!validation.IsSuccess)
+                    return validation;
 
-            return _category.Update(category);
+                var actionResponse = _category.Update(category);
+                if(actionResponse.IsSuccess)
+                scope.Complete();
+
+                return actionResponse;
+            }
         }
 
         public ObjectResponse<bool> Delete(int productCategoryId)
         {
-            return _category.Delete(productCategoryId);
+            using (var scope = new TransactionScope())
+            {
+                var actionResponse = _category.Delete(productCategoryId);
+                if (actionResponse.IsSuccess)
+                    scope.Complete();
+
+                return actionResponse;
+            }
         }
 
         public ObjectResponse<ProductCategoryDTO> Get(int productCategoryId)

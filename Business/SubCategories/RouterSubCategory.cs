@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Transactions;
 
 namespace Business.SubCategories
 {
@@ -22,34 +23,55 @@ namespace Business.SubCategories
 
         public ObjectResponse<bool> Insert(ProductSubCategoryDTO productSubCategoryDTO)
         {
-            var subCategory = MapperSubCategory.MapFromDTO(productSubCategoryDTO, new ProductSubCategory());
-            subCategory = Finisher.FinishToInsert(subCategory);
-            var validation = ValidateSubCategory.ValidateToInsert(subCategory, _subCategory.GetAll(false).Data.ToList());
+            using (var scope = new TransactionScope())
+            {
+                var subCategory = MapperSubCategory.MapFromDTO(productSubCategoryDTO, new ProductSubCategory());
+                subCategory = Finisher.FinishToInsert(subCategory);
+                var validation = ValidateSubCategory.ValidateToInsert(subCategory, _subCategory.GetAll(false).Data.ToList());
 
-            if (!validation.IsSuccess)
-                return validation;
+                if (!validation.IsSuccess)
+                    return validation;
 
-            return _subCategory.Insert(subCategory);
+                var actionResponse = _subCategory.Insert(subCategory);
+                if (actionResponse.IsSuccess)
+                    scope.Complete();
+
+                return actionResponse;
+            }
         }
 
         public ObjectResponse<bool> Update(ProductSubCategoryDTO productSubCategoryDTO)
         {
-            var currentSubCategory = _subCategory.Get(productSubCategoryDTO.ProductSubCategoryId);
-            if (!currentSubCategory.IsSuccess)
-                return new ObjectResponse<bool>(false, currentSubCategory.Message);
+            using (var scope = new TransactionScope())
+            {
+                var currentSubCategory = _subCategory.Get(productSubCategoryDTO.ProductSubCategoryId);
+                if (!currentSubCategory.IsSuccess)
+                    return new ObjectResponse<bool>(false, currentSubCategory.Message);
 
-            var subCategory = MapperSubCategory.MapFromDTO(productSubCategoryDTO, currentSubCategory.Data);
-            subCategory = Finisher.FinishToUpdate(subCategory);
-            var validation = ValidateSubCategory.ValidateToInsert(subCategory, _subCategory.GetAll(false).Data.ToList());
-            if (!validation.IsSuccess)
-                return validation;
+                var subCategory = MapperSubCategory.MapFromDTO(productSubCategoryDTO, currentSubCategory.Data);
+                subCategory = Finisher.FinishToUpdate(subCategory);
+                var validation = ValidateSubCategory.ValidateToInsert(subCategory, _subCategory.GetAll(false).Data.ToList());
+                if (!validation.IsSuccess)
+                    return validation;
 
-            return _subCategory.Update(subCategory);
+                var actionResponse = _subCategory.Update(subCategory);
+                if (actionResponse.IsSuccess)
+                    scope.Complete();
+
+                return actionResponse;
+            }
         }
 
         public ObjectResponse<bool> Delete(int productSubCategoryId)
         {
-            return _subCategory.Delete(productSubCategoryId);
+            using (var scope = new TransactionScope())
+            {
+                var actionResponse = _subCategory.Delete(productSubCategoryId);
+                if (actionResponse.IsSuccess)
+                    scope.Complete();
+
+                return actionResponse;
+            }
         }
 
         public ObjectResponse<ProductSubCategoryDTO> Get(int productSubCategoryId)

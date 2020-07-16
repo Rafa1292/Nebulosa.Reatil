@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Transactions;
 
 namespace Business.Taxes
 {
@@ -19,34 +20,55 @@ namespace Business.Taxes
 
         public ObjectResponse<bool> Insert(TaxDTO taxDTO)
         {
-            var tax = MapperTax.MapFromDTO(taxDTO, new Tax());
-            tax = Finisher.FinishToInsert(tax);
-            var validation = ValidateTax.ValidateToInsert(tax);
+            using (var scope = new TransactionScope())
+            {
+                var tax = MapperTax.MapFromDTO(taxDTO, new Tax());
+                tax = Finisher.FinishToInsert(tax);
+                var validation = ValidateTax.ValidateToInsert(tax);
 
-            if (!validation.IsSuccess)
-                return validation;
+                if (!validation.IsSuccess)
+                    return validation;
 
-            return _tax.Insert(tax);
+                var actionResponse = _tax.Insert(tax);
+                if (actionResponse.IsSuccess)
+                    scope.Complete();
+
+                return actionResponse;
+            }
         }
 
         public ObjectResponse<bool> Update(TaxDTO taxDTO)
         {
-            var currentTax = _tax.Get(taxDTO.TaxId);
-            if (!currentTax.IsSuccess)
-                return new ObjectResponse<bool>(false, currentTax.Message);
+            using (var scope = new TransactionScope())
+            {
+                var currentTax = _tax.Get(taxDTO.TaxId);
+                if (!currentTax.IsSuccess)
+                    return new ObjectResponse<bool>(false, currentTax.Message);
 
-            var tax = MapperTax.MapFromDTO(taxDTO, currentTax.Data);
-            tax = Finisher.FinishToUpdate(tax);
-            var validation = ValidateTax.ValidateToInsert(tax);
-            if (!validation.IsSuccess)
-                return validation;
+                var tax = MapperTax.MapFromDTO(taxDTO, currentTax.Data);
+                tax = Finisher.FinishToUpdate(tax);
+                var validation = ValidateTax.ValidateToInsert(tax);
+                if (!validation.IsSuccess)
+                    return validation;
 
-            return _tax.Update(tax);
+                var actionResponse = _tax.Update(tax);
+                if (actionResponse.IsSuccess)
+                    scope.Complete();
+
+                return actionResponse;
+            }
         }
 
         public ObjectResponse<bool> Delete(int taxId)
         {
-            return _tax.Delete(taxId);
+            using (var scope = new TransactionScope())
+            {
+                var actionResponse = _tax.Delete(taxId);
+                if (actionResponse.IsSuccess)
+                    scope.Complete();
+
+                return actionResponse;
+            }
         }
 
         public ObjectResponse<TaxDTO> Get(int taxId)
