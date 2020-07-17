@@ -11,13 +11,13 @@ namespace DataAccess.Routes
     public class Repository
     {
         #region Metodos
-        public static ObjectResponse<bool> Insert(Route route)
+        public static ObjectResponse<int> Insert(Route route)
         {
             using (var db = new DataContext())
             {
                 db.Routes.Add(route);
                 db.SaveChanges();
-                return new ObjectResponse<bool>(true, "Ruta agregada");
+                return new ObjectResponse<int>(true, "Ruta agregada", route.RouteId);
             }
 
         }

@@ -8,7 +8,7 @@ namespace Business.Routes
 {
     public interface IRoute
     {
-        public ObjectResponse<bool> Insert(Route route);
+        public ObjectResponse<int> Insert(Route route);
 
         public ObjectResponse<bool> Update(Route route);
 

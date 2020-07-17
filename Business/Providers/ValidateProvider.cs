@@ -20,6 +20,10 @@ namespace Business.Providers
             if (!validateProviderPhone)
                 return new ObjectResponse<bool>(false, "El numero debe ser valido");
 
+            bool validateRouteId= provider.RouteId > 0 ? true : false;
+            if (!validateRouteId)
+                return new ObjectResponse<bool>(false, "Debe asignar una ruta");
+
             return new ObjectResponse<bool>(true, "Proveedor validado");
         }
     }

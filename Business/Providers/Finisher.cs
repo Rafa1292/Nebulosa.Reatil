@@ -1,28 +1,45 @@
-﻿using Common.Models;
+﻿using Business.ModelsDTO;
+using Common.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Business.Providers
 {
     public class Finisher
     {
-        public static Route FinishToInsert(Route route)
+        public static Provider FinishToInsert(Provider provider, int routeId)
         {
-            route.DateCreate = DateTime.Now;
-            route.DateUpdate = DateTime.Now;
-            route.UserCreate = "";//pendiente de implementar
-            route.UserUpdate = "";//pendiente de implementar
+            provider.RouteId = routeId;
+            provider.DateCreate = DateTime.Now;
+            provider.DateUpdate = DateTime.Now;
+            provider.UserCreate = "";//pendiente de implementar
+            provider.UserUpdate = "";//pendiente de implementar
 
-            return route;
+            return provider;
         }
 
-        public static Route FinishToUpdate(Route route)
+        public static Provider FinishToUpdate(Provider provider)
         {
-            route.DateUpdate = DateTime.Now;
-            route.UserUpdate = "";//pendiente de implementar
+            provider.DateUpdate = DateTime.Now;
+            provider.UserUpdate = "";//pendiente de implementar
 
-            return route;
+            return provider;
+        }
+
+        public static ProviderDTO FinishToGet(ProviderDTO providerDTO, RouteDTO routeDTO)
+        {
+            providerDTO.Route = routeDTO;
+
+            return providerDTO;
+        }
+
+        public static List<ProviderDTO> FinishToGetAll(List<ProviderDTO> providersDTO, List<RouteDTO> routesDTO)
+        {
+            providersDTO.ForEach(x => x.Route = routesDTO.Find(y => y.RouteId == x.RouteId));
+
+            return providersDTO;
         }
     }
 }

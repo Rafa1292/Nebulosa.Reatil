@@ -1,95 +1,150 @@
 ﻿using Business.ModelsDTO;
+using Business.Routes;
 using Common;
+using Common.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Transactions;
 
 namespace Business.Providers
 {
     public class RouterProvider
     {
         private readonly IProvider _provider;
+        private readonly RouterRoute _route;
 
         public RouterProvider(IProvider provider)
         {
             _provider = provider;
         }
 
-        public ObjectResponse<bool> Insert(TaxDTO taxDTO)
+        public ObjectResponse<bool> Insert(ProviderDTO providerDTO)
         {
             using (var scope = new TransactionScope())
             {
-                var tax = MapperTax.MapFromDTO(taxDTO, new Tax());
-                tax = Finisher.FinishToInsert(tax);
-                var validation = ValidateTax.ValidateToInsert(tax);
+
+                var routeRelationship = _route.Insert(providerDTO.Route);
+                if (!routeRelationship.IsSuccess)
+                {
+                    scope.Dispose();
+                    return new ObjectResponse<bool>(false, routeRelationship.Message);
+                }
+
+                var provider = MapperProvider.MapFromDTO(providerDTO, new Provider());
+                provider = Finisher.FinishToInsert(provider, routeRelationship.Data);
+                var validation = ValidateProvider.ValidateToInsert(provider);
 
                 if (!validation.IsSuccess)
                     return validation;
 
-                var actionResponse = _tax.Insert(tax);
-                if (actionResponse.IsSuccess)
-                    scope.Complete();
+                var actionResponse = _provider.Insert(provider);
+                if (!actionResponse.IsSuccess)
+                {
+                    scope.Dispose();
+                    return actionResponse;
+                }
+
+
+
+                scope.Complete();
 
                 return actionResponse;
             }
         }
 
-        public ObjectResponse<bool> Update(TaxDTO taxDTO)
+        public ObjectResponse<bool> Update(ProviderDTO providerDTO)
         {
             using (var scope = new TransactionScope())
             {
-                var currentTax = _tax.Get(taxDTO.TaxId);
-                if (!currentTax.IsSuccess)
-                    return new ObjectResponse<bool>(false, currentTax.Message);
 
-                var tax = MapperTax.MapFromDTO(taxDTO, currentTax.Data);
-                tax = Finisher.FinishToUpdate(tax);
-                var validation = ValidateTax.ValidateToInsert(tax);
+                var routeRelationship = _route.Update(providerDTO.Route);
+                if (!routeRelationship.IsSuccess)
+                {
+                    scope.Dispose();
+                    return new ObjectResponse<bool>(false, routeRelationship.Message);
+                }
+
+                var provider = MapperProvider.MapFromDTO(providerDTO, new Provider());
+                provider = Finisher.FinishToUpdate(provider);
+                var validation = ValidateProvider.ValidateToInsert(provider);
+
                 if (!validation.IsSuccess)
                     return validation;
 
-                var actionResponse = _tax.Update(tax);
-                if (actionResponse.IsSuccess)
-                    scope.Complete();
+                var actionResponse = _provider.Update(provider);
+                if (!actionResponse.IsSuccess)
+                {
+                    scope.Dispose();
+                    return actionResponse;
+                }
+
+                scope.Complete();
 
                 return actionResponse;
             }
         }
 
-        public ObjectResponse<bool> Delete(int taxId)
+        public ObjectResponse<bool> Delete(int providerId)
         {
             using (var scope = new TransactionScope())
             {
-                var actionResponse = _tax.Delete(taxId);
-                if (actionResponse.IsSuccess)
-                    scope.Complete();
+                var provider = _provider.Get(providerId);
+                if (!provider.IsSuccess)
+                {
+                    scope.Dispose();
+                    return new ObjectResponse<bool>(false, provider.Message);
+                }
+                var actionResponse = _provider.Delete(providerId);
+                if (!actionResponse.IsSuccess)
+                {
+                    scope.Dispose();
+                    return actionResponse;
+                }
 
+                var routeRelationship = _route.Delete(provider.Data.RouteId);
+                if (!routeRelationship.IsSuccess)
+                {
+                    scope.Dispose();
+                    return routeRelationship;
+                }
+
+                scope.Complete();
                 return actionResponse;
             }
         }
 
-        public ObjectResponse<TaxDTO> Get(int taxId)
+        public ObjectResponse<ProviderDTO> Get(int providerId)
         {
-            var tax = _tax.Get(taxId);
+            var provider = _provider.Get(providerId);
+            if (!provider.IsSuccess)
+                return new ObjectResponse<ProviderDTO>(false, provider.Message);
 
-            if (!tax.IsSuccess)
-                return new ObjectResponse<TaxDTO>(false, tax.Message);
+            var route = _route.Get(provider.Data.RouteId);
+            if (!route.IsSuccess)
+                return new ObjectResponse<ProviderDTO>(false, route.Message);
 
-            var taxDTO = MapperTax.MapToDTO(tax.Data);
+            var providerDTO = MapperProvider.MapToDTO(provider.Data);
+            providerDTO = Finisher.FinishToGet(providerDTO, route.Data);
 
-            return new ObjectResponse<TaxDTO>(true, tax.Message, taxDTO);
+            return new ObjectResponse<ProviderDTO>(true, route.Message, providerDTO);
         }
 
-        public ObjectResponse<List<TaxDTO>> GetAll(bool deleteItems)
+        public ObjectResponse<List<ProviderDTO>> GetAll(bool deleteItems)
         {
-            var taxes = _tax.GetAll(deleteItems);
+            var provider = _provider.GetAll(deleteItems);
+            if (!provider.IsSuccess)
+                return new ObjectResponse<List<ProviderDTO>>(false, provider.Message);
 
-            if (!taxes.IsSuccess)
-                return new ObjectResponse<List<TaxDTO>>(false, taxes.Message);
+            var route = _route.GetAll(deleteItems);
+            if (!route.IsSuccess)
+                return new ObjectResponse<List<ProviderDTO>>(false, route.Message);
 
-            var taxesDTO = MapperTax.MapToDTO(taxes.Data.ToList());
+            var providersDTO = MapperProvider.MapToDTO(provider.Data.ToList());
+            providersDTO = Finisher.FinishToGetAll(providersDTO, route.Data);
 
-            return new ObjectResponse<List<TaxDTO>>(true, taxes.Message, taxesDTO);
+            return new ObjectResponse<List<ProviderDTO>>(true, route.Message, providersDTO);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace DataAccess.Routes
     public class ImplementerRoute : IRoute
     {
         #region Metodos
-        public ObjectResponse<bool> Insert(Route route)
+        public ObjectResponse<int> Insert(Route route)
         {
             return Repository.Insert(route);
         }

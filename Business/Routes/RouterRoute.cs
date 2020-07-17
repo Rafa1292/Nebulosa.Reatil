@@ -18,7 +18,7 @@ namespace Business.Routes
             _route = route;
         }
 
-        public ObjectResponse<bool> Insert(RouteDTO routeDTO)
+        public ObjectResponse<int> Insert(RouteDTO routeDTO)
         {
             using (var scope = new TransactionScope())
             {
@@ -27,7 +27,7 @@ namespace Business.Routes
                 var validation = ValidateRoute.ValidateToInsert(route);
 
                 if (!validation.IsSuccess)
-                    return validation;
+                    return new ObjectResponse<int>(false,validation.Message);
 
                 var actionResponse = _route.Insert(route);
                 if (actionResponse.IsSuccess)

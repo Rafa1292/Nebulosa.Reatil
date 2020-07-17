@@ -8,52 +8,52 @@ namespace Business.Providers
 {
     public class MapperProvider
     {
-        public static Route MapFromDTO(RouteDTO routeDTO, Route route)
+        public static Provider MapFromDTO(ProviderDTO providerDTO, Provider provider)
         {
-            route.Lunes = routeDTO.Lunes;
-            route.Martes = routeDTO.Martes;
-            route.Miercoles = routeDTO.Miercoles;
-            route.Jueves = routeDTO.Jueves;
-            route.Viernes = routeDTO.Viernes;
-            route.Sabado = routeDTO.Sabado;
-            route.Domingo = routeDTO.Domingo;
+            provider.Account = providerDTO.Account;
+            provider.Email = providerDTO.Email;
+            provider.Name = providerDTO.Name;
+            provider.Phone = providerDTO.Phone;
+            provider.PriceQuality = providerDTO.PriceQuality;
+            provider.ProviderId = providerDTO.ProviderId;
+            provider.RouteId = providerDTO.RouteId;
 
-            return route;
+            return provider;
         }
 
-        public static RouteDTO MapToDTO(Route route)
+        public static ProviderDTO MapToDTO(Provider provider)
         {
-            RouteDTO routeDTO = new RouteDTO()
+            ProviderDTO providerDTO = new ProviderDTO()
             {
-             Lunes = route.Lunes,
-             Martes = route.Martes,
-             Miercoles = route.Miercoles,
-             Jueves = route.Jueves,
-             Viernes = route.Viernes,
-             Sabado = route.Sabado,
-             Domingo = route.Domingo
-        };
+                Account = provider.Account,
+                Email = provider.Email,
+                Name = provider.Name,
+                Phone = provider.Phone,
+                PriceQuality = provider.PriceQuality,
+                ProviderId = provider.ProviderId,
+                RouteId = provider.RouteId
+            };
 
-            return routeDTO;
+            return providerDTO;
         }
 
-        public static List<RouteDTO> MapToDTO(List<Route> routes)
+        public static List<ProviderDTO> MapToDTO(List<Provider> providers)
         {
-            List<RouteDTO> routesDTO = new List<RouteDTO>();
+            List<ProviderDTO> providersDTO = new List<ProviderDTO>();
 
-            routes.ForEach(x => routesDTO.Add(
-                new RouteDTO()
+            providers.ForEach(x => providersDTO.Add(
+                new ProviderDTO()
                 {
-                    Lunes = x.Lunes,
-                    Martes = x.Martes,
-                    Miercoles = x.Miercoles,
-                    Jueves = x.Jueves,
-                    Viernes = x.Viernes,
-                    Sabado = x.Sabado,
-                    Domingo = x.Domingo
+                    Account = x.Account,
+                    Email = x.Email,
+                    Name = x.Name,
+                    Phone = x.Phone,
+                    PriceQuality = x.PriceQuality,
+                    ProviderId = x.ProviderId,
+                    RouteId = x.RouteId
                 }));
 
-            return routesDTO;
+            return providersDTO;
         }
     }
 }

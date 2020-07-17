@@ -8,14 +8,14 @@ namespace Business.Providers
 {
     public interface IProvider
     {
-        public ObjectResponse<bool> Insert(Route route);
+        public ObjectResponse<bool> Insert(Provider provider);
 
-        public ObjectResponse<bool> Update(Route route);
+        public ObjectResponse<bool> Update(Provider provider);
 
-        public ObjectResponse<bool> Delete(int routeId);
+        public ObjectResponse<bool> Delete(int providerId);
 
-        public ObjectResponse<Route> Get(int routeId);
+        public ObjectResponse<Provider> Get(int providerId);
 
-        public ObjectResponse<IEnumerable<Route>> GetAll(bool deleteItems);
+        public ObjectResponse<IEnumerable<Provider>> GetAll(bool deleteItems);
     }
 }
