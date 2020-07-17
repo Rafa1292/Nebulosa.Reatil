@@ -16,6 +16,9 @@ namespace DataAccess
 
         public DbSet<ProductTax> ProductTaxes { get; set; }
 
+        public DbSet<Route> Routes { get; set; }
+
+        public DbSet<Provider> Providers { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
