@@ -1,47 +1,60 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">Nebulosa</a>
-    <button class="navbar-toggler" @onclick="ToggleNavMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+﻿<div class="col-12 d-flex flex-wrap p-0">
+    <nav class="col-12 navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">
+            <img src="/images/NebulosaBrand.png" width="168" height="60" alt="" loading="lazy"/>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Mantenimiento
+                    </a>
+                    <div class="dropdown-menu " aria-labelledby="navbarDropdown">
+                        <NavLink class="nav-link text-black-50" href="Categories/Index" Match="NavLinkMatch.All">
+                            <span class="oi oi-home" aria-hidden="true"></span> Categorias
+                        </NavLink>
+                        <NavLink class="nav-link text-black-50" href="SubCategories/Index" Match="NavLinkMatch.All">
+                            <span class="oi oi-home" aria-hidden="true"></span> SubCategorias
+                        </NavLink>
+                        <NavLink class="nav-link text-black-50" href="Taxes/Index" Match="NavLinkMatch.All">
+                            <span class="oi oi-home" aria-hidden="true"></span> Impuestos
+                        </NavLink>
+                        <NavLink class="nav-link text-black-50" href="Products/Index" Match="NavLinkMatch.All">
+                            <span class="oi oi-home" aria-hidden="true"></span> Productos
+                        </NavLink>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Compras
+                    </a>
+                    <div class="dropdown-menu " aria-labelledby="navbarDropdown">
+                        <NavLink class="nav-link text-black-50" href="SubCategories/Index" Match="NavLinkMatch.All">
+                            <span class="oi oi-home" aria-hidden="true"></span> Proveedores
+                        </NavLink>
+                        <NavLink class="nav-link text-black-50" href="Taxes/Index" Match="NavLinkMatch.All">
+                            <span class="oi oi-home" aria-hidden="true"></span> Ingredientes
+                        </NavLink>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Costos
+                    </a>
+                    <div class="dropdown-menu " aria-labelledby="navbarDropdown">
+                        <NavLink class="nav-link text-black-50" href="SubCategories/Index" Match="NavLinkMatch.All">
+                            <span class="oi oi-home" aria-hidden="true"></span> Recetas
+                        </NavLink>
+                        <NavLink class="nav-link text-black-50" href="Products/Index" Match="NavLinkMatch.All">
+                            <span class="oi oi-home" aria-hidden="true"></span> Preparaciones
+                        </NavLink>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
 </div>
-
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="Categories/Index">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Categories
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="SubCategories/Index">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> SubCategories
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="Taxes/Index">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Impuestos
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="Products/Index">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Productos
-            </NavLink>
-        </li>
-    </ul>
-</div>
-
-@code {
-    private bool collapseNavMenu = true;
-
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-}
