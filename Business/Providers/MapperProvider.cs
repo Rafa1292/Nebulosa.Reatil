@@ -1,0 +1,59 @@
+﻿using Business.ModelsDTO;
+using Common.Models;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Business.Providers
+{
+    public class MapperProvider
+    {
+        public static Route MapFromDTO(RouteDTO routeDTO, Route route)
+        {
+            route.Lunes = routeDTO.Lunes;
+            route.Martes = routeDTO.Martes;
+            route.Miercoles = routeDTO.Miercoles;
+            route.Jueves = routeDTO.Jueves;
+            route.Viernes = routeDTO.Viernes;
+            route.Sabado = routeDTO.Sabado;
+            route.Domingo = routeDTO.Domingo;
+
+            return route;
+        }
+
+        public static RouteDTO MapToDTO(Route route)
+        {
+            RouteDTO routeDTO = new RouteDTO()
+            {
+             Lunes = route.Lunes,
+             Martes = route.Martes,
+             Miercoles = route.Miercoles,
+             Jueves = route.Jueves,
+             Viernes = route.Viernes,
+             Sabado = route.Sabado,
+             Domingo = route.Domingo
+        };
+
+            return routeDTO;
+        }
+
+        public static List<RouteDTO> MapToDTO(List<Route> routes)
+        {
+            List<RouteDTO> routesDTO = new List<RouteDTO>();
+
+            routes.ForEach(x => routesDTO.Add(
+                new RouteDTO()
+                {
+                    Lunes = x.Lunes,
+                    Martes = x.Martes,
+                    Miercoles = x.Miercoles,
+                    Jueves = x.Jueves,
+                    Viernes = x.Viernes,
+                    Sabado = x.Sabado,
+                    Domingo = x.Domingo
+                }));
+
+            return routesDTO;
+        }
+    }
+}

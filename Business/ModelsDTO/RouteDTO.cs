@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Common.Models
+namespace Business.ModelsDTO
 {
-    public class Route
+    public class RouteDTO
     {
-        [Key]
         public int RouteId { get; set; }
 
         public bool Lunes { get; set; }
@@ -25,14 +23,5 @@ namespace Common.Models
         public bool Domingo { get; set; }
 
         public bool Delete { get; set; }
-
-        public string UserCreate { get; set; }
-
-        public string UserUpdate { get; set; }
-
-        public DateTime DateCreate { get; set; }
-
-        public DateTime DateUpdate { get; set; }
-
     }
 }
