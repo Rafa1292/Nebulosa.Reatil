@@ -22,6 +22,8 @@ namespace Business.ModelsDTO
 
         public bool Delete { get; set; }
 
+        public string RouteShortcut { get; set; }
+
         public RouteDTO Route { get; set; }
 
 

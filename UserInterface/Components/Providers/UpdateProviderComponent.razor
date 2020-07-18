@@ -1,0 +1,151 @@
+﻿@using Business.ModelsDTO
+@using System.Linq
+@using Business.Providers
+
+@inject RouterProvider _router;
+@inject NavigationManager NavManager
+
+
+<span class="col-12 h4 text-center font-weight-bolder mt-5 mb-5">
+    Actualizar proveedor
+</span>
+<EditForm class="col-md-4 d-flex flex-wrap justify-content-center" OnValidSubmit="Save" Model="@oProvider">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group col-md-12">
+        <label for="name" class="font-weight-bolder">Nombre</label>
+        <InputText id="name" @bind-Value="oProvider.Name" class="form-control col-lg-12" />
+        <ValidationMessage For="@(() => oProvider.Name)" class="text-danger" />
+    </div>
+    <div class="form-group col-md-12">
+        <label for="name" class="font-weight-bolder">Telefono</label>
+        <InputNumber id="name" @bind-Value="oProvider.Phone" class="form-control col-lg-12" />
+        <ValidationMessage For="@(() => oProvider.Phone)" class="text-danger" />
+    </div>
+    <div class="form-group col-md-12">
+        <label for="name" class="font-weight-bolder">Cuenta bancaria</label>
+        <InputNumber id="name" @bind-Value="oProvider.Account" class="form-control col-lg-12" />
+        <ValidationMessage For="@(() => oProvider.Account)" class="text-danger" />
+    </div>
+    <div class="form-group col-md-12">
+        <label for="name" class="font-weight-bolder">Correo</label>
+        <InputText id="name" @bind-Value="oProvider.Email" class="form-control col-lg-12" />
+        <ValidationMessage For="@(() => oProvider.Email)" class="text-danger" />
+    </div>
+    <div class="d-flex col-12 flex-wrap justify-content-between">
+        <div class="form-group col-md-1 text-center p-0">
+            <label for="l" class="font-weight-bolder">L</label>
+            <InputCheckbox id="l" @bind-Value="Route.Lunes" class="form-control col-12" />
+            <ValidationMessage For="@(() => Route.Lunes)" class="text-danger" />
+        </div>
+        <div class="form-group col-md-1 text-center p-0">
+            <label for="k" class="font-weight-bolder">K</label>
+            <InputCheckbox id="k" @bind-Value="Route.Martes" class="form-control col-12" />
+            <ValidationMessage For="@(() => Route.Martes)" class="text-danger" />
+        </div>
+        <div class="form-group col-md-1 text-center p-0">
+            <label for="m" class="font-weight-bolder">M</label>
+            <InputCheckbox id="m" @bind-Value="Route.Miercoles" class="form-control col-12" />
+            <ValidationMessage For="@(() => Route.Miercoles)" class="text-danger" />
+        </div>
+        <div class="form-group col-md-1 text-center p-0">
+            <label for="j" class="font-weight-bolder">J</label>
+            <InputCheckbox id="j" @bind-Value="Route.Jueves" class="form-control col-12" />
+            <ValidationMessage For="@(() => Route.Jueves)" class="text-danger" />
+        </div>
+        <div class="form-group col-md-1 text-center p-0">
+            <label for="v" class="font-weight-bolder">V</label>
+            <InputCheckbox id="v" @bind-Value="Route.Viernes" class="form-control col-12" />
+            <ValidationMessage For="@(() => Route.Viernes)" class="text-danger" />
+        </div>
+        <div class="form-group col-md-1 text-center p-0">
+            <label for="s" class="font-weight-bolder">S</label>
+            <InputCheckbox id="s" @bind-Value="Route.Sabado" class="form-control col-12" />
+            <ValidationMessage For="@(() => Route.Sabado)" class="text-danger" />
+        </div>
+        <div class="form-group col-md-1 text-center p-0">
+            <label for="d" class="font-weight-bolder">D</label>
+            <InputCheckbox id="d" @bind-Value="Route.Domingo" class="form-control col-12" />
+            <ValidationMessage For="@(() => Route.Domingo)" class="text-danger" />
+        </div>
+    </div>
+    <div class="form-group justify-content-center d-flex flex-wrap">
+        <span class="col-12 text-danger text-center h5">@Message</span>
+        <input type="submit" value="Actualizar proveedor" class="form-control col-12 btn btn-dark" />
+        <a href="Providers/Index" class="btn btn-outline-secondary m-3 col-12">Volver</a>
+
+    </div>
+</EditForm>
+
+
+
+@code {
+
+    #region Variables
+    [Parameter]
+    public string ProviderId { get; set; }
+
+    ProviderDTO oProvider = new ProviderDTO();
+    RouteDTO Route = new RouteDTO();
+    public string Message;
+
+
+
+    #endregion
+
+    #region| Metodos
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var tryGetProvider = _router.Get(Int32.Parse(ProviderId));
+            if (!tryGetProvider.IsSuccess)
+            {
+                Message = tryGetProvider.Message;
+            }
+            else
+            {
+                oProvider = tryGetProvider.Data;
+                Route = oProvider.Route;
+            }
+        }
+        catch (Exception e)
+        {
+
+            Message = e.Message;
+        }
+
+    }
+
+    private void Save()
+    {
+        try
+        {
+            oProvider.Route = Route;
+            var actionResponse = _router.Update(oProvider);
+
+            if (actionResponse.IsSuccess)
+            {
+                NavManager.NavigateTo("Providers/Index");
+            }
+            else
+            {
+                Message = actionResponse.Message;
+            }
+        }
+        catch (Exception e)
+        {
+
+            Message = e.Message;
+        }
+
+    }
+
+    private void HandleValidSubmit()
+    {
+        Console.WriteLine("OnValidSubmit");
+    }
+
+    #endregion
+}

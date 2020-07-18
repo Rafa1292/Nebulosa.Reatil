@@ -105,6 +105,13 @@ using UserInterface.Components.Products;
 #line hidden
 #nullable disable
 #nullable restore
+#line 14 "C:\Users\rvill\source\repos\Nebulosa\UserInterface\_Imports.razor"
+using UserInterface.Components.Providers;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
 #line 3 "C:\Users\rvill\source\repos\Nebulosa\UserInterface\Pages\FetchData.razor"
 using UserInterface.Data;
 

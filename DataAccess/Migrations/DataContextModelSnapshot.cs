@@ -168,6 +168,99 @@ namespace DataAccess.Migrations
                     b.ToTable("ProductTaxes");
                 });
 
+            modelBuilder.Entity("Common.Models.Provider", b =>
+                {
+                    b.Property<int>("ProviderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Account")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateUpdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Delete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Phone")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PriceQuality")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RouteId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserCreate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserUpdate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProviderId");
+
+                    b.ToTable("Providers");
+                });
+
+            modelBuilder.Entity("Common.Models.Route", b =>
+                {
+                    b.Property<int>("RouteId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateUpdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Delete")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Domingo")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Jueves")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Lunes")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Martes")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Miercoles")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Sabado")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserCreate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserUpdate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Viernes")
+                        .HasColumnType("bit");
+
+                    b.HasKey("RouteId");
+
+                    b.ToTable("Routes");
+                });
+
             modelBuilder.Entity("Common.Models.Tax", b =>
                 {
                     b.Property<int>("TaxId")

@@ -36,7 +36,7 @@ namespace DataAccess.Providers
         {
             using (var db = new DataContext())
             {
-                var provider = db.ProductCategories.Find(providerId);
+                var provider = db.Providers.Find(providerId);
                 if (provider == null)
                     return new ObjectResponse<bool>(false, "No se encontro el proveedor");
                 provider.Delete = true;

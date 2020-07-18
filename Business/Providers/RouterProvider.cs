@@ -15,9 +15,10 @@ namespace Business.Providers
         private readonly IProvider _provider;
         private readonly RouterRoute _route;
 
-        public RouterProvider(IProvider provider)
+        public RouterProvider(IProvider provider, RouterRoute route)
         {
             _provider = provider;
+            _route = route;
         }
 
         public ObjectResponse<bool> Insert(ProviderDTO providerDTO)
@@ -32,9 +33,13 @@ namespace Business.Providers
                     return new ObjectResponse<bool>(false, routeRelationship.Message);
                 }
 
+                var providers = _provider.GetAll(false);
+                if (!providers.IsSuccess)
+                    return new ObjectResponse<bool>(false, providers.Message);
+
                 var provider = MapperProvider.MapFromDTO(providerDTO, new Provider());
                 provider = Finisher.FinishToInsert(provider, routeRelationship.Data);
-                var validation = ValidateProvider.ValidateToInsert(provider);
+                var validation = ValidateProvider.ValidateToInsert(provider, providers.Data.ToList());
 
                 if (!validation.IsSuccess)
                     return validation;
@@ -65,10 +70,13 @@ namespace Business.Providers
                     scope.Dispose();
                     return new ObjectResponse<bool>(false, routeRelationship.Message);
                 }
+                var providers = _provider.GetAll(false);
+                if (!providers.IsSuccess)
+                    return new ObjectResponse<bool>(false, providers.Message);
 
                 var provider = MapperProvider.MapFromDTO(providerDTO, new Provider());
                 provider = Finisher.FinishToUpdate(provider);
-                var validation = ValidateProvider.ValidateToInsert(provider);
+                var validation = ValidateProvider.ValidateToInsert(provider, providers.Data.ToList());
 
                 if (!validation.IsSuccess)
                     return validation;

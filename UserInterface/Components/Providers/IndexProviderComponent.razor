@@ -1,0 +1,72 @@
+﻿@using Business.Providers
+@using Business.ModelsDTO
+
+@inject RouterProvider routerProvider
+
+<span class="col-12 h4 text-center font-weight-bolder mt-5 mb-5">
+    Proveedores
+</span>
+<p class="col-12 p-1 d-flex justify-content-center">
+    <a class="btn btn-primary " href="Providers/Create">Agregar nuevo proveedor</a>
+</p>
+<label class="text-danger h5 ">@Message</label>
+
+<div class="col-12 p-0 d-flex flex-wrap justify-content-center">
+    <table id="providersTable" class="display col-12 table text-center table-hover">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Telefono</th>
+                <th>Cuenta</th>
+                <th>Correo</th>
+                <th>Ruta</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var provider in providers)
+            {
+                <tr>
+                    <td>@provider.Name</td>
+                    <td>@provider.Phone</td>
+                    <td>@provider.Account</td>
+                    <td>@provider.Email</td>
+                    <td><strong>@provider.RouteShortcut</strong></td>
+
+
+                    <td class="d-flex">
+                        <a class="btn btn-secondary m-1" href="Providers/Update/@provider.ProviderId">Editar</a>
+                        <a class="btn btn-outline-danger m-1" href="Providers/Delete/@provider.ProviderId">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+@code {
+    private List<ProviderDTO> providers = new List<ProviderDTO>();
+    private string Message;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var response = routerProvider.GetAll(false);
+            if (response.IsSuccess)
+            {
+                providers = response.Data;
+            }
+            else
+            {
+                Message = response.Message;
+            }
+        }
+        catch (Exception e)
+        {
+
+            Message = e.Message;
+        }
+    }
+}

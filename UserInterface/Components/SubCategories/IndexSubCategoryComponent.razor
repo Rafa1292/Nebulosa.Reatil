@@ -28,7 +28,14 @@
             {
                 <tr>
                     <td>@subCategory.Name</td>
-                    <td>@subCategory.ProductCategoryDTO.Name</td>
+                    @if (@subCategory.ProductCategoryDTO != null)
+                    {
+                        <td>@subCategory.ProductCategoryDTO.Name</td>
+                    }
+                    else
+                    {
+                        <td>Categoria eliminada</td>
+                    }
                     <td>
                         <a class="btn btn-secondary" href="SubCategories/Update/@subCategory.ProductSubCategoryId">Editar</a>
                         <a class="btn btn-outline-danger" href="SubCategories/Delete/@subCategory.ProductSubCategoryId">Eliminar</a>

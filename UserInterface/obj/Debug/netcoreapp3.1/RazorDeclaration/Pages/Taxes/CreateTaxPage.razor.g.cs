@@ -104,6 +104,13 @@ using UserInterface.Components.Products;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 14 "C:\Users\rvill\source\repos\Nebulosa\UserInterface\_Imports.razor"
+using UserInterface.Components.Providers;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/Taxes/Create")]
     public partial class CreateTaxPage : Microsoft.AspNetCore.Components.ComponentBase
     {

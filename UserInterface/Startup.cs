@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Business.Categories;
 using Business.ProductTaxes;
-using Business.Proucts;
+using Business.Products;
 using Business.SubCategories;
 using Business.Taxes;
 using DataAccess.Categories;
@@ -20,6 +20,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using UserInterface.Data;
+using Business.Providers;
+using DataAccess.Providers;
+using Business.Routes;
+using DataAccess.Routes;
 
 namespace UserInterface
 {
@@ -38,6 +42,8 @@ namespace UserInterface
         {            
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddScoped<RouterRoute>();
+            services.AddScoped<RouterProvider>();
             services.AddScoped<RouterTax>();
             services.AddScoped<RouterProductTax>();
             services.AddScoped<RouterProduct>();
@@ -48,6 +54,8 @@ namespace UserInterface
             services.AddScoped<ITax, ImplementerTax>();
             services.AddScoped<IProductTax, ImplementerProductTax>();
             services.AddScoped<IProduct, ImplementerProduct>();
+            services.AddScoped<IProvider, ImplementerProvider>();
+            services.AddScoped<IRoute, ImplementerRoute>();
 
 
         }

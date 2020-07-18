@@ -10,6 +10,7 @@ namespace Business.Routes
     {
         public static Route MapFromDTO(RouteDTO routeDTO, Route route)
         {
+            route.RouteId = routeDTO.RouteId;
             route.Lunes = routeDTO.Lunes;
             route.Martes = routeDTO.Martes;
             route.Miercoles = routeDTO.Miercoles;
@@ -25,6 +26,7 @@ namespace Business.Routes
         {
             RouteDTO routeDTO = new RouteDTO()
             {
+                RouteId = route.RouteId,
                 Lunes = route.Lunes,
                 Martes = route.Martes,
                 Miercoles = route.Miercoles,
@@ -44,6 +46,7 @@ namespace Business.Routes
             routes.ForEach(x => routesDTO.Add(
                 new RouteDTO()
                 {
+                    RouteId = x.RouteId,
                     Lunes = x.Lunes,
                     Martes = x.Martes,
                     Miercoles = x.Miercoles,

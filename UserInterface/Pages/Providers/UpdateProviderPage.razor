@@ -1,0 +1,13 @@
+﻿@page "/Providers/Update/{ProviderId}"
+
+<UpdateProviderComponent ProviderId="@ProviderId" />
+
+@code {
+    [Parameter]
+    public string ProviderId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        ProviderId = ProviderId;
+    }
+}
