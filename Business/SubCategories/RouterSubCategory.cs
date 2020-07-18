@@ -1,5 +1,6 @@
 ﻿using Business.Categories;
 using Business.ModelsDTO;
+using Business.Products;
 using Common;
 using Common.Models;
 using System;
@@ -14,9 +15,11 @@ namespace Business.SubCategories
     {
         private readonly ISubCategory _subCategory;
         private readonly ICategory _category;
+        private readonly IProduct _product;
 
-        public RouterSubCategory(ISubCategory subCategory, ICategory category)
+        public RouterSubCategory(ISubCategory subCategory, ICategory category, IProduct product)
         {
+            _product = product;
             _subCategory = subCategory;
             _category = category;
         }
@@ -66,6 +69,14 @@ namespace Business.SubCategories
         {
             using (var scope = new TransactionScope())
             {
+                var productRelationship = _product.GetAll(false);
+                if (!productRelationship.IsSuccess)
+                    return new ObjectResponse<bool>(false, productRelationship.Message);
+
+                var validate = ValidateSubCategory.ValidateToDelete(productSubCategoryId, productRelationship.Data);
+                if (!validate.IsSuccess)
+                    return validate;
+
                 var actionResponse = _subCategory.Delete(productSubCategoryId);
                 if (actionResponse.IsSuccess)
                     scope.Complete();
@@ -87,7 +98,7 @@ namespace Business.SubCategories
             if (!productCategory.IsSuccess)
                 return new ObjectResponse<ProductSubCategoryDTO>(false, "No se pudo obtener la categoria asociada");
 
-            var productCategoryDTO = MapperCategory.MapToDTO(productCategory.Data);  
+            var productCategoryDTO = MapperCategory.MapToDTO(productCategory.Data);
             productSubCategoryDTO = Finisher.FinishToGet(productSubCategoryDTO, productCategoryDTO);
 
             return new ObjectResponse<ProductSubCategoryDTO>(true, productSubCategory.Message, productSubCategoryDTO);

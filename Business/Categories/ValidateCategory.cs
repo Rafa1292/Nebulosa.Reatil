@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using Business.ModelsDTO;
+using Common;
 using Common.Models;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,16 @@ namespace Business.Categories
             if (NameExist)
                 return new ObjectResponse<bool>(false, "Este nombre ya existe");
 
+
+
+            return new ObjectResponse<bool>(true, "Categoria validada");
+        }
+
+        public static ObjectResponse<bool> ValidateToDelete(int categoryId, List<ProductSubCategoryDTO> subCategories)
+        {
+            var subCategoriesRelationship = subCategories.Select(x => x.ProductCategoryId).Contains(categoryId);
+            if (subCategoriesRelationship)
+                return new ObjectResponse<bool>(false, "Debes eliminar las subCategorias asociadas antes de seguir con esta accion");
 
 
             return new ObjectResponse<bool>(true, "Categoria validada");

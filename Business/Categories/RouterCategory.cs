@@ -66,6 +66,14 @@ namespace Business.Categories
         {
             using (var scope = new TransactionScope())
             {
+                var subCategories = _subCategory.GetAll(false);
+                if (!subCategories.IsSuccess)
+                    return new ObjectResponse<bool>(false, subCategories.Message);
+
+                var relationship = ValidateCategory.ValidateToDelete(productCategoryId, subCategories.Data);
+                if (!relationship.IsSuccess)
+                    return relationship;
+
                 var actionResponse = _category.Delete(productCategoryId);
                 if (actionResponse.IsSuccess)
                     scope.Complete();
