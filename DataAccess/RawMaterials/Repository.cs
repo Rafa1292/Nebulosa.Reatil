@@ -54,12 +54,12 @@ namespace DataAccess.RawMaterials
             }
         }
 
-        public static ObjectResponse<IEnumerable<RawMaterial>> GetAll()
+        public static ObjectResponse<List<RawMaterial>> GetAll()
         {
             using (var db = new DataContext())
             {
                 var rawMaterials = db.rawMaterials.ToList();
-                return new ObjectResponse<IEnumerable<RawMaterial>>(true, "Consulta exitosa", rawMaterials);
+                return new ObjectResponse<List<RawMaterial>>(true, "Consulta exitosa", rawMaterials);
             }
         }
     }

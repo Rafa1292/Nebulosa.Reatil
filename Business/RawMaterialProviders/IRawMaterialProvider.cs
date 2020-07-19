@@ -8,7 +8,7 @@ namespace Business.RawMaterialProviders
 {
     public interface IRawMaterialProvider
     {
-        public ObjectResponse<int> Insert(RawMaterialProvider rawMaterialProvider);
+        public ObjectResponse<bool> Insert(RawMaterialProvider rawMaterialProvider);
 
         public ObjectResponse<bool> Update(RawMaterialProvider rawMaterialProvider);
 
