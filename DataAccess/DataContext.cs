@@ -20,6 +20,12 @@ namespace DataAccess
 
         public DbSet<Provider> Providers { get; set; }
 
+        public DbSet<RawMaterialProvider> RawMaterialProviders { get; set; }
+
+        public DbSet<RawMaterial> rawMaterials { get; set; }
+
+
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {

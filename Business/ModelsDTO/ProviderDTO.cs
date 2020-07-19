@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Business.ModelsDTO
@@ -8,8 +9,10 @@ namespace Business.ModelsDTO
     {
         public int ProviderId { get; set; }
 
+        [Required(ErrorMessage = "Campo obligatorio")]
         public string Name { get; set; }
 
+        [Range(1, 10000000, ErrorMessage = "Campo obligatorio")]
         public int Phone { get; set; }
 
         public int Account { get; set; }
