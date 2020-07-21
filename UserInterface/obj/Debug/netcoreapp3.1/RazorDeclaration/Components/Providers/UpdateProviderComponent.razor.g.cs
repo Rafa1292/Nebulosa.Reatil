@@ -111,6 +111,13 @@ using UserInterface.Components.Providers;
 #line hidden
 #nullable disable
 #nullable restore
+#line 15 "C:\Users\rvill\source\repos\Nebulosa\UserInterface\_Imports.razor"
+using UserInterface.Components.RawMaterials;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
 #line 1 "C:\Users\rvill\source\repos\Nebulosa\UserInterface\Components\Providers\UpdateProviderComponent.razor"
 using Business.ModelsDTO;
 

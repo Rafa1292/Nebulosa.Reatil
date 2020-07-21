@@ -18,6 +18,8 @@ namespace Common.Models
 
         public int Quantity { get; set; }
 
+        public int MeasureId { get; set; }
+
         public bool Delete { get; set; }
 
         public string UserCreate { get; set; }

@@ -19,6 +19,21 @@ namespace DataAccess.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Common.Models.Measure", b =>
+                {
+                    b.Property<int>("MeasureID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MeasureID");
+
+                    b.ToTable("Measures");
+                });
+
             modelBuilder.Entity("Common.Models.Product", b =>
                 {
                     b.Property<int>("ProductId")
@@ -211,6 +226,90 @@ namespace DataAccess.Migrations
                     b.HasKey("ProviderId");
 
                     b.ToTable("Providers");
+                });
+
+            modelBuilder.Entity("Common.Models.RawMaterial", b =>
+                {
+                    b.Property<int>("RawMaterialId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateUpdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Delete")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastPurchase")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProviderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Stock")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserCreate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserUpdate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("RawMaterialId");
+
+                    b.ToTable("RawMaterials");
+                });
+
+            modelBuilder.Entity("Common.Models.RawMaterialProvider", b =>
+                {
+                    b.Property<int>("RawMaterialProviderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateUpdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Delete")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("MeasureId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProviderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RawMaterialId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserCreate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserUpdate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Weight")
+                        .HasColumnType("int");
+
+                    b.HasKey("RawMaterialProviderId");
+
+                    b.ToTable("RawMaterialProviders");
                 });
 
             modelBuilder.Entity("Common.Models.Route", b =>

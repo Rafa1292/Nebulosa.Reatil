@@ -14,7 +14,7 @@ namespace DataAccess.RawMaterials
         {
             using (var db = new DataContext())
             {
-                db.rawMaterials.Add(rawMaterial);
+                db.RawMaterials.Add(rawMaterial);
                 db.SaveChanges();
                 return new ObjectResponse<bool>(true, "Insumo agregado");
             }
@@ -35,7 +35,7 @@ namespace DataAccess.RawMaterials
         {
             using (var db = new DataContext())
             {
-                var rawMaterial = db.rawMaterials.Find(rawMaterialId);
+                var rawMaterial = db.RawMaterials.Find(rawMaterialId);
                 if (rawMaterial == null)
                     return new ObjectResponse<bool>(false, "No se encontro el insumo");
                 rawMaterial.Delete = true;
@@ -49,7 +49,7 @@ namespace DataAccess.RawMaterials
         {
             using (var db = new DataContext())
             {
-                var rawMaterial = db.rawMaterials.Find(rawMaterialId);
+                var rawMaterial = db.RawMaterials.Find(rawMaterialId);
                 return new ObjectResponse<RawMaterial>(true, "Consulta exitosa", rawMaterial);
             }
         }
@@ -58,7 +58,7 @@ namespace DataAccess.RawMaterials
         {
             using (var db = new DataContext())
             {
-                var rawMaterials = db.rawMaterials.ToList();
+                var rawMaterials = db.RawMaterials.ToList();
                 return new ObjectResponse<List<RawMaterial>>(true, "Consulta exitosa", rawMaterials);
             }
         }

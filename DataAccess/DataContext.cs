@@ -22,7 +22,10 @@ namespace DataAccess
 
         public DbSet<RawMaterialProvider> RawMaterialProviders { get; set; }
 
-        public DbSet<RawMaterial> rawMaterials { get; set; }
+        public DbSet<RawMaterial> RawMaterials { get; set; }
+
+        public DbSet<Measure> Measures { get; set; }
+
 
 
 

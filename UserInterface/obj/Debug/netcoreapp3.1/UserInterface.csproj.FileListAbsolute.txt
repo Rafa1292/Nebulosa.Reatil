@@ -165,3 +165,5 @@ C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor
 C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\Providers\DeleteProviderPage.razor.g.cs
 C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor\Components\Providers\DeleteProviderComponent.razor.g.cs
 C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor\Pages\Providers\DeleteProviderPage.razor.g.cs
+C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\RazorDeclaration\Components\RawMaterials\CreateRawMaterialComponent.razor.g.cs
+C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor\Components\RawMaterials\CreateRawMaterialComponent.razor.g.cs
