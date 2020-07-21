@@ -24,7 +24,7 @@ namespace Business.ModelsDTO
 
         public int CurreentQuantity { get; set; }
 
-        public List<ProviderDTO> Providers { get; set; }
+        public List<RawMaterialProviderDTO> rawMaterialProvidersDTO { get; set; }
 
 
     }
