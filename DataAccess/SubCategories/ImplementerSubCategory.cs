@@ -32,7 +32,7 @@ namespace DataAccess.SubCategories
             return Repository.Get(productSubCategoryId);
         }
 
-        public ObjectResponse<IEnumerable<ProductSubCategory>> GetAll(bool deleteItems)
+        public ObjectResponse<List<ProductSubCategory>> GetAll(bool deleteItems)
         {
             var subCategories = Repository.GetAll();
 

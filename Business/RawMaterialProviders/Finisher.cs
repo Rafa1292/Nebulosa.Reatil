@@ -1,6 +1,8 @@
-﻿using Common.Models;
+﻿using Business.ModelsDTO;
+using Common.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Business.RawMaterialProviders
@@ -23,6 +25,15 @@ namespace Business.RawMaterialProviders
             rawMaterialProvider.UserUpdate = "";//pendiente de implementar
 
             return rawMaterialProvider;
+        }
+
+        public static List<RawMaterialProviderDTO> FinishToGetAll(List<RawMaterialProviderDTO> rawMaterialProvidersDTO, List<RawMaterialDTO> rawMaterialsDTO, List<ProviderDTO> providersDTO, List<MeasureDTO> measuresDTO)
+        {
+            rawMaterialProvidersDTO.ForEach(x => x.RawMaterialDTO = rawMaterialsDTO.FirstOrDefault(y => y.RawMaterialId == x.RawMaterialId));
+            rawMaterialProvidersDTO.ForEach(x => x.ProviderDTO = providersDTO.FirstOrDefault(y => y.ProviderId == x.ProviderId));
+            rawMaterialProvidersDTO.ForEach(x => x.MeasureDTO = measuresDTO.FirstOrDefault(y => y.MeasureID == x.MeasureId));
+
+            return rawMaterialProvidersDTO;
         }
     }
 }
