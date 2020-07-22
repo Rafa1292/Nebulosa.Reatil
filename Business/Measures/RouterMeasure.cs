@@ -12,12 +12,12 @@ namespace Business.Measures
     public class RouterMeasure
     {
         private readonly IMeasure _measure;
-        private readonly RouterRawMaterialProvider _routerMaterialProvider;
+        private readonly RouterRawMaterialProvider _materialProvider;
 
-        public RouterMeasure(IMeasure measure, RouterRawMaterialProvider routerRawMaterialProvider)
+        public RouterMeasure(IMeasure measure, RouterRawMaterialProvider rawMaterialProvider)
         {
             _measure = measure;
-            _routerMaterialProvider = routerRawMaterialProvider;
+            _materialProvider = rawMaterialProvider;
         }
 
         public ObjectResponse<bool> Insert(MeasureDTO measureDTO)
@@ -69,7 +69,7 @@ namespace Business.Measures
         {
             using (var scope = new TransactionScope())
             {
-                var rawMaterialProviders = _routerMaterialProvider.GetAll(false);
+                var rawMaterialProviders = _materialProvider.GetAll(false);
                 if (!rawMaterialProviders.IsSuccess)
                     return new ObjectResponse<bool>(false, rawMaterialProviders.Message);
 

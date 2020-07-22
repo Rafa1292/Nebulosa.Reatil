@@ -15,10 +15,10 @@ namespace Business.Categories
         private readonly ICategory _category;
         private readonly RouterSubCategory _subCategory;
  
-        public RouterCategory(ICategory category, RouterSubCategory routerSubCategory)
+        public RouterCategory(ICategory category, RouterSubCategory SubCategory)
         {
             _category = category;
-            _subCategory = routerSubCategory;
+            _subCategory = SubCategory;
         }
 
         public ObjectResponse<bool> Insert(ProductCategoryDTO productCategoryDTO)

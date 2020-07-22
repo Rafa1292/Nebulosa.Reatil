@@ -12,12 +12,12 @@ namespace Business.RawMaterials
     public class RouterRawMaterial
     {
         private readonly IRawMaterial _rawMaterial;
-        private readonly RouterRawMaterialProvider _routerRawMaterialProvider;
+        private readonly RouterRawMaterialProvider _rawMaterialProvider;
 
         public RouterRawMaterial(IRawMaterial rawMaterial, RouterRawMaterialProvider rawMaterialProvider)
         {
             _rawMaterial = rawMaterial;
-            _routerRawMaterialProvider = rawMaterialProvider;
+            _rawMaterialProvider = rawMaterialProvider;
         }
 
         public ObjectResponse<bool> Insert(RawMaterialDTO rawMaterialDTO)
@@ -90,9 +90,12 @@ namespace Business.RawMaterials
             if (!rawMaterial.IsSuccess)
                 return new ObjectResponse<RawMaterialDTO>(false, rawMaterial.Message);
 
-            var rawMaterialDTO = MapperRawMaterial.MapToDTO(rawMaterial.Data);
-            rawMaterialDTO = Finisher.FinishToGet(rawMaterialDTO, new List<RawMaterialProviderDTO>());
+            var rawMaterialProviders = _rawMaterialProvider.GetAll(false);
+            if (!rawMaterialProviders.IsSuccess)
+                return new ObjectResponse<RawMaterialDTO>(false, rawMaterialProviders.Message);
 
+            var rawMaterialDTO = MapperRawMaterial.MapToDTO(rawMaterial.Data);
+            rawMaterialDTO = Finisher.FinishToGet(rawMaterialDTO, rawMaterialProviders.Data);
 
             return new ObjectResponse<RawMaterialDTO>(true, rawMaterial.Message, rawMaterialDTO);
         }
