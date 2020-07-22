@@ -31,7 +31,7 @@ namespace DataAccess.Providers
             return Repository.Get(providerId);
         }
 
-        public ObjectResponse<IEnumerable<Provider>> GetAll(bool deleteItems)
+        public ObjectResponse<List<Provider>> GetAll(bool deleteItems)
         {
             var providers = Repository.GetAll();
 

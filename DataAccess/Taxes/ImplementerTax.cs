@@ -31,7 +31,7 @@ namespace DataAccess.Taxes
             return Repository.Get(taxId);
         }
 
-        public ObjectResponse<IEnumerable<Tax>> GetAll(bool deleteItems)
+        public ObjectResponse<List<Tax>> GetAll(bool deleteItems)
         {
             var taxes = Repository.GetAll();
 

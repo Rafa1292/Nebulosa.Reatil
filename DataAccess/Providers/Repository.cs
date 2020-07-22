@@ -55,12 +55,12 @@ namespace DataAccess.Providers
             }
         }
 
-        public static ObjectResponse<IEnumerable<Provider>> GetAll()
+        public static ObjectResponse<List<Provider>> GetAll()
         {
             using (var db = new DataContext())
             {
                 var providers = db.Providers.ToList();
-                return new ObjectResponse<IEnumerable<Provider>>(true, "Consulta exitosa", providers);
+                return new ObjectResponse<List<Provider>>(true, "Consulta exitosa", providers);
             }
         }
 

@@ -31,7 +31,7 @@ namespace DataAccess.Routes
             return Repository.Get(routeId);
         }
 
-        public ObjectResponse<IEnumerable<Route>> GetAll(bool deleteItems)
+        public ObjectResponse<List<Route>> GetAll(bool deleteItems)
         {
             var routes = Repository.GetAll();
 

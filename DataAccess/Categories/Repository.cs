@@ -54,12 +54,12 @@ namespace DataAccess.Categories
             }
         }
 
-        public static ObjectResponse<IEnumerable<ProductCategory>> GetAll()
+        public static ObjectResponse<List<ProductCategory>> GetAll()
         {
             using (var db = new DataContext())
             {
                 var categories = db.ProductCategories.ToList();
-                return new ObjectResponse<IEnumerable<ProductCategory>>(true, "Consulta exitosa", categories);
+                return new ObjectResponse<List<ProductCategory>>(true, "Consulta exitosa", categories);
             }
         }
 

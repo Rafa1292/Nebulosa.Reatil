@@ -55,12 +55,12 @@ namespace DataAccess.SubCategories
             }
         }
 
-        public static ObjectResponse<IEnumerable<ProductSubCategory>> GetAll()
+        public static ObjectResponse<List<ProductSubCategory>> GetAll()
         {
             using (var db = new DataContext())
             {
                 var subCategories = db.ProductSubCategories.ToList();
-                return new ObjectResponse<IEnumerable<ProductSubCategory>>(true, "Consulta exitosa", subCategories);
+                return new ObjectResponse<List<ProductSubCategory>>(true, "Consulta exitosa", subCategories);
             }
         }
 

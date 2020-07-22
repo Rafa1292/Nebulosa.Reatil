@@ -56,12 +56,12 @@ namespace DataAccess.Taxes
             }
         }
 
-        public static ObjectResponse<IEnumerable<Tax>> GetAll()
+        public static ObjectResponse<List<Tax>> GetAll()
         {
             using (var db = new DataContext())
             {
                 var taxes = db.Taxes.ToList();
-                return new ObjectResponse<IEnumerable<Tax>>(true, "Consulta exitosa", taxes);
+                return new ObjectResponse<List<Tax>>(true, "Consulta exitosa", taxes);
             }
         }
 

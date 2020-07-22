@@ -55,12 +55,12 @@ namespace DataAccess.Routes
             }
         }
 
-        public static ObjectResponse<IEnumerable<Route>> GetAll()
+        public static ObjectResponse<List<Route>> GetAll()
         {
             using (var db = new DataContext())
             {
                 var routes = db.Routes.ToList();
-                return new ObjectResponse<IEnumerable<Route>>(true, "Consulta exitosa", routes);
+                return new ObjectResponse<List<Route>>(true, "Consulta exitosa", routes);
             }
         }
 
