@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using Business.Measures;
+using Common;
 using Common.Models;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace DataAccess.Measures
 {
-    public class ImplementerMeasure
+    public class ImplementerMeasure : IMeasure
     {
         public ObjectResponse<bool> Insert(Measure measure)
         {

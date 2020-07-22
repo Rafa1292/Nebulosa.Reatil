@@ -74,7 +74,12 @@ namespace Business.Providers
                 if (!providers.IsSuccess)
                     return new ObjectResponse<bool>(false, providers.Message);
 
-                var provider = MapperProvider.MapFromDTO(providerDTO, new Provider());
+                var currentProvider = providers.Data.ToList().Find(x => x.ProviderId == providerDTO.ProviderId);
+                if(currentProvider == null)
+                    return new ObjectResponse<bool>(false, "No se puede acceder a la informacion actual del proveedor");
+
+
+                var provider = MapperProvider.MapFromDTO(providerDTO, currentProvider);
                 provider = Finisher.FinishToUpdate(provider);
                 var validation = ValidateProvider.ValidateToInsert(provider, providers.Data.ToList());
 

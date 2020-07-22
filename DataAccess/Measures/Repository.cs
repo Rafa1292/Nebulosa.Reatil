@@ -59,7 +59,7 @@ namespace DataAccess.Measures
             using (var db = new DataContext())
             {
                 var measures = db.Measures.ToList();
-                return new ObjectResponse<IEnumerable<ProductCategory>>(true, "Consulta exitosa", measures);
+                return new ObjectResponse<List<Measure>>(true, "Consulta exitosa", measures);
             }
         }
 

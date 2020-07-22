@@ -11,7 +11,7 @@ namespace Business.Products
     {
         public static ObjectResponse<bool> ValidateToInsert(Product product, List<Product> products)
         {
-            bool validateNullName = product.Name != null ? true : false;
+            bool validateNullName = String.IsNullOrWhiteSpace(product.Name);
 
             if (!validateNullName)
                 return new ObjectResponse<bool>(false, "El nombre no puede ser nulo");

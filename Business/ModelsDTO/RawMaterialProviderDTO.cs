@@ -18,6 +18,10 @@ namespace Business.ModelsDTO
 
         public int Quantity { get; set; }
 
+        public int MeasureId { get; set; }
+
+        public MeasureDTO MeasureDTO { get; set; }
+
         public virtual ProviderDTO ProviderDTO { get; set; }
 
         public virtual RawMaterialDTO RawMaterialDTO { get; set; }
