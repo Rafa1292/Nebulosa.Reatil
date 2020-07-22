@@ -16,6 +16,6 @@ namespace Business.Routes
 
         public ObjectResponse<Route> Get(int routeId);
 
-        public ObjectResponse<IEnumerable<Route>> GetAll(bool deleteItems);
+        public ObjectResponse<List<Route>> GetAll(bool deleteItems);
     }
 }

@@ -16,6 +16,6 @@ namespace Business.SubCategories
 
         public ObjectResponse<ProductSubCategory> Get(int productSubCategoryId);
 
-        public ObjectResponse<IEnumerable<ProductSubCategory>> GetAll(bool deleteItems);
+        public ObjectResponse<List<ProductSubCategory>> GetAll(bool deleteItems);
     }
 }

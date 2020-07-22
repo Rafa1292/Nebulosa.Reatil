@@ -1,4 +1,5 @@
 ﻿using Business.ModelsDTO;
+using Business.RawMaterialProviders;
 using Business.Routes;
 using Common;
 using Common.Models;
@@ -14,11 +15,13 @@ namespace Business.Providers
     {
         private readonly IProvider _provider;
         private readonly RouterRoute _route;
+        private readonly RouterRawMaterialProvider _rawMaterialProvider;
 
-        public RouterProvider(IProvider provider, RouterRoute route)
+        public RouterProvider(IProvider provider, RouterRoute route, RouterRawMaterialProvider rawMaterialProvider)
         {
             _provider = provider;
             _route = route;
+            _rawMaterialProvider = rawMaterialProvider;
         }
 
         public ObjectResponse<bool> Insert(ProviderDTO providerDTO)
@@ -109,6 +112,15 @@ namespace Business.Providers
                     scope.Dispose();
                     return new ObjectResponse<bool>(false, provider.Message);
                 }
+
+                var rawMaterialProviders = _rawMaterialProvider.GetAll(false);
+                if (!rawMaterialProviders.IsSuccess)
+                    return new ObjectResponse<bool>(false, rawMaterialProviders.Message);
+
+                var validation = ValidateProvider.ValidateToDelete(providerId, rawMaterialProviders.Data);
+                if (!validation.IsSuccess)
+                    return validation;
+
                 var actionResponse = _provider.Delete(providerId);
                 if (!actionResponse.IsSuccess)
                 {

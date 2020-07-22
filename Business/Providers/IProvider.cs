@@ -16,6 +16,6 @@ namespace Business.Providers
 
         public ObjectResponse<Provider> Get(int providerId);
 
-        public ObjectResponse<IEnumerable<Provider>> GetAll(bool deleteItems);
+        public ObjectResponse<List<Provider>> GetAll(bool deleteItems);
     }
 }

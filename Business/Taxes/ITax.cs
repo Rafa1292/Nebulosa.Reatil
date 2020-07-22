@@ -16,6 +16,6 @@ namespace Business.Taxes
 
         public ObjectResponse<Tax> Get(int taxId);
 
-        public ObjectResponse<IEnumerable<Tax>> GetAll(bool deleteItems);
+        public ObjectResponse<List<Tax>> GetAll(bool deleteItems);
     }
 }

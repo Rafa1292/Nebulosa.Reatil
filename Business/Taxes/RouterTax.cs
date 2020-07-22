@@ -1,4 +1,5 @@
 ﻿using Business.ModelsDTO;
+using Business.ProductTaxes;
 using Common;
 using Common.Models;
 using System;
@@ -12,10 +13,12 @@ namespace Business.Taxes
     public class RouterTax
     {
         private readonly ITax _tax;
+        private readonly RouterProductTax _productTax;
 
-        public RouterTax(ITax tax)
+        public RouterTax(ITax tax, RouterProductTax productTax)
         {
             _tax = tax;
+            _productTax = productTax;
         }
 
         public ObjectResponse<bool> Insert(TaxDTO taxDTO)
@@ -63,6 +66,14 @@ namespace Business.Taxes
         {
             using (var scope = new TransactionScope())
             {
+                var productTaxes = _productTax.GetAll(false);
+                if (!productTaxes.IsSuccess)
+                    return new ObjectResponse<bool>(false, productTaxes.Message);
+
+                var validation = ValidateTax.ValidateToDelete(taxId, productTaxes.Data);
+                if (!validation.IsSuccess)
+                    return validation;
+
                 var actionResponse = _tax.Delete(taxId);
                 if (actionResponse.IsSuccess)
                     scope.Complete();

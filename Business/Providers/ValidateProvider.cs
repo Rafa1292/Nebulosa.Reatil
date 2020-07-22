@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using Business.ModelsDTO;
+using Common;
 using Common.Models;
 using System;
 using System.Collections.Generic;
@@ -35,5 +36,16 @@ namespace Business.Providers
 
             return new ObjectResponse<bool>(true, "Proveedor validado");
         }
+
+        public static ObjectResponse<bool> ValidateToDelete(int providerId, List<RawMaterialProviderDTO> rawMaterialProviders)
+        {
+            var rawMaterialRelationship = rawMaterialProviders.Select(x => x.ProviderId).Contains(providerId);
+            if (rawMaterialRelationship)
+                return new ObjectResponse<bool>(false, "Debes eliminar este proveedor de cualquier relacion con insumo antes de proceder con esta accion");
+
+
+            return new ObjectResponse<bool>(true, "Proveedor validado");
+        }
+
     }
 }
