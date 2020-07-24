@@ -10,7 +10,7 @@ namespace Business.ModelsDTO
 
         public string Name { get; set; }
 
-        //public List<RawMaterialProviderBrandDTO> RawMaterialProvider { get; set; }
+        public List<RawMaterialProviderBrandDTO> RawMaterialProvider { get; set; }
 
         public List<RawMaterialDTO> rawMaterialsDTO { get; set; }
 
