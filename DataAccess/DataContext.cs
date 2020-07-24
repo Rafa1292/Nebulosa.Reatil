@@ -26,6 +26,9 @@ namespace DataAccess
 
         public DbSet<Measure> Measures { get; set; }
 
+        public DbSet<Brand> Brands { get; set; }
+
+
 
 
 
