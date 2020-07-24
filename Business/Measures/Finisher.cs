@@ -8,6 +8,7 @@ namespace Business.Measures
 {
     public class Finisher
     {
+
         public static Measure FinishToInsert(Measure measure)
         {
             measure.DateCreate = DateTime.Now;

@@ -121,6 +121,13 @@ using UserInterface.Components.RawMaterialProviders;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 17 "C:\Users\rvill\source\repos\Nebulosa\UserInterface\_Imports.razor"
+using UserInterface.Components.Measures;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/SubCategories/Index")]
     public partial class IndexSubCategoryPage : Microsoft.AspNetCore.Components.ComponentBase
     {

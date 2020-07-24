@@ -1,0 +1,71 @@
+﻿@using Business.Brands;
+@using Business.ModelsDTO;
+
+@inject NavigationManager NavManager
+@inject RouterBrand router
+
+<span class="col-12 h4 text-center font-weight-bolder mt-5 mb-5">
+    Eliminar marca
+</span>
+<span class="col-12 text-danger text-center h5">@Message</span>
+
+<label class="col-12 text-center">¿Seguro que deseas eliminar esta marca?</label>
+<h5 class="col-12 mb-4 text-center">
+    <strong>
+        @oBrand.Name
+    </strong>
+</h5>
+<div class="form-group justify-content-center d-flex flex-wrap">
+    <input type="button" value="Eliminar marca" @onclick="Delete" class="form-control btn btn-danger col-12" />
+    <a href="Brands/Index" class="btn btn-outline-secondary m-3">Volver</a>
+</div>
+
+
+@code {
+    [Parameter]
+    public string BrandId { get; set; }
+
+    public string Message { get; set; }
+    BrandDTO oBrand = new BrandDTO();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var response = router.Get(Int32.Parse(BrandId));
+            if (response.IsSuccess)
+            {
+                oBrand = response.Data;
+            }
+            else
+            {
+                Message = response.Message;
+            }
+        }
+        catch (Exception e)
+        {
+
+            Message = e.Message;
+        }
+    }
+
+    private void Delete()
+    {
+        try
+        {
+            var response = router.Delete(Int32.Parse(BrandId));
+            if (response.IsSuccess)
+            {
+                NavManager.NavigateTo("Brands/Index");
+            }
+            else
+            {
+                Message = response.Message;
+            }
+        }
+        catch (Exception e)
+        {
+            Message = e.Message;
+        }
+    }
+}

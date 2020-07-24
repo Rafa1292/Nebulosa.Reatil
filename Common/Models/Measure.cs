@@ -6,7 +6,7 @@ namespace Common.Models
 {
     public class Measure
     {
-        public int MeasureID { get; set; }
+        public int MeasureId { get; set; }
 
         public string Name { get; set; }
 

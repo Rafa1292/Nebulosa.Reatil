@@ -37,7 +37,7 @@ namespace Business.Providers
             return new ObjectResponse<bool>(true, "Proveedor validado");
         }
 
-        public static ObjectResponse<bool> ValidateToDelete(int providerId, List<RawMaterialProviderDTO> rawMaterialProviders)
+        public static ObjectResponse<bool> ValidateToDelete(int providerId, List<RawMaterialProvider> rawMaterialProviders)
         {
             var rawMaterialRelationship = rawMaterialProviders.Select(x => x.ProviderId).Contains(providerId);
             if (rawMaterialRelationship)

@@ -1,0 +1,13 @@
+﻿@page "/Measures/Update/{MeasureId}"
+
+<UpdateMeasureComponent MeasureId="@MeasureId" />
+
+@code {
+    [Parameter]
+    public string MeasureId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        MeasureId = MeasureId;
+    }
+}

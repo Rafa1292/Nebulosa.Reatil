@@ -15,9 +15,9 @@ namespace Business.Providers
     {
         private readonly IProvider _provider;
         private readonly RouterRoute _route;
-        private readonly RouterRawMaterialProvider _rawMaterialProvider;
+        private readonly IRawMaterialProvider _rawMaterialProvider;
 
-        public RouterProvider(IProvider provider, RouterRoute route, RouterRawMaterialProvider rawMaterialProvider)
+        public RouterProvider(IProvider provider, RouterRoute route, IRawMaterialProvider rawMaterialProvider)
         {
             _provider = provider;
             _route = route;

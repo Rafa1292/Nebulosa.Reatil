@@ -1,0 +1,14 @@
+﻿@page "/Measures/Delete/{MeasureId}"
+
+
+<DeleteMeasureComponent MeasureId="@MeasureId" />
+
+@code {
+    [Parameter]
+    public string MeasureId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        MeasureId = MeasureId;
+    }
+}

@@ -10,7 +10,7 @@ namespace Business.Measures
     {
         public static Measure MapFromDTO(MeasureDTO measureDTO, Measure measure)
         {
-            measure.MeasureID = measureDTO.MeasureID;
+            measure.MeasureId = measureDTO.MeasureId;
             measure.Name = measureDTO.Name;
 
             return measure;
@@ -20,7 +20,7 @@ namespace Business.Measures
         {
             MeasureDTO measureDTO = new MeasureDTO()
             {
-                MeasureID = measure.MeasureID,
+                MeasureId = measure.MeasureId,
                 Name = measure.Name                
             };
 
@@ -34,7 +34,7 @@ namespace Business.Measures
             measures.ForEach(x => measuresDTO.Add(
                 new MeasureDTO()
                 {
-                    MeasureID = x.MeasureID,
+                    MeasureId = x.MeasureId,
                     Name = x.Name
                 }));
 

@@ -1,5 +1,6 @@
 ﻿using Business.ModelsDTO;
 using Common;
+using Common.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,7 +21,7 @@ namespace Business.Brands
         {
             using (var scope = new TransactionScope())
             {
-                var brand = MapperBrand.MapFromDTO(brandDTO);
+                var brand = MapperBrand.MapFromDTO(brandDTO, new Brand());
                 brand = Finisher.FinishToInsert(brand);
                 var validation = ValidateBrand.ValidateToInsert(brand, _brand.GetAll(false).Data);
 

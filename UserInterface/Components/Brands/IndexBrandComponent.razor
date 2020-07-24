@@ -1,0 +1,57 @@
+﻿@using Business.Brands
+@using Business.ModelsDTO
+
+@inject RouterBrand router
+
+<span class="col-12 h4 text-center font-weight-bolder mt-5 mb-5">
+    Marcas
+</span>
+<p class="col-12 p-1 d-flex justify-content-center">
+    <a class="btn btn-primary " href="Categories/Create">Agregar nueva marca</a>
+</p>
+<label class="text-danger h5 ">@Message</label>
+
+<div class="col-12 p-0 d-flex flex-wrap justify-content-center">
+    <table id="brandsTable" class="display col-6 table text-center table-hover">
+
+        <tbody>
+            @foreach (var brand in brands)
+            {
+                <tr>
+                    <td>@brand.Name</td>
+                    <td>
+                        <a class="btn btn-secondary" href="Brands/Update/@brand.BrandId">Editar</a>
+                        <a class="btn btn-outline-danger" href="Brands/Delete/@brand.BrandId">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+@code {
+    private List<BrandDTO> brands = new List<BrandDTO>();
+    private string Message;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var response = router.GetAll(false);
+            if (response.IsSuccess)
+            {
+                brands = response.Data.ToList();
+            }
+            else
+            {
+                Message = response.Message;
+            }
+        }
+        catch (Exception e)
+        {
+
+            Message = e.Message;
+        }
+    }
+}

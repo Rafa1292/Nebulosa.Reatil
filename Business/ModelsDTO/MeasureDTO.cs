@@ -7,7 +7,7 @@ namespace Business.ModelsDTO
 {
     public class MeasureDTO
     {
-        public int MeasureID { get; set; }
+        public int MeasureId { get; set; }
 
         [Required(ErrorMessage = "Campo obligatorio")]
         public string Name { get; set; }

@@ -1,0 +1,57 @@
+﻿@using Business.Measures
+@using Business.ModelsDTO
+
+@inject RouterMeasure router
+
+<span class="col-12 h4 text-center font-weight-bolder mt-5 mb-5">
+    Medidas
+</span>
+<p class="col-12 p-1 d-flex justify-content-center">
+    <a class="btn btn-primary " href="Measures/Create">Agregar nueva medida</a>
+</p>
+<label class="text-danger h5 ">@Message</label>
+
+<div class="col-12 p-0 d-flex flex-wrap justify-content-center">
+    <table id="measuresTable" class="display col-6 table text-center table-hover">
+
+        <tbody>
+            @foreach (var measure in measures)
+            {
+                <tr>
+                    <td>@measure.Name</td>
+                    <td>
+                        <a class="btn btn-secondary" href="Measures/Update/@measure.MeasureId">Editar</a>
+                        <a class="btn btn-outline-danger" href="Measures/Delete/@measure.MeasureId">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+@code {
+    private List<MeasureDTO> measures = new List<MeasureDTO>();
+    private string Message;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var response = router.GetAll(false);
+            if (response.IsSuccess)
+            {
+                measures = response.Data.ToList();
+            }
+            else
+            {
+                Message = response.Message;
+            }
+        }
+        catch (Exception e)
+        {
+
+            Message = e.Message;
+        }
+    }
+}

@@ -1,0 +1,55 @@
+﻿@using Business.Brands
+@using Business.ModelsDTO
+
+@inject NavigationManager NavManager
+@inject RouterBrand router
+
+<span class="col-12 h4 text-center font-weight-bolder mt-5 mb-5">
+    Agregar nueva marca
+</span>
+<span class="col-12 text-danger text-center h5">@Message</span>
+<EditForm class="col-4 p-2" OnValidSubmit="@Save" Model="@oBrand">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <label for="name" class="font-weight-bolder">Nombre de la marca:</label>
+        <InputText id="name" @bind-Value="oBrand.Name" class="form-control" />
+        <ValidationMessage For="@(() => oBrand.Name)" class="text-danger" />
+    </div>
+    <div class="form-group justify-content-center d-flex flex-wrap">
+        <input type="submit" value="Agregar marca" class="form-control btn btn-dark" />
+        <a href="Brands/Index" class="btn btn-outline-secondary m-3">Volver</a>
+
+    </div>
+</EditForm>
+
+@code {
+    BrandDTO oBrand = new BrandDTO();
+    public string Message;
+
+    private void Save()
+    {
+        try
+        {
+            var response = router.Insert(oBrand);
+            if (response.IsSuccess)
+            {
+                NavManager.NavigateTo("Brands/Index");
+            }
+            else
+            {
+                Message = response.Message;
+            }
+        }
+        catch (Exception e)
+        {
+
+            Message = e.Message;
+        }
+    }
+
+    private void HandleValidSubmit()
+    {
+        Console.WriteLine("OnValidSubmit");
+    }
+}

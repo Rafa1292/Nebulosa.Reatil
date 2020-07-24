@@ -125,6 +125,13 @@ using UserInterface.Components.RawMaterialProviders;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 17 "C:\Users\rvill\source\repos\Nebulosa\UserInterface\_Imports.razor"
+using UserInterface.Components.Measures;
+
+#line default
+#line hidden
+#nullable disable
     public partial class App : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998

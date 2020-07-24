@@ -12,9 +12,9 @@ namespace Business.Measures
     public class RouterMeasure
     {
         private readonly IMeasure _measure;
-        private readonly RouterRawMaterialProvider _materialProvider;
+        private readonly IRawMaterialProvider _materialProvider;
 
-        public RouterMeasure(IMeasure measure, RouterRawMaterialProvider rawMaterialProvider)
+        public RouterMeasure(IMeasure measure, IRawMaterialProvider rawMaterialProvider)
         {
             _measure = measure;
             _materialProvider = rawMaterialProvider;
@@ -47,7 +47,7 @@ namespace Business.Measures
         {
             using (var scope = new TransactionScope())
             {
-                var currentMeasure = _measure.Get(measureDTO.MeasureID);
+                var currentMeasure = _measure.Get(measureDTO.MeasureId);
                 if (!currentMeasure.IsSuccess)
                     return new ObjectResponse<bool>(false, currentMeasure.Message);
 

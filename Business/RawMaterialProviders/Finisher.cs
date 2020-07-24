@@ -35,11 +35,10 @@ namespace Business.RawMaterialProviders
             return rawMaterialProviders;
         }
 
-        public static List<RawMaterialProviderDTO> FinishToGetAll(List<RawMaterialProviderDTO> rawMaterialProvidersDTO, List<RawMaterialDTO> rawMaterialsDTO, List<ProviderDTO> providersDTO, List<MeasureDTO> measuresDTO)
+        public static List<RawMaterialProviderDTO> FinishToGetAll(List<RawMaterialProviderDTO> rawMaterialProvidersDTO, List<ProviderDTO> providersDTO, List<MeasureDTO> measuresDTO)
         {
-            rawMaterialProvidersDTO.ForEach(x => x.RawMaterialDTO = rawMaterialsDTO.FirstOrDefault(y => y.RawMaterialId == x.RawMaterialId));
             rawMaterialProvidersDTO.ForEach(x => x.ProviderDTO = providersDTO.FirstOrDefault(y => y.ProviderId == x.ProviderId));
-            rawMaterialProvidersDTO.ForEach(x => x.MeasureDTO = measuresDTO.FirstOrDefault(y => y.MeasureID == x.MeasureId));
+            rawMaterialProvidersDTO.ForEach(x => x.MeasureDTO = measuresDTO.FirstOrDefault(y => y.MeasureId == x.MeasureId));
 
             return rawMaterialProvidersDTO;
         }

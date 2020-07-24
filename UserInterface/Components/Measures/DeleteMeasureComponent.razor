@@ -1,0 +1,71 @@
+﻿@using Business.Measures;
+@using Business.ModelsDTO;
+
+@inject NavigationManager NavManager
+@inject RouterMeasure router
+
+<span class="col-12 h4 text-center font-weight-bolder mt-5 mb-5">
+    Eliminar medida
+</span>
+<span class="col-12 text-danger text-center h5">@Message</span>
+
+<label class="col-12 text-center">¿Seguro que deseas eliminar esta medida?</label>
+<h5 class="col-12 mb-4 text-center">
+    <strong>
+        @oMeasure.Name
+    </strong>
+</h5>
+<div class="form-group justify-content-center d-flex flex-wrap">
+    <input type="button" value="Eliminar medida" @onclick="Delete" class="form-control btn btn-danger col-12" />
+    <a href="Measures/Index" class="btn btn-outline-secondary m-3">Volver</a>
+</div>
+
+
+@code {
+    [Parameter]
+    public string MeasureId { get; set; }
+
+    public string Message { get; set; }
+    MeasureDTO oMeasure = new MeasureDTO();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var response = router.Get(Int32.Parse(MeasureId));
+            if (response.IsSuccess)
+            {
+                oMeasure = response.Data;
+            }
+            else
+            {
+                Message = response.Message;
+            }
+        }
+        catch (Exception e)
+        {
+
+            Message = e.Message;
+        }
+    }
+
+    private void Delete()
+    {
+        try
+        {
+            var response = router.Delete(Int32.Parse(MeasureId));
+            if (response.IsSuccess)
+            {
+                NavManager.NavigateTo("Measures/Index");
+            }
+            else
+            {
+                Message = response.Message;
+            }
+        }
+        catch (Exception e)
+        {
+            Message = e.Message;
+        }
+    }
+}

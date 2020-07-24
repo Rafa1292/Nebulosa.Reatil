@@ -14,11 +14,11 @@ namespace Business.Measures
         {
             bool validateNullName =  String.IsNullOrWhiteSpace(measure.Name);
 
-            if (!validateNullName)
+            if (validateNullName)
                 return new ObjectResponse<bool>(false, "El nombre no puede ser nulo");
 
             bool NameExist = measures
-                .Where(x => x.MeasureID != measure.MeasureID)
+                .Where(x => x.MeasureId != measure.MeasureId)
                 .Select(x => x.Name.ToLower())
                 .Contains(measure.Name.ToLower());
 
@@ -30,7 +30,7 @@ namespace Business.Measures
             return new ObjectResponse<bool>(true, "Medida validada");
         }
 
-        public static ObjectResponse<bool> ValidateToDelete(int measureId, List<RawMaterialProviderDTO> rawMaterialProviders)
+        public static ObjectResponse<bool> ValidateToDelete(int measureId, List<RawMaterialProvider> rawMaterialProviders)
         {
             var Relationship = rawMaterialProviders.Select(x => x.MeasureId).Contains(measureId);
             if (Relationship)
