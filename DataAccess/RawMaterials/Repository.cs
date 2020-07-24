@@ -10,13 +10,13 @@ namespace DataAccess.RawMaterials
 {
     public class Repository
     {
-        public static ObjectResponse<bool> Insert(RawMaterial rawMaterial)
+        public static ObjectResponse<int> Insert(RawMaterial rawMaterial)
         {
             using (var db = new DataContext())
             {
                 db.RawMaterials.Add(rawMaterial);
                 db.SaveChanges();
-                return new ObjectResponse<bool>(true, "Insumo agregado");
+                return new ObjectResponse<int>(true, "Insumo agregado",rawMaterial.RawMaterialId);
             }
 
         }

@@ -8,11 +8,11 @@ namespace Business.RawMaterialProviders
 {
     public interface IRawMaterialProvider
     {
-        public ObjectResponse<bool> Insert(RawMaterialProvider rawMaterialProvider);
+        public ObjectResponse<bool> Insert(List<RawMaterialProvider> rawMaterialProvider);
 
-        public ObjectResponse<bool> Update(RawMaterialProvider rawMaterialProvider);
+        public ObjectResponse<bool> Update(List<RawMaterialProvider> rawMaterialProvider, int rawMaterialId);
 
-        public ObjectResponse<bool> Delete(int rawMaterialProviderId);
+        public ObjectResponse<bool> Delete(List<int> rawMaterialProvidersId);
 
         public ObjectResponse<List<RawMaterialProvider>> GetByRawMaterial(int rawMaterialId);
 

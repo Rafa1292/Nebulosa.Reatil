@@ -23,22 +23,18 @@ namespace Business.RawMaterialProviders
             _rawMaterialProvider = rawMaterialProvider;
         }
 
-        public ObjectResponse<bool> Insert(RawMaterialProviderDTO rawMaterialProviderDTO)
+        public ObjectResponse<bool> Insert(List<RawMaterialProviderDTO> rawMaterialProvidersDTO, int rawMaterialId)
         {
             using (var scope = new TransactionScope())
             {
-                var rawMaterialProviders = _rawMaterialProvider.GetAll(false);
-                if (!rawMaterialProviders.IsSuccess)
-                    return new ObjectResponse<bool>(false, rawMaterialProviders.Message);
+                var rawMaterialProviders = MapperRawMaterialProvider.MapFromDTO(rawMaterialProvidersDTO);
+                rawMaterialProviders = Finisher.FinishToInsert(rawMaterialProviders, rawMaterialId);
 
-                var rawMaterialProvider = MapperRawMaterialProvider.MapFromDTO(rawMaterialProviderDTO, new RawMaterialProvider());
-                rawMaterialProvider = Finisher.FinishToInsert(rawMaterialProvider);
-
-                var validation = ValidateRawMaterialProvider.ValidateToInsert(rawMaterialProvider);
+                var validation = ValidateRawMaterialProvider.ValidateToInsert(rawMaterialProviders);
                 if (!validation.IsSuccess)
                     return validation;
 
-                var actionResponse = _rawMaterialProvider.Insert(rawMaterialProvider);
+                var actionResponse = _rawMaterialProvider.Insert(rawMaterialProviders);
                 if (actionResponse.IsSuccess)
                     scope.Complete();
 
@@ -46,26 +42,18 @@ namespace Business.RawMaterialProviders
             }
         }
 
-        public ObjectResponse<bool> Update(RawMaterialProviderDTO rawMaterialProviderDTO)
+        public ObjectResponse<bool> Update(List<RawMaterialProviderDTO> rawMaterialProvidersDTO, int rawMaterialProviderId)
         {
             using (var scope = new TransactionScope())
             {
-                var rawMaterialProviders = _rawMaterialProvider.GetAll(false);
-                if (!rawMaterialProviders.IsSuccess)
-                    return new ObjectResponse<bool>(false, rawMaterialProviders.Message);
+                var rawMaterialProviders = MapperRawMaterialProvider.MapFromDTO(rawMaterialProvidersDTO);
+                rawMaterialProviders = Finisher.FinishToUpdate(rawMaterialProviders);
 
-                var currentRawMaterialProvider = rawMaterialProviders.Data.Find(x => x.RawMaterialProviderId == rawMaterialProviderDTO.RawMaterialProviderId);
-                if (currentRawMaterialProvider == null)
-                    return new ObjectResponse<bool>(false, "Imposible acceder a la informacion de esta relacion");
-
-                var rawMaterialProvider = MapperRawMaterialProvider.MapFromDTO(rawMaterialProviderDTO, currentRawMaterialProvider);
-                rawMaterialProvider = Finisher.FinishToUpdate(rawMaterialProvider);
-
-                var validation = ValidateRawMaterialProvider.ValidateToInsert(rawMaterialProvider);
+                var validation = ValidateRawMaterialProvider.ValidateToInsert(rawMaterialProviders);
                 if (!validation.IsSuccess)
                     return validation;
 
-                var actionResponse = _rawMaterialProvider.Update(rawMaterialProvider);
+                var actionResponse = _rawMaterialProvider.Update(rawMaterialProviders, rawMaterialProviderId);
                 if (actionResponse.IsSuccess)
                     scope.Complete();
 
@@ -73,11 +61,11 @@ namespace Business.RawMaterialProviders
             }
         }
 
-        public ObjectResponse<bool> Delete(int rawMaterialProviderId)
+        public ObjectResponse<bool> Delete(List<int> rawMaterialProvidersId)
         {
             using (var scope = new TransactionScope())
             {
-                var actionResponse = _rawMaterialProvider.Delete(rawMaterialProviderId);
+                var actionResponse = _rawMaterialProvider.Delete(rawMaterialProvidersId);
                 if (actionResponse.IsSuccess)
                     scope.Complete();
 

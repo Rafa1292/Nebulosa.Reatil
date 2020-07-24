@@ -112,6 +112,13 @@ using UserInterface.Components.RawMaterials;
 #line hidden
 #nullable disable
 #nullable restore
+#line 16 "C:\Users\rvill\source\repos\Nebulosa\UserInterface\_Imports.razor"
+using UserInterface.Components.RawMaterialProviders;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
 #line 1 "C:\Users\rvill\source\repos\Nebulosa\UserInterface\Pages\Categories\CreateCategoryPage.razor"
 using UserInterface.Components.Categories;
 

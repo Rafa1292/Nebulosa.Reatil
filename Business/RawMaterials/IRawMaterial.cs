@@ -8,7 +8,7 @@ namespace Business.RawMaterials
 {
     public interface IRawMaterial
     {
-        public ObjectResponse<bool> Insert(RawMaterial rawMaterial);
+        public ObjectResponse<int> Insert(RawMaterial rawMaterial);
 
         public ObjectResponse<bool> Update(RawMaterial rawMaterial);
 

@@ -9,22 +9,30 @@ namespace Business.RawMaterialProviders
 {
     public class Finisher
     {
-        public static RawMaterialProvider FinishToInsert(RawMaterialProvider rawMaterialProvider)
+        public static List<RawMaterialProvider> FinishToInsert(List<RawMaterialProvider> rawMaterialProviders, int rawMaterialId)
         {
-            rawMaterialProvider.DateCreate = DateTime.Now;
-            rawMaterialProvider.DateUpdate = DateTime.Now;
-            rawMaterialProvider.UserCreate = "";//pendiente de implementar
-            rawMaterialProvider.UserUpdate = "";//pendiente de implementar
+            foreach (var rawMaterialProvider in rawMaterialProviders)
+            {
+                rawMaterialProvider.RawMaterialId = rawMaterialId;
+                rawMaterialProvider.DateCreate = DateTime.Now;
+                rawMaterialProvider.DateUpdate = DateTime.Now;
+                rawMaterialProvider.UserCreate = "";//pendiente de implementar
+                rawMaterialProvider.UserUpdate = "";//pendiente de implementar
+            }
 
-            return rawMaterialProvider;
+
+            return rawMaterialProviders;
+
         }
 
-        public static RawMaterialProvider FinishToUpdate(RawMaterialProvider rawMaterialProvider)
+        public static List<RawMaterialProvider> FinishToUpdate(List<RawMaterialProvider> rawMaterialProviders)
         {
-            rawMaterialProvider.DateUpdate = DateTime.Now;
-            rawMaterialProvider.UserUpdate = "";//pendiente de implementar
-
-            return rawMaterialProvider;
+            foreach (var rawMaterialProvider in rawMaterialProviders)
+            {
+                rawMaterialProvider.DateUpdate = DateTime.Now;
+                rawMaterialProvider.UserUpdate = "";//pendiente de implementar
+            }
+            return rawMaterialProviders;
         }
 
         public static List<RawMaterialProviderDTO> FinishToGetAll(List<RawMaterialProviderDTO> rawMaterialProvidersDTO, List<RawMaterialDTO> rawMaterialsDTO, List<ProviderDTO> providersDTO, List<MeasureDTO> measuresDTO)

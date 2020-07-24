@@ -6,3 +6,4 @@ C:\Users\rvill\source\repos\Nebulosa\Common\obj\Debug\netcoreapp3.1\Common.Assem
 C:\Users\rvill\source\repos\Nebulosa\Common\obj\Debug\netcoreapp3.1\Common.dll
 C:\Users\rvill\source\repos\Nebulosa\Common\obj\Debug\netcoreapp3.1\Common.pdb
 C:\Users\rvill\source\repos\Nebulosa\Common\obj\Debug\netcoreapp3.1\Common.csproj.CoreCompileInputs.cache
+C:\Users\rvill\source\repos\Nebulosa\Common\obj\Debug\netcoreapp3.1\Common.csprojAssemblyReference.cache

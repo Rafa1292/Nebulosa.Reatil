@@ -10,7 +10,7 @@ namespace DataAccess.RawMaterials
 {
     public class ImplementerRawMaterial : IRawMaterial
     {
-        public ObjectResponse<bool> Insert(RawMaterial rawMaterial)
+        public ObjectResponse<int> Insert(RawMaterial rawMaterial)
         {
             return Repository.Insert(rawMaterial);
         }

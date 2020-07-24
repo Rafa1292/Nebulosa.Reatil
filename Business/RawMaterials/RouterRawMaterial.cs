@@ -37,11 +37,15 @@ namespace Business.RawMaterials
 
                 var actionResponse = _rawMaterial.Insert(rawMaterial);
                 if (!actionResponse.IsSuccess)
-                    return actionResponse;
+                    return new ObjectResponse<bool>(false, actionResponse.Message);
+
+                var relationship = _rawMaterialProvider.Insert(rawMaterialDTO.rawMaterialProvidersDTO, rawMaterial.RawMaterialId);
+                if (!relationship.IsSuccess)
+                    return relationship;
 
                 scope.Complete();
 
-                return actionResponse;
+                return new ObjectResponse<bool>(true, "Insumo creado exitosamente");
             }
         }
 
@@ -64,6 +68,10 @@ namespace Business.RawMaterials
                 if (!actionResponse.IsSuccess)
                     return actionResponse;
 
+                var editRealtionshipResponse = _rawMaterialProvider.Update(rawMaterialDTO.rawMaterialProvidersDTO, rawMaterial.RawMaterialId);
+                if (!editRealtionshipResponse.IsSuccess)
+                    return editRealtionshipResponse;
+
                 scope.Complete();
 
                 return actionResponse;
@@ -77,6 +85,14 @@ namespace Business.RawMaterials
                 var actionResponse = _rawMaterial.Delete(rawMaterialId);
                 if (!actionResponse.IsSuccess)
                     return actionResponse;
+
+                var rawMaterialProviders = _rawMaterialProvider.GetByRawMaterial(rawMaterialId);
+                if (!rawMaterialProviders.IsSuccess)
+                    return new ObjectResponse<bool>(false, rawMaterialProviders.Message);
+
+                var deleteRelationshipResponse = _rawMaterialProvider.Delete(rawMaterialProviders.Data.Select(x => x.RawMaterialProviderId).ToList());
+                if (!deleteRelationshipResponse.IsSuccess)
+                    return deleteRelationshipResponse;
 
                 scope.Complete();
 

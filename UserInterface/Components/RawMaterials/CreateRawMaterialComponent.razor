@@ -2,16 +2,19 @@
 @using System.Linq
 @using Business.RawMaterials
 @using Business.Providers
+@using Common
+@using Business.Measures
 
 @inject RouterRawMaterial _router;
 @inject NavigationManager NavManager
 @inject RouterProvider _provider ;
+@inject RouterMeasure _measure;
 
 
 <span class="col-12 h4 text-center font-weight-bolder mt-5 mb-5">
     Agregar nuevo insumo
 </span>
-<EditForm class="col-md-4 d-flex flex-wrap justify-content-center" OnValidSubmit="Save" Model="@oRawMaterial">
+<EditForm class="col-md-6 d-flex flex-wrap justify-content-center" OnValidSubmit="Save" Model="@oRawMaterial">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <div class="form-group col-md-12">
@@ -24,36 +27,27 @@
         <InputNumber id="name" @bind-Value="oRawMaterial.Stock" class="form-control col-lg-12" />
         <ValidationMessage For="@(() => oRawMaterial.Stock)" class="text-danger" />
     </div>
-    <div class="form-group col-md-12">
-        <label class="font-weight-bolder">Proveedor:</label>
-        <select @onchange="SetProvider" class="form-control">
-            <option value="0" selected disabled>Seleccione un proveedor...</option>
-            @foreach (var provider in providers)
-            {
-                <option value="@provider.ProviderId">@provider.Name</option>
-            }
-        </select>
-    </div>
-    <div class="form-group col-md-12">
-        <label for="name" class="font-weight-bolder">Precio</label>
-        <InputNumber id="name" @bind-Value="oRawMaterial.Stock" class="form-control col-lg-12" />
-        <ValidationMessage For="@(() => oRawMaterial.Stock)" class="text-danger" />
-    </div>
-    <div class="form-group col-md-12">
-        <label for="name" class="font-weight-bolder">Peso</label>
-        <InputNumber id="name" @bind-Value="oRawMaterial.Stock" class="form-control col-lg-12" />
-        <ValidationMessage For="@(() => oRawMaterial.Stock)" class="text-danger" />
-    </div>
-    <div class="form-group col-md-12">
-        <label for="name" class="font-weight-bolder">Cantidad</label>
-        <InputNumber id="name" @bind-Value="oRawMaterial.Stock" class="form-control col-lg-12" />
-        <ValidationMessage For="@(() => oRawMaterial.Stock)" class="text-danger" />
-    </div>
+    <span class="col-12 my-4 justify-content-start d-flex" style="height: 40px">
+        <input type="button" class="btn btn-outline-primary button-animation" value="Asociar proveedor" @onclick="AddProvider" />
+    </span>
 
-    <div class="form-group justify-content-center d-flex flex-wrap">
+    @foreach (var rawMaterialProvider in rawMaterialProvidersDTO)
+    {
+        <CreateRawMaterialProviderComponent Providers="providers"
+                                            RawMaterialProvider="rawMaterialProvider"
+                                            SetCurrentProvider="SetProvider"
+                                            RemoveProviderForm="RemoveProviderForm"
+                                            Measures="measures" />
+    }
+
+    <div class="form-group justify-content-center d-flex col-12 flex-wrap">
         <span class="col-12 text-danger text-center h5">@Message</span>
-        <input type="submit" value="Agregar insumo" class="form-control col-12 btn btn-dark" />
-        <a href="Providers/Index" class="btn btn-outline-secondary m-3 col-12">Volver</a>
+        <span class="col-12 justify-content-center d-flex" style="height: 35px">
+            <input type="submit" value="Agregar insumo" class="form-control col-8 btn btn-dark button-animation" style="height: 35px" />
+        </span>
+        <span class="col-12 justify-content-center mt-3 d-flex" style="height: 35px">
+            <a href="Providers/Index" class=" button-animation btn btn-outline-secondary col-8" style="height: 35px">Regresar</a>
+        </span>
     </div>
 </EditForm>
 
@@ -66,7 +60,8 @@
     RawMaterialDTO oRawMaterial = new RawMaterialDTO();
     public string Message;
     List<ProviderDTO> providers = new List<ProviderDTO>();
-
+    List<RawMaterialProviderDTO> rawMaterialProvidersDTO = new List<RawMaterialProviderDTO>();
+    List<MeasureDTO> measures = new List<MeasureDTO>();
 
     #endregion
 
@@ -77,6 +72,12 @@
         try
         {
             providers = _provider.GetAll(false).Data;
+            //measures = _measure.GetAll(false).Data;
+            measures.Add(new MeasureDTO() { MeasureID = 1, Name = "Kg" });
+            measures.Add(new MeasureDTO() { MeasureID = 2, Name = "Unidad" });
+
+            rawMaterialProvidersDTO.Add(new RawMaterialProviderDTO());
+
         }
         catch (Exception e)
         {
@@ -85,30 +86,84 @@
         }
     }
 
-    private void SetProvider(ChangeEventArgs e)
+    private void SetProvider(RawMaterialProviderDTO rawMaterialProvider)
     {
-        oRawMaterial.ProviderId = Int32.Parse(e.Value.ToString());
+        if (rawMaterialProvider.CurrentProvider)
+        {
+            rawMaterialProvidersDTO.Where(x => x != rawMaterialProvider).ToList().ForEach(x => x.CurrentProvider = false);
+            oRawMaterial.CurreentQuantity = rawMaterialProvider.Quantity;
+            oRawMaterial.CurrentPrice = rawMaterialProvider.Price;
+            oRawMaterial.CurrentWeight = rawMaterialProvider.Weight;
+            oRawMaterial.ProviderId = rawMaterialProvider.ProviderId;
+        }
     }
 
     private void Save()
     {
         try
         {
-            var actionResponse = _router.Insert(oRawMaterial);
-
-            if (actionResponse.IsSuccess)
+            var formValidation = ValidateProviders();
+            if (!formValidation.IsSuccess)
             {
-                NavManager.NavigateTo("RawMaterials/Index");
+                Message = formValidation.Message;
             }
             else
             {
-                Message = actionResponse.Message;
+                if (!(oRawMaterial.ProviderId > 0))
+                    rawMaterialProvidersDTO.ForEach(x => SetProvider(x));
+
+                oRawMaterial.rawMaterialProvidersDTO = rawMaterialProvidersDTO;
+                var actionResponse = _router.Insert(oRawMaterial);
+
+                if (actionResponse.IsSuccess)
+                {
+                    NavManager.NavigateTo("RawMaterials/Index");
+                }
+                else
+                {
+                    Message = actionResponse.Message;
+                }
             }
         }
         catch (Exception e)
         {
 
             Message = e.Message;
+        }
+
+    }
+
+    private ObjectResponse<bool> ValidateProviders()
+    {
+        var providersNull = rawMaterialProvidersDTO.Select(x => x.ProviderId).Contains(0);
+        if (providersNull)
+            return new ObjectResponse<bool>(false, "En cada formulario debes seleccionar un proveedor, si no lo necesitas elimina el formulario.");
+
+        var currentProviders = rawMaterialProvidersDTO.Select(x => x.CurrentProvider).Contains(true);
+        if (!currentProviders)
+            return new ObjectResponse<bool>(false, "Debes seleccionar un proveedor actual.");
+
+        return new ObjectResponse<bool>(true, "Validacion correcta");
+    }
+
+
+    private void AddProvider()
+    {
+        rawMaterialProvidersDTO.Add(new RawMaterialProviderDTO());
+        rawMaterialProvidersDTO = rawMaterialProvidersDTO.OrderBy(x => x.ProviderId).ToList();
+    }
+
+    private void RemoveProviderForm(RawMaterialProviderDTO rawMaterialProvider)
+    {
+        try
+        {
+            rawMaterialProvidersDTO.Remove(rawMaterialProvider);
+            rawMaterialProvidersDTO = rawMaterialProvidersDTO.OrderBy(x => x.ProviderId).ToList();
+        }
+        catch (Exception)
+        {
+
+            Message = "Formulario dañado, ingrese nuevamente el formulario y esta vez agrega solo la informacion necesaria";
         }
 
     }
