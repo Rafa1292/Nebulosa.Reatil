@@ -132,6 +132,13 @@ using UserInterface.Components.Measures;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 18 "C:\Users\rvill\source\repos\Nebulosa\UserInterface\_Imports.razor"
+using UserInterface.Components.Brands;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/Taxes/Index")]
     public partial class IndexTaxPage : Microsoft.AspNetCore.Components.ComponentBase
     {

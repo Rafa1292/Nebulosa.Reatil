@@ -14,7 +14,7 @@ namespace Business.Brands
         {
             bool validateNullName = String.IsNullOrWhiteSpace(brand.Name);
 
-            if (!validateNullName)
+            if (validateNullName)
                 return new ObjectResponse<bool>(false, "El nombre no puede ser nulo");
 
             bool NameExist = brands

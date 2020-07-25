@@ -30,6 +30,8 @@ using Business.RawMaterialProviders;
 using DataAccess.RawMaterialProviders;
 using Business.Measures;
 using DataAccess.Measures;
+using Business.Brands;
+using DataAccess.Brands;
 
 namespace UserInterface
 {
@@ -48,6 +50,7 @@ namespace UserInterface
         {            
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddScoped<RouterBrand>();
             services.AddScoped<RouterRoute>();
             services.AddScoped<RouterMeasure>();
             services.AddScoped<RouterRawMaterialProvider>();
@@ -68,6 +71,7 @@ namespace UserInterface
             services.AddScoped<IRawMaterial, ImplementerRawMaterial>();
             services.AddScoped<IRawMaterialProvider, ImplementerRawMaterialProvider>();
             services.AddScoped<IMeasure, ImplementerMeasure>();
+            services.AddScoped<IBrand, ImplementerBrand>();
 
 
 

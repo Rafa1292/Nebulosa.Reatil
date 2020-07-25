@@ -1,0 +1,13 @@
+﻿@page "/Brands/Update/{BrandId}"
+
+<UpdateBrandComponent BrandId="@BrandId" />
+
+@code {
+    [Parameter]
+    public string BrandId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        BrandId = BrandId;
+    }
+}

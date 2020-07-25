@@ -1,0 +1,14 @@
+﻿@page "/Brands/Delete/{BrandId}"
+
+
+<DeleteBrandComponent BrandId="@BrandId" />
+
+@code {
+    [Parameter]
+    public string BrandId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        BrandId = BrandId;
+    }
+}

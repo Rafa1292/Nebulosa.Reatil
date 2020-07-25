@@ -122,6 +122,13 @@ using UserInterface.Components.Measures;
 #line hidden
 #nullable disable
 #nullable restore
+#line 18 "C:\Users\rvill\source\repos\Nebulosa\UserInterface\_Imports.razor"
+using UserInterface.Components.Brands;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
 #line 1 "C:\Users\rvill\source\repos\Nebulosa\UserInterface\Pages\Categories\CreateCategoryPage.razor"
 using UserInterface.Components.Categories;
 
