@@ -32,7 +32,7 @@ namespace DataAccess.RawMaterialProviders
             var addRawMaterialProviders = currentRawMaterialProviders.Data.Where(x => x.RawMaterialProviderId == 0).ToList();
             var deleteRawMaterialProviders = currentRawMaterialProviders.Data.Where(x => !rawMaterialProvidersId.Contains(x.RawMaterialProviderId)).ToList();
 
-
+            RouteUpdateActions(editRawMaterialProviders,addRawMaterialProviders,deleteRawMaterialProviders);
 
             return new ObjectResponse<bool>(true, "Relacion actualizada exitosamente");
         }

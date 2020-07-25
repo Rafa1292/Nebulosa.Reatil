@@ -28,6 +28,9 @@ namespace DataAccess
 
         public DbSet<Brand> Brands { get; set; }
 
+        public DbSet<RawMaterialProviderBrand> RawMaterialProviderBrands { get; set; }
+
+
 
 
 

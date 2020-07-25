@@ -6,7 +6,7 @@ namespace Business.ModelsDTO
 {
     public class RawMaterialProviderBrandDTO
     {
-        public int RawMaterialProviderBrandID { get; set; }
+        public int RawMaterialProviderBrandId { get; set; }
 
         public int RawMaterialProviderId { get; set; }
 
