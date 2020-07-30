@@ -10,22 +10,24 @@ namespace DataAccess.RawMaterialProviderBrands
 {
     public class ImplementerRawMaterialProviderBrand : IRawMaterialProviderBrand
     {
-        public ObjectResponse<bool> Insert(List<RawMaterialProviderBrand> rawMaterialProviderBrands)
+        public ObjectResponse<bool> Insert(RawMaterialProviderBrand rawMaterialProviderBrand)
         {
-            foreach (var rawMaterialProviderBrand in rawMaterialProviderBrands)
-            {
-                var response = Repository.Insert(rawMaterialProviderBrand);
-                if (!response.IsSuccess)
-                    return response;
-            }
+            var response = Repository.Insert(rawMaterialProviderBrand);
+            if (!response.IsSuccess)
+                return response;
+
             return new ObjectResponse<bool>(true, "Relacion creada exitosamente");
         }
 
         public ObjectResponse<bool> RouteUpdateActions(List<RawMaterialProviderBrand> editRawMaterialProviderBrands, List<RawMaterialProviderBrand> addRawMaterialProviderBrands, List<RawMaterialProviderBrand> deleteRawMaterialProviderBrands)
         {
-            var insertResponse = Insert(addRawMaterialProviderBrands);
-            if (!insertResponse.IsSuccess)
-                return insertResponse;
+            foreach (var rawMaterialProviderBrand in addRawMaterialProviderBrands)
+            {
+                var insertResponse = Insert(rawMaterialProviderBrand);
+                if (!insertResponse.IsSuccess)
+                    return insertResponse;
+            }
+
 
             var deleteResponse = Delete(deleteRawMaterialProviderBrands.Select(x => x.RawMaterialProviderId).ToList());
             if (!deleteResponse.IsSuccess)
@@ -64,7 +66,7 @@ namespace DataAccess.RawMaterialProviderBrands
         {
             foreach (var rawMaterialProviderBrandId in rawMaterialProviderBrandsId)
             {
-                var  actionResponse = Repository.Delete(rawMaterialProviderBrandId);
+                var actionResponse = Repository.Delete(rawMaterialProviderBrandId);
                 if (!actionResponse.IsSuccess)
                     return actionResponse;
             }
@@ -83,7 +85,7 @@ namespace DataAccess.RawMaterialProviderBrands
             return new ObjectResponse<List<RawMaterialProviderBrand>>(true, "Consulta exitosa", rawMaterialProviderBrandsByRawMaterialId);
         }
 
-        public ObjectResponse<List<RawMaterialProviderBrand>> GetAll(bool deleteItems) 
+        public ObjectResponse<List<RawMaterialProviderBrand>> GetAll(bool deleteItems)
         {
             var rawMaterialProviderBrands = Repository.GetAll();
             if (!rawMaterialProviderBrands.IsSuccess)

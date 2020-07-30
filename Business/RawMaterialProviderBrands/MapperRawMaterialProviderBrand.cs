@@ -11,16 +11,20 @@ namespace Business.RawMaterialProviderBrands
         public static List<RawMaterialProviderBrand> MapFromDTO(List<RawMaterialProviderBrandDTO> rawMaterialProviderBrandsDTO)
         {
             List<RawMaterialProviderBrand> rawMaterialProviderBrands = new List<RawMaterialProviderBrand>();
-            rawMaterialProviderBrandsDTO.ForEach(x => rawMaterialProviderBrands.Add(
-                new RawMaterialProviderBrand()
-                {
-                    BrandId = x.BrandId,
-                    RawMaterialProviderBrandId = x.RawMaterialProviderBrandId,
-                    RawMaterialProviderId = x.RawMaterialProviderId
-                }
-                ));
+            rawMaterialProviderBrandsDTO.ForEach(x => rawMaterialProviderBrands.Add(MapFromDTO(x)));
 
             return rawMaterialProviderBrands;
+        }
+
+        public static RawMaterialProviderBrand MapFromDTO(RawMaterialProviderBrandDTO rawMaterialProviderBrandDTO)
+        {
+            return new RawMaterialProviderBrand()
+            {
+                BrandId = rawMaterialProviderBrandDTO.BrandId,
+                RawMaterialProviderBrandId = rawMaterialProviderBrandDTO.RawMaterialProviderBrandId,
+                RawMaterialProviderId = rawMaterialProviderBrandDTO.RawMaterialProviderId
+            };
+
         }
 
         public static RawMaterialProviderBrandDTO MapToDTO(RawMaterialProviderBrand rawMaterialProviderBrand)

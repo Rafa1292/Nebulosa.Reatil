@@ -10,15 +10,13 @@ namespace DataAccess.RawMaterialProviders
 {
     public class ImplementerRawMaterialProvider : IRawMaterialProvider
     {
-        public ObjectResponse<bool> Insert(List<RawMaterialProvider> rawMaterialProviders)
+        public ObjectResponse<int> Insert(RawMaterialProvider rawMaterialProvider)
         {
-            foreach (var rawMaterialProvider in rawMaterialProviders)
-            {
-                var response = Repository.Insert(rawMaterialProvider);
-                if (!response.IsSuccess)
-                    return response;
-            }
-            return new ObjectResponse<bool>(true, "Relacion creada exitosamente");
+            var response = Repository.Insert(rawMaterialProvider);
+            if (!response.IsSuccess)
+                return response;
+
+            return new ObjectResponse<int>(true, "Relacion creada exitosamente", response.Data);
         }
 
         public ObjectResponse<bool> Update(List<RawMaterialProvider> rawMaterialProviders, int rawMaterialId)
@@ -32,16 +30,20 @@ namespace DataAccess.RawMaterialProviders
             var addRawMaterialProviders = currentRawMaterialProviders.Data.Where(x => x.RawMaterialProviderId == 0).ToList();
             var deleteRawMaterialProviders = currentRawMaterialProviders.Data.Where(x => !rawMaterialProvidersId.Contains(x.RawMaterialProviderId)).ToList();
 
-            RouteUpdateActions(editRawMaterialProviders,addRawMaterialProviders,deleteRawMaterialProviders);
+            RouteUpdateActions(editRawMaterialProviders, addRawMaterialProviders, deleteRawMaterialProviders);
 
             return new ObjectResponse<bool>(true, "Relacion actualizada exitosamente");
         }
 
         public ObjectResponse<bool> RouteUpdateActions(List<RawMaterialProvider> editRawMaterialProviders, List<RawMaterialProvider> addRawMaterialProviders, List<RawMaterialProvider> deleteRawMaterialProviders)
         {
-            var insertResponse = Insert(addRawMaterialProviders);
-            if (!insertResponse.IsSuccess)
-                return insertResponse;
+            foreach (var rawMaterialProvider in addRawMaterialProviders)
+            {
+                var insertResponse = Insert(rawMaterialProvider);
+                if (!insertResponse.IsSuccess)
+                    return new ObjectResponse<bool>(false, insertResponse.Message);
+            }
+
 
             var deleteResponse = Delete(deleteRawMaterialProviders.Select(x => x.RawMaterialProviderId).ToList());
             if (!deleteResponse.IsSuccess)

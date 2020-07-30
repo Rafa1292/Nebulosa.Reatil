@@ -9,6 +9,8 @@ namespace Business.ModelsDTO
     {
         public int RawMaterialProviderId { get; set; }
 
+        public int RawMaterialProviderBrandId { get; set; }
+
         public bool CurrentProvider { get; set; }
 
         [Range(1, 10000000, ErrorMessage = "Debe seleccionar una subCategoria")]
@@ -31,5 +33,8 @@ namespace Business.ModelsDTO
         public virtual ProviderDTO ProviderDTO { get; set; }
 
         public virtual RawMaterialDTO RawMaterialDTO { get; set; }
+
+        public virtual RawMaterialProviderBrandDTO RawMaterialProviderBrandDTO { get; set; }
+
     }
 }

@@ -8,23 +8,19 @@ namespace Business.RawMaterials
 {
     public class Finisher
     {
-        public static RawMaterial FinishToInsert(RawMaterial rawMaterial)
+        public static RawMaterial FinishToDatabase(RawMaterial rawMaterial)
         {
-            rawMaterial.DateCreate = DateTime.Now;
-            rawMaterial.DateUpdate = DateTime.Now;
-            rawMaterial.UserCreate = "";//pendiente de implementar
-            rawMaterial.UserUpdate = "";//pendiente de implementar
-
-            return rawMaterial;
-        }
-
-        public static RawMaterial FinishToUpdate(RawMaterial rawMaterial)
-        {
+            if (!(rawMaterial.DateCreate > new DateTime(1 / 1 / 1)))
+            {
+                rawMaterial.DateCreate = DateTime.Now;
+                rawMaterial.UserCreate = "";//pendiente de implementar
+            }
             rawMaterial.DateUpdate = DateTime.Now;
             rawMaterial.UserUpdate = "";//pendiente de implementar
 
             return rawMaterial;
         }
+
 
         public static RawMaterialDTO FinishToGet(RawMaterialDTO rawMaterialDTO, List<RawMaterialProviderDTO> rawMaterialprovidersDTO)
         {

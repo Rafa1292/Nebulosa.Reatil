@@ -43,6 +43,16 @@
         </select>
     </div>
     <div class="form-group col-md-12">
+        <label class="font-weight-bolder">Marca:</label>
+        <select @bind="RawMaterialProvider.RawMaterialProviderBrandDTO.BrandId" class="form-control">
+            <option value="0" selected disabled>Seleccionar marca...</option>
+            @foreach (var brand in Brands)
+            {
+                <option value="@brand.BrandId">@brand.Name</option>
+            }
+        </select>
+    </div>
+    <div class="form-group col-md-12">
         <label for="currentProvider" class="font-weight-bolder">Proveedor actual</label>
         <InputCheckbox id="currentProvider" @bind-Value="RawMaterialProvider.CurrentProvider" @onclick="@(() => SetCurrentProvider.InvokeAsync(RawMaterialProvider))" class="form-control col-1" />
         <ValidationMessage For="@(() => RawMaterialProvider.CurrentProvider)" class="text-danger" />
@@ -53,8 +63,18 @@
     [Parameter] public RawMaterialProviderDTO RawMaterialProvider { get; set; }
     [Parameter] public List<ProviderDTO> Providers { get; set; }
     [Parameter] public List<MeasureDTO> Measures { get; set; }
+    [Parameter] public List<BrandDTO> Brands { get; set; }
     [Parameter] public EventCallback<RawMaterialProviderDTO> SetCurrentProvider { get; set; }
     [Parameter] public EventCallback<RawMaterialProviderDTO> RemoveProviderForm { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (RawMaterialProvider.RawMaterialProviderBrandDTO == null)
+        {
+            RawMaterialProvider.RawMaterialProviderBrandDTO = new RawMaterialProviderBrandDTO();
+        }
+    }
+
 
 
 

@@ -32,6 +32,8 @@ using Business.Measures;
 using DataAccess.Measures;
 using Business.Brands;
 using DataAccess.Brands;
+using Business.RawMaterialProviderBrands;
+using DataAccess.RawMaterialProviderBrands;
 
 namespace UserInterface
 {
@@ -54,6 +56,7 @@ namespace UserInterface
             services.AddScoped<RouterRoute>();
             services.AddScoped<RouterMeasure>();
             services.AddScoped<RouterRawMaterialProvider>();
+            services.AddScoped<RouterRawMaterialProviderBrand>();
             services.AddScoped<RouterRawMaterial>();
             services.AddScoped<RouterProvider>();
             services.AddScoped<RouterTax>();
@@ -72,8 +75,7 @@ namespace UserInterface
             services.AddScoped<IRawMaterialProvider, ImplementerRawMaterialProvider>();
             services.AddScoped<IMeasure, ImplementerMeasure>();
             services.AddScoped<IBrand, ImplementerBrand>();
-
-
+            services.AddScoped<IRawMaterialProviderBrand, ImplementerRawMaterialProviderBrand>();
 
         }
 

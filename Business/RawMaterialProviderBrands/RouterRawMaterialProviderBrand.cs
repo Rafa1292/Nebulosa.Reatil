@@ -21,23 +21,19 @@ namespace Business.RawMaterialProviderBrands
             _brand = brand;
         }
 
-        public ObjectResponse<bool> Insert(List<RawMaterialProviderBrandDTO> rawMaterialProviderBrandsDTO, int rawMaterialProviderId)
+        public ObjectResponse<bool> Insert(RawMaterialProviderBrandDTO rawMaterialProviderBrandDTO, int rawMaterialProviderId)
         {
-            using (var scope = new TransactionScope())
-            {
-                var rawMaterialProviderBrands = MapperRawMaterialProviderBrand.MapFromDTO(rawMaterialProviderBrandsDTO);
-                rawMaterialProviderBrands = Finisher.FinishToInsert(rawMaterialProviderBrands, rawMaterialProviderId);
 
-                var validation = ValidateRawMaterialProviderBrand.ValidateToInsert(rawMaterialProviderBrands);
-                if (!validation.IsSuccess)
-                    return validation;
+            var rawMaterialProviderBrand = MapperRawMaterialProviderBrand.MapFromDTO(rawMaterialProviderBrandDTO);
+            rawMaterialProviderBrand = Finisher.FinishToInsert(rawMaterialProviderBrand, rawMaterialProviderId);
 
-                var actionResponse = _rawMaterialProviderBrand.Insert(rawMaterialProviderBrands);
-                if (actionResponse.IsSuccess)
-                    scope.Complete();
+            var validation = ValidateRawMaterialProviderBrand.ValidateToInsert(rawMaterialProviderBrand);
+            if (!validation.IsSuccess)
+                return validation;
 
-                return actionResponse;
-            }
+            var actionResponse = _rawMaterialProviderBrand.Insert(rawMaterialProviderBrand);
+
+            return actionResponse;
         }
 
         public ObjectResponse<bool> Update(List<RawMaterialProviderBrandDTO> rawMaterialProviderBrandsDTO, List<int> rawMaterialProvidersId)

@@ -20,8 +20,18 @@ namespace Business.RawMaterialProviderBrands
                 rawMaterialProviderBrand.UserUpdate = "";//pendiente de implementar
             }
 
-
             return rawMaterialProviderBrands;
+        }
+
+        public static RawMaterialProviderBrand FinishToInsert(RawMaterialProviderBrand rawMaterialProviderBrand, int rawMaterialProviderId)
+        {
+            rawMaterialProviderBrand.RawMaterialProviderId = rawMaterialProviderId;
+            rawMaterialProviderBrand.DateCreate = DateTime.Now;
+            rawMaterialProviderBrand.DateUpdate = DateTime.Now;
+            rawMaterialProviderBrand.UserCreate = "";//pendiente de implementar
+            rawMaterialProviderBrand.UserUpdate = "";//pendiente de implementar
+
+            return rawMaterialProviderBrand;
 
         }
 

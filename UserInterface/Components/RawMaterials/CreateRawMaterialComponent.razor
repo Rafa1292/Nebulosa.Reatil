@@ -1,6 +1,7 @@
 ﻿@using Business.ModelsDTO
 @using System.Linq
 @using Business.RawMaterials
+@using Business.Brands
 @using Business.Providers
 @using Common
 @using Business.Measures
@@ -9,6 +10,7 @@
 @inject NavigationManager NavManager
 @inject RouterProvider _provider ;
 @inject RouterMeasure _measure;
+@inject RouterBrand _brand;
 
 
 <span class="col-12 h4 text-center font-weight-bolder mt-5 mb-5">
@@ -37,6 +39,7 @@
                                             RawMaterialProvider="rawMaterialProvider"
                                             SetCurrentProvider="SetProvider"
                                             RemoveProviderForm="RemoveProviderForm"
+                                            Brands="brands"
                                             Measures="measures" />
     }
 
@@ -62,7 +65,7 @@
     List<ProviderDTO> providers = new List<ProviderDTO>();
     List<RawMaterialProviderDTO> rawMaterialProvidersDTO = new List<RawMaterialProviderDTO>();
     List<MeasureDTO> measures = new List<MeasureDTO>();
-
+    List<BrandDTO> brands = new List<BrandDTO>();
     #endregion
 
     #region| Metodos
@@ -71,11 +74,9 @@
     {
         try
         {
+            brands = _brand.GetAll(false).Data;
             providers = _provider.GetAll(false).Data;
-            //measures = _measure.GetAll(false).Data;
-            measures.Add(new MeasureDTO() { MeasureId = 1, Name = "Kg" });
-            measures.Add(new MeasureDTO() { MeasureId = 2, Name = "Unidad" });
-
+            measures = _measure.GetAll(false).Data;
             rawMaterialProvidersDTO.Add(new RawMaterialProviderDTO());
 
         }
@@ -88,9 +89,10 @@
 
     private void SetProvider(RawMaterialProviderDTO rawMaterialProvider)
     {
-        if (rawMaterialProvider.CurrentProvider)
+        rawMaterialProvidersDTO.Where(x => x != rawMaterialProvider).ToList().ForEach(x => x.CurrentProvider = false);
+
+        if (!rawMaterialProvider.CurrentProvider)
         {
-            rawMaterialProvidersDTO.Where(x => x != rawMaterialProvider).ToList().ForEach(x => x.CurrentProvider = false);
             oRawMaterial.CurreentQuantity = rawMaterialProvider.Quantity;
             oRawMaterial.CurrentPrice = rawMaterialProvider.Price;
             oRawMaterial.CurrentWeight = rawMaterialProvider.Weight;
@@ -149,7 +151,9 @@
 
     private void AddProvider()
     {
-        rawMaterialProvidersDTO.Add(new RawMaterialProviderDTO());
+        var rawMaterialProviderDTO = new RawMaterialProviderDTO();
+        rawMaterialProviderDTO.RawMaterialProviderBrandDTO = new RawMaterialProviderBrandDTO();
+        rawMaterialProvidersDTO.Add(rawMaterialProviderDTO);
         rawMaterialProvidersDTO = rawMaterialProvidersDTO.OrderBy(x => x.ProviderId).ToList();
     }
 

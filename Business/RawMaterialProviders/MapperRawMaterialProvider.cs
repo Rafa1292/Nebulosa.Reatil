@@ -1,37 +1,29 @@
 ﻿using Business.ModelsDTO;
 using Common.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Business.RawMaterialProviders
 {
     public class MapperRawMaterialProvider
     {
-        public static List<RawMaterialProvider> MapFromDTO(List<RawMaterialProviderDTO> rawMaterialProvidersDTO)
+        public static RawMaterialProvider MapFromDTO(RawMaterialProviderDTO rawMaterialProviderDTO, RawMaterialProvider rawMaterialProvider)
         {
-            List<RawMaterialProvider> rawMaterialProviders = new List<RawMaterialProvider>();
-            rawMaterialProvidersDTO.ForEach(x => rawMaterialProviders.Add(
-                new RawMaterialProvider()
-                {
-                    ProviderId = x.ProviderId,
-                    MeasureId = x.MeasureId,
-                    Price = x.Price,
-                    Quantity = x.Quantity,
-                    RawMaterialId = x.RawMaterialId,
-                    RawMaterialProviderId = x.RawMaterialProviderId,
-                    Weight = x.Weight
-                }
-                ));
+            rawMaterialProvider.ProviderId = rawMaterialProviderDTO.ProviderId;
+            rawMaterialProvider.MeasureId = rawMaterialProviderDTO.MeasureId;
+            rawMaterialProvider.Price = rawMaterialProviderDTO.Price;
+            rawMaterialProvider.Quantity = rawMaterialProviderDTO.Quantity;
+            rawMaterialProvider.RawMaterialId = rawMaterialProviderDTO.RawMaterialId;
+            rawMaterialProvider.RawMaterialProviderId = rawMaterialProviderDTO.RawMaterialProviderId;
+            rawMaterialProvider.Weight = rawMaterialProviderDTO.Weight;
 
-
-            return rawMaterialProviders;
+            return rawMaterialProvider;
         }
 
         public static RawMaterialProviderDTO MapToDTO(RawMaterialProvider rawMaterialProvider)
         {
             RawMaterialProviderDTO rawMaterialProviderDTO = new RawMaterialProviderDTO()
             {
+                ProviderId = rawMaterialProvider.ProviderId,
                 MeasureId = rawMaterialProvider.MeasureId,
                 Price = rawMaterialProvider.Price,
                 Quantity = rawMaterialProvider.Quantity,
@@ -47,16 +39,7 @@ namespace Business.RawMaterialProviders
         {
             List<RawMaterialProviderDTO> rawMaterialProvidersDTO = new List<RawMaterialProviderDTO>();
 
-            rawMaterialProviders.ForEach(x => rawMaterialProvidersDTO.Add(
-            new RawMaterialProviderDTO()
-            {
-                MeasureId = x.MeasureId,
-                Price = x.Price,
-                Quantity = x.Quantity,
-                RawMaterialId = x.RawMaterialId,
-                RawMaterialProviderId = x.RawMaterialProviderId,
-                Weight = x.Weight
-            }));
+            rawMaterialProviders.ForEach(x => rawMaterialProvidersDTO.Add(MapToDTO(x)));
 
             return rawMaterialProvidersDTO;
         }

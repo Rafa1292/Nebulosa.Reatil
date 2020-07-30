@@ -9,36 +9,28 @@ namespace Business.RawMaterialProviders
 {
     public class Finisher
     {
-        public static List<RawMaterialProvider> FinishToInsert(List<RawMaterialProvider> rawMaterialProviders, int rawMaterialId)
+        public static RawMaterialProvider FinishToDatabase(RawMaterialProvider rawMaterialProvider, int rawMaterialId)
         {
-            foreach (var rawMaterialProvider in rawMaterialProviders)
+            if (!(rawMaterialProvider.DateCreate > new DateTime(1 / 1 / 1)))
             {
-                rawMaterialProvider.RawMaterialId = rawMaterialId;
                 rawMaterialProvider.DateCreate = DateTime.Now;
-                rawMaterialProvider.DateUpdate = DateTime.Now;
                 rawMaterialProvider.UserCreate = "";//pendiente de implementar
-                rawMaterialProvider.UserUpdate = "";//pendiente de implementar
             }
 
+            rawMaterialProvider.RawMaterialId = rawMaterialId;
+            rawMaterialProvider.DateUpdate = DateTime.Now;
+            rawMaterialProvider.UserUpdate = "";//pendiente de implementar
 
-            return rawMaterialProviders;
 
+            return rawMaterialProvider;
         }
 
-        public static List<RawMaterialProvider> FinishToUpdate(List<RawMaterialProvider> rawMaterialProviders)
-        {
-            foreach (var rawMaterialProvider in rawMaterialProviders)
-            {
-                rawMaterialProvider.DateUpdate = DateTime.Now;
-                rawMaterialProvider.UserUpdate = "";//pendiente de implementar
-            }
-            return rawMaterialProviders;
-        }
-
-        public static List<RawMaterialProviderDTO> FinishToGetAll(List<RawMaterialProviderDTO> rawMaterialProvidersDTO, List<ProviderDTO> providersDTO, List<MeasureDTO> measuresDTO)
+        public static List<RawMaterialProviderDTO> FinishToGetAll(List<RawMaterialProviderDTO> rawMaterialProvidersDTO, List<ProviderDTO> providersDTO, List<MeasureDTO> measuresDTO, List<RawMaterialProviderBrandDTO> rawMaterialProviderBrandsDTO)
         {
             rawMaterialProvidersDTO.ForEach(x => x.ProviderDTO = providersDTO.FirstOrDefault(y => y.ProviderId == x.ProviderId));
             rawMaterialProvidersDTO.ForEach(x => x.MeasureDTO = measuresDTO.FirstOrDefault(y => y.MeasureId == x.MeasureId));
+            rawMaterialProvidersDTO.ForEach(x => x.RawMaterialProviderBrandDTO = rawMaterialProviderBrandsDTO.FirstOrDefault(y => y.RawMaterialProviderId == x.RawMaterialProviderId));
+
 
             return rawMaterialProvidersDTO;
         }

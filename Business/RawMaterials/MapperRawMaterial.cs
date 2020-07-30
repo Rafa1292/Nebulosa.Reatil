@@ -16,7 +16,6 @@ namespace Business.RawMaterials
             rawMaterial.LastPurchase = rawMaterialDTO.LastPurchase;
             rawMaterial.ProviderId = rawMaterialDTO.ProviderId;
 
-
             return rawMaterial;
         }
 
@@ -38,15 +37,7 @@ namespace Business.RawMaterials
         {
             List<RawMaterialDTO> rawMaterialsDTO = new List<RawMaterialDTO>();
 
-            rawMaterials.ForEach(x => rawMaterialsDTO.Add(
-                new RawMaterialDTO()
-                {
-                    LastPurchase = x.LastPurchase,
-                    Name = x.Name,
-                    RawMaterialId = x.RawMaterialId,
-                    ProviderId = x.ProviderId,
-                    Stock = x.Stock
-                }));
+            rawMaterials.ForEach(x => rawMaterialsDTO.Add(MapToDTO(x)));
 
             return rawMaterialsDTO;
         }

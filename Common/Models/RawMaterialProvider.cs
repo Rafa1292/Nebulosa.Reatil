@@ -8,6 +8,8 @@ namespace Common.Models
     {
         public int RawMaterialProviderId { get; set; }
 
+        public int RawMaterialProviderBrandId { get; set; }
+
         public int ProviderId { get; set; }
 
         public int RawMaterialId { get; set; }

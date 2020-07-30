@@ -10,15 +10,14 @@ namespace DataAccess.RawMaterialProviders
 {
     public class Repository
     {
-        public static ObjectResponse<bool> Insert(RawMaterialProvider rawMaterialProvider)
+        public static ObjectResponse<int> Insert(RawMaterialProvider rawMaterialProvider)
         {
             using (var db = new DataContext())
             {
                 db.RawMaterialProviders.Add(rawMaterialProvider);
                 db.SaveChanges();
-                return new ObjectResponse<bool>(true, "Proveedor agregado");
+                return new ObjectResponse<int>(true, "Proveedor agregado", rawMaterialProvider.RawMaterialProviderId);
             }
-
         }
 
         public static ObjectResponse<bool> Update(RawMaterialProvider rawMaterialProvider)

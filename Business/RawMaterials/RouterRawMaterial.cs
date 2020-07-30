@@ -1,6 +1,7 @@
 ﻿using Business.ModelsDTO;
 using Business.RawMaterialProviders;
 using Common;
+using Common.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,23 +24,18 @@ namespace Business.RawMaterials
         public ObjectResponse<bool> Insert(RawMaterialDTO rawMaterialDTO)
         {
             using (var scope = new TransactionScope())
-            {
-                var rawMaterial = MapperRawMaterial.MapFromDTO(rawMaterialDTO, new Common.Models.RawMaterial());
-                rawMaterial = Finisher.FinishToInsert(rawMaterial);
-
-                var rawMaterials = _rawMaterial.GetAll(false);
-                if (!rawMaterials.IsSuccess)
-                    return new ObjectResponse<bool>(false, rawMaterials.Message);
-
-                var validation = ValidateRawMaterial.ValidateToInsert(rawMaterial, rawMaterials.Data);
+            {                
+                var validation = PrepareToDataBase(rawMaterialDTO, new RawMaterial());
                 if (!validation.IsSuccess)
-                    return validation;
+                    return new ObjectResponse<bool>(false, validation.Message);
+
+                var rawMaterial = validation.Data;
 
                 var actionResponse = _rawMaterial.Insert(rawMaterial);
                 if (!actionResponse.IsSuccess)
                     return new ObjectResponse<bool>(false, actionResponse.Message);
 
-                var relationship = _rawMaterialProvider.Insert(rawMaterialDTO.rawMaterialProvidersDTO, rawMaterial.RawMaterialId);
+                var relationship = InsertRelations(rawMaterialDTO.rawMaterialProvidersDTO, rawMaterial.RawMaterialId);
                 if (!relationship.IsSuccess)
                     return relationship;
 
@@ -49,20 +45,25 @@ namespace Business.RawMaterials
             }
         }
 
+        public ObjectResponse<bool> InsertRelations(List<RawMaterialProviderDTO> rawMaterialProviders, int rawMaterialId)
+        {
+            var actionResponse = _rawMaterialProvider.InsertList(rawMaterialProviders, rawMaterialId);
+            return actionResponse;
+        }
+
         public ObjectResponse<bool> Update(RawMaterialDTO rawMaterialDTO)
         {
             using (var scope = new TransactionScope())
             {
-                var rawMaterial = MapperRawMaterial.MapFromDTO(rawMaterialDTO, new Common.Models.RawMaterial());
-                rawMaterial = Finisher.FinishToUpdate(rawMaterial);
+                var currentRawMaterial = GetCurrentRawMaterial(rawMaterialDTO.RawMaterialId);
+                if (currentRawMaterial == null)
+                    return new ObjectResponse<bool>(false, "No se encuentra el insumo a actualiar");
 
-                var rawMaterials = _rawMaterial.GetAll(false);
-                if (!rawMaterials.IsSuccess)
-                    return new ObjectResponse<bool>(false, rawMaterials.Message);
-
-                var validation = ValidateRawMaterial.ValidateToInsert(rawMaterial, rawMaterials.Data);
+                var validation = PrepareToDataBase(rawMaterialDTO, currentRawMaterial);
                 if (!validation.IsSuccess)
-                    return validation;
+                    return new ObjectResponse<bool>(false, validation.Message);
+
+                var rawMaterial = validation.Data;
 
                 var actionResponse = _rawMaterial.Update(rawMaterial);
                 if (!actionResponse.IsSuccess)
@@ -122,11 +123,43 @@ namespace Business.RawMaterials
             if (!rawMaterials.IsSuccess)
                 return new ObjectResponse<List<RawMaterialDTO>>(false, rawMaterials.Message);
 
-            var rawMaterialsDTO = MapperRawMaterial.MapToDTO(rawMaterials.Data);
-            rawMaterialsDTO = Finisher.FinishToGetAll(rawMaterialsDTO, new List<RawMaterialProviderDTO>());
+            var rawMaterialProviders = _rawMaterialProvider.GetAll(false);
+            if (!rawMaterialProviders.IsSuccess)
+                return new ObjectResponse<List<RawMaterialDTO>>(false, rawMaterialProviders.Message);
 
+            var rawMaterialsDTO = MapperRawMaterial.MapToDTO(rawMaterials.Data);
+            rawMaterialsDTO = Finisher.FinishToGetAll(rawMaterialsDTO, rawMaterialProviders.Data);
 
             return new ObjectResponse<List<RawMaterialDTO>>(true, rawMaterials.Message, rawMaterialsDTO);
+        }
+
+        public RawMaterial GetCurrentRawMaterial(int rawMaterialId)
+        {
+            if (rawMaterialId > 0)
+            {
+                var tryGetRawMaterial = _rawMaterial.Get(rawMaterialId);
+                if (tryGetRawMaterial.IsSuccess)
+                    return tryGetRawMaterial.Data;               
+                
+            }
+
+            return null;
+        }
+
+        public ObjectResponse<RawMaterial> PrepareToDataBase(RawMaterialDTO rawMaterialDTO, RawMaterial currentRawMaterial)
+        {
+            var rawMaterial = MapperRawMaterial.MapFromDTO(rawMaterialDTO, currentRawMaterial);
+            rawMaterial = Finisher.FinishToDatabase(rawMaterial);
+
+            var rawMaterials = _rawMaterial.GetAll(false);
+            if (!rawMaterials.IsSuccess)
+                return new ObjectResponse<RawMaterial>(false, rawMaterials.Message);
+
+            var validation = ValidateRawMaterial.ValidateToInsert(rawMaterial, rawMaterials.Data);
+            if (!validation.IsSuccess)
+                return new ObjectResponse<RawMaterial>(false, validation.Message);
+
+            return new ObjectResponse<RawMaterial>(true, "Listo para insertar", rawMaterial);
         }
     }
 }
