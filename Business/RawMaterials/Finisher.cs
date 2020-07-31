@@ -2,6 +2,7 @@
 using Common.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Business.RawMaterials
@@ -25,6 +26,7 @@ namespace Business.RawMaterials
         public static RawMaterialDTO FinishToGet(RawMaterialDTO rawMaterialDTO, List<RawMaterialProviderDTO> rawMaterialprovidersDTO)
         {
             var rawMaterialProviderDTO = rawMaterialprovidersDTO.Find(x => x.RawMaterialId == rawMaterialDTO.RawMaterialId && x.ProviderId == rawMaterialDTO.ProviderId);
+            rawMaterialDTO.rawMaterialProvidersDTO = rawMaterialprovidersDTO.Where(x => x.RawMaterialId == rawMaterialDTO.RawMaterialId).ToList();
             if (rawMaterialProviderDTO != null)
             {
                 rawMaterialDTO.CurreentQuantity = rawMaterialProviderDTO.Quantity;

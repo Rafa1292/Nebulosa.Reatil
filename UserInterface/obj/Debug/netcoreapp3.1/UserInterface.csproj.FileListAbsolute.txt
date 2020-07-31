@@ -201,3 +201,9 @@ C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor
 C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor\Pages\Brands\DeleteBrandPage.razor.g.cs
 C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor\Pages\Brands\IndexBrandPage.razor.g.cs
 C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor\Pages\Brands\UpdateBrandPage.razor.g.cs
+C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\RazorDeclaration\Components\RawMaterials\IndexRawMaterialComponent.razor.g.cs
+C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor\Components\RawMaterials\IndexRawMaterialComponent.razor.g.cs
+C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\RawMaterials\CreateRawMaterialPage.razor.g.cs
+C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor\Pages\RawMaterials\CreateRawMaterialPage.razor.g.cs
+C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\RawMaterials\IndexRawMaterialPage.razor.g.cs
+C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor\Pages\RawMaterials\IndexRawMaterialPage.razor.g.cs

@@ -10,6 +10,9 @@ namespace Common.Models
 
         public int RawMaterialProviderBrandId { get; set; }
 
+        public bool CurrentProvider { get; set; }
+
+
         public int ProviderId { get; set; }
 
         public int RawMaterialId { get; set; }

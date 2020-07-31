@@ -1,0 +1,101 @@
+﻿@using Business.RawMaterials
+@using Business.ModelsDTO
+@using System.Globalization
+
+@inject RouterRawMaterial routerRawMaterial
+
+<span class="col-12 h4 text-center font-weight-bolder mt-5 mb-5">
+    Insumos
+</span>
+<p class="col-12 p-1 d-flex justify-content-center">
+    <a class="btn btn-primary " href="RawMaterials/Create">Agregar nuevo insumo</a>
+</p>
+<label class="text-danger h5 ">@Message</label>
+
+<div class="col-12 p-0 d-flex flex-wrap justify-content-center">
+    <table id="rawMaterialsTable" class="display col-12 table text-center table-hover">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Stock</th>
+                <th>Proveedor</th>
+                <th>Precio</th>
+                <th>Presentacion</th>
+                <th>Marca</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var rawMaterial in rawMaterials)
+            {
+                var newStock = rawMaterial.Stock;
+                var newMeasure = "gms";
+                <tr>
+                    <td>@rawMaterial.Name</td>
+                    <td>
+                        @if (rawMaterial.Stock > 1000)
+                        {
+                            newStock = rawMaterial.Stock / 1000;
+                            newMeasure = "kg";
+                        }
+                        @newStock @newMeasure
+                    </td>
+                    @if (rawMaterial.rawMaterialProvidersDTO != null)
+                    {
+
+                        @foreach (var rawMaterialProvider in rawMaterial.rawMaterialProvidersDTO)
+                        {
+                            if (rawMaterialProvider.CurrentProvider)
+                            {
+                                <td>@rawMaterialProvider.ProviderDTO.Name</td>
+                                <td>¢@rawMaterialProvider.Price.ToString("F0", ci)</td>
+                                <td>
+                                    @rawMaterialProvider.Quantity
+                                    @rawMaterialProvider.MeasureDTO.Name
+                                </td>
+                                <td>@rawMaterialProvider.RawMaterialProviderBrandDTO.Brand.Name</td>
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        <td>No se puede acceder a los proveedores ligados a este insumo...</td>
+                    }
+                    <td class="d-flex">
+                        <a class="btn btn-secondary m-1" href="RawMaterials/Update/@rawMaterial.RawMaterialId">Editar</a>
+                        <a class="btn btn-outline-danger m-1" href="RawMaterials/Delete/@rawMaterial.RawMaterialId">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+@code {
+    private List<RawMaterialDTO> rawMaterials = new List<RawMaterialDTO>();
+    private string Message;
+    private CultureInfo ci = new CultureInfo("en-us");
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var response = routerRawMaterial.GetAll(false);
+            if (response.IsSuccess)
+            {
+                rawMaterials = response.Data;
+            }
+            else
+            {
+                Message = response.Message;
+            }
+        }
+        catch (Exception e)
+        {
+
+            Message = e.Message;
+        }
+    }
+}

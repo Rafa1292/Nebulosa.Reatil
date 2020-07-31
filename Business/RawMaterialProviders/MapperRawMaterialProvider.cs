@@ -15,6 +15,7 @@ namespace Business.RawMaterialProviders
             rawMaterialProvider.RawMaterialId = rawMaterialProviderDTO.RawMaterialId;
             rawMaterialProvider.RawMaterialProviderId = rawMaterialProviderDTO.RawMaterialProviderId;
             rawMaterialProvider.Weight = rawMaterialProviderDTO.Weight;
+            rawMaterialProvider.CurrentProvider = rawMaterialProviderDTO.CurrentProvider;
 
             return rawMaterialProvider;
         }
@@ -29,7 +30,8 @@ namespace Business.RawMaterialProviders
                 Quantity = rawMaterialProvider.Quantity,
                 RawMaterialId = rawMaterialProvider.RawMaterialId,
                 RawMaterialProviderId = rawMaterialProvider.RawMaterialProviderId,
-                Weight = rawMaterialProvider.Weight
+                Weight = rawMaterialProvider.Weight,
+                CurrentProvider = rawMaterialProvider.CurrentProvider
             };
 
             return rawMaterialProviderDTO;
