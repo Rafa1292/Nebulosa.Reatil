@@ -10,9 +10,9 @@ namespace Business.RawMaterialProviderBrands
     {
         public ObjectResponse<bool> Insert(RawMaterialProviderBrand rawMaterialProviderBrand);
 
-        public ObjectResponse<bool> Update(List<RawMaterialProviderBrand> rawMaterialProviderBrands, List<int> rawMaterialProviderId);
+        public ObjectResponse<bool> Update(RawMaterialProviderBrand rawMaterialProviderBrand);
 
-        public ObjectResponse<bool> Delete(List<int> rawMaterialProviderBrandsId);
+        public ObjectResponse<bool> Delete(int rawMaterialProviderBrandId);
 
         public ObjectResponse<List<RawMaterialProviderBrand>> Get(List<int> rawMaterialProviderBrandsId);
 

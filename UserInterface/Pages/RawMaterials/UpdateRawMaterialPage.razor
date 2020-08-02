@@ -1,0 +1,13 @@
+﻿@page "/RawMaterials/Update/{RawMaterialId}"
+
+<UpdateRawMaterialComponent RawMaterialId="@RawMaterialId" />
+
+@code {
+    [Parameter]
+    public string RawMaterialId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        RawMaterialId = RawMaterialId;
+    }
+}

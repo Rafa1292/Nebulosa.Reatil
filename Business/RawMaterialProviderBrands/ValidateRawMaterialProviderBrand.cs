@@ -10,18 +10,6 @@ namespace Business.RawMaterialProviderBrands
 {
     public class ValidateRawMaterialProviderBrand
     {
-        public static ObjectResponse<bool> ValidateToInsert(List<RawMaterialProviderBrand> rawMaterialProviderBrands)
-        {
-            foreach (var rawMaterialProviderBrand in rawMaterialProviderBrands)
-            {
-                var validation = ValidateToInsert(rawMaterialProviderBrand);
-                if (!validation.IsSuccess)
-                    return validation;
-            }
-
-            return new ObjectResponse<bool>(true, "Relacion validada");
-        }
-
         public static ObjectResponse<bool> ValidateToInsert(RawMaterialProviderBrand rawMaterialProviderBrand)
         {
             bool validateBrandId = rawMaterialProviderBrand.BrandId > 0 ? true : false;

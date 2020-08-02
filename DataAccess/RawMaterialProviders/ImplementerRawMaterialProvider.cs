@@ -19,45 +19,13 @@ namespace DataAccess.RawMaterialProviders
             return new ObjectResponse<int>(true, "Relacion creada exitosamente", response.Data);
         }
 
-        public ObjectResponse<bool> Update(List<RawMaterialProvider> rawMaterialProviders, int rawMaterialId)
+        public ObjectResponse<bool> Update(RawMaterialProvider rawMaterialProvider)
         {
-            var currentRawMaterialProviders = GetByRawMaterial(rawMaterialId);
-            if (!currentRawMaterialProviders.IsSuccess)
-                return new ObjectResponse<bool>(false, currentRawMaterialProviders.Message);
-
-            var rawMaterialProvidersId = rawMaterialProviders.Select(x => x.RawMaterialProviderId).ToList();
-            var editRawMaterialProviders = currentRawMaterialProviders.Data.Where(x => rawMaterialProvidersId.Contains(x.RawMaterialProviderId)).ToList();
-            var addRawMaterialProviders = currentRawMaterialProviders.Data.Where(x => x.RawMaterialProviderId == 0).ToList();
-            var deleteRawMaterialProviders = currentRawMaterialProviders.Data.Where(x => !rawMaterialProvidersId.Contains(x.RawMaterialProviderId)).ToList();
-
-            RouteUpdateActions(editRawMaterialProviders, addRawMaterialProviders, deleteRawMaterialProviders);
+            var response = Repository.Update(rawMaterialProvider);
+            if (!response.IsSuccess)
+                return response;
 
             return new ObjectResponse<bool>(true, "Relacion actualizada exitosamente");
-        }
-
-        public ObjectResponse<bool> RouteUpdateActions(List<RawMaterialProvider> editRawMaterialProviders, List<RawMaterialProvider> addRawMaterialProviders, List<RawMaterialProvider> deleteRawMaterialProviders)
-        {
-            foreach (var rawMaterialProvider in addRawMaterialProviders)
-            {
-                var insertResponse = Insert(rawMaterialProvider);
-                if (!insertResponse.IsSuccess)
-                    return new ObjectResponse<bool>(false, insertResponse.Message);
-            }
-
-
-            var deleteResponse = Delete(deleteRawMaterialProviders.Select(x => x.RawMaterialProviderId).ToList());
-            if (!deleteResponse.IsSuccess)
-                return deleteResponse;
-
-            foreach (var rawMaterialProvider in editRawMaterialProviders)
-            {
-                var editResponse = Repository.Update(rawMaterialProvider);
-                if (!editResponse.IsSuccess)
-                    return editResponse;
-            }
-
-            return new ObjectResponse<bool>(true, "Relacion editada exitosamente");
-
         }
 
         public ObjectResponse<bool> Delete(List<int> rawMaterialProvidersId)

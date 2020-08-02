@@ -23,6 +23,8 @@ namespace Business.ModelsDTO
         [Required(ErrorMessage ="Campo obligatorio")]
         public int Weight { get; set; }
 
+        public bool IsEdited { get; set; }
+
         public int Quantity { get; set; }
 
         [Range(1, 10000000, ErrorMessage = "Debe seleccionar una subCategoria")]

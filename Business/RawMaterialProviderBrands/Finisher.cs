@@ -9,40 +9,20 @@ namespace Business.RawMaterialProviderBrands
 {
     public class Finisher
     {
-        public static List<RawMaterialProviderBrand> FinishToInsert(List<RawMaterialProviderBrand> rawMaterialProviderBrands, int rawMaterialProviderId)
+        public static RawMaterialProviderBrand FinishToDatabase(RawMaterialProviderBrand rawMaterialProviderBrand, int rawMaterialProviderId)
         {
-            foreach (var rawMaterialProviderBrand in rawMaterialProviderBrands)
+            if (!(rawMaterialProviderBrand.DateCreate > new DateTime(1 / 1 / 1)))
             {
-                rawMaterialProviderBrand.RawMaterialProviderId = rawMaterialProviderId;
                 rawMaterialProviderBrand.DateCreate = DateTime.Now;
-                rawMaterialProviderBrand.DateUpdate = DateTime.Now;
                 rawMaterialProviderBrand.UserCreate = "";//pendiente de implementar
-                rawMaterialProviderBrand.UserUpdate = "";//pendiente de implementar
             }
 
-            return rawMaterialProviderBrands;
-        }
-
-        public static RawMaterialProviderBrand FinishToInsert(RawMaterialProviderBrand rawMaterialProviderBrand, int rawMaterialProviderId)
-        {
             rawMaterialProviderBrand.RawMaterialProviderId = rawMaterialProviderId;
-            rawMaterialProviderBrand.DateCreate = DateTime.Now;
             rawMaterialProviderBrand.DateUpdate = DateTime.Now;
-            rawMaterialProviderBrand.UserCreate = "";//pendiente de implementar
             rawMaterialProviderBrand.UserUpdate = "";//pendiente de implementar
 
             return rawMaterialProviderBrand;
 
-        }
-
-        public static List<RawMaterialProviderBrand> FinishToUpdate(List<RawMaterialProviderBrand> rawMaterialProviderBrands)
-        {
-            foreach (var rawMaterialProviderBrand in rawMaterialProviderBrands)
-            {
-                rawMaterialProviderBrand.DateUpdate = DateTime.Now;
-                rawMaterialProviderBrand.UserUpdate = "";//pendiente de implementar
-            }
-            return rawMaterialProviderBrands;
         }
 
         public static List<RawMaterialProviderBrandDTO> FinishToGetAll(List<RawMaterialProviderBrandDTO> rawMaterialProviderBrandsDTO, List<BrandDTO> brandsDTO)

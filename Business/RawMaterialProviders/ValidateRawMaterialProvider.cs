@@ -44,10 +44,10 @@ namespace Business.RawMaterialProviders
         public static ObjectResponse<bool> ValidateDontRepeatBrandByProvider(RawMaterialProviderDTO rawMaterialProviderDTO, List<RawMaterialProviderDTO> rawMaterialProvidersDTO)
         {
             var rawMaterialWithSameProvider = rawMaterialProvidersDTO.Where(x => x.ProviderId == rawMaterialProviderDTO.ProviderId).ToList();
-            var rawMaterialWithSameProviderSameBrand = rawMaterialWithSameProvider.Where(x => x.RawMaterialProviderBrandDTO.BrandId == rawMaterialProviderDTO.RawMaterialProviderBrandDTO.BrandId).ToList();
+            var rawMaterialWithSameProviderSameBrand = rawMaterialWithSameProvider.Where(x => x.RawMaterialProviderBrandDTO.BrandId == rawMaterialProviderDTO.RawMaterialProviderBrandDTO.BrandId && x.RawMaterialProviderId != rawMaterialProviderDTO.RawMaterialProviderId).ToList();
 
             var validation = rawMaterialWithSameProviderSameBrand.Count() > 0 ? false : true;
-            var message = validation ? "Validacion correcta" : "Ya existe un proveedor ligado a esta marca dentro de este producto";
+            var message = validation ? "Validacion correcta" : "Ya existe un proveedor ligado a esta marca dentro de este producto, si el problema persiste recargue la pagina y cambie un proveedor a la vez";
 
             return new ObjectResponse<bool>(validation, message);
         }

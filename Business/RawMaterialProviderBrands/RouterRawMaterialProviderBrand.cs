@@ -25,7 +25,7 @@ namespace Business.RawMaterialProviderBrands
         {
 
             var rawMaterialProviderBrand = MapperRawMaterialProviderBrand.MapFromDTO(rawMaterialProviderBrandDTO);
-            rawMaterialProviderBrand = Finisher.FinishToInsert(rawMaterialProviderBrand, rawMaterialProviderId);
+            rawMaterialProviderBrand = Finisher.FinishToDatabase(rawMaterialProviderBrand, rawMaterialProviderId);
 
             var validation = ValidateRawMaterialProviderBrand.ValidateToInsert(rawMaterialProviderBrand);
             if (!validation.IsSuccess)
@@ -36,35 +36,25 @@ namespace Business.RawMaterialProviderBrands
             return actionResponse;
         }
 
-        public ObjectResponse<bool> Update(List<RawMaterialProviderBrandDTO> rawMaterialProviderBrandsDTO, List<int> rawMaterialProvidersId)
+        public ObjectResponse<bool> Update(RawMaterialProviderBrandDTO rawMaterialProviderBrandDTO)
         {
-            using (var scope = new TransactionScope())
-            {
-                var rawMaterialProviderBrands = MapperRawMaterialProviderBrand.MapFromDTO(rawMaterialProviderBrandsDTO);
-                rawMaterialProviderBrands = Finisher.FinishToUpdate(rawMaterialProviderBrands);
+            var rawMaterialProviderBrand = MapperRawMaterialProviderBrand.MapFromDTO(rawMaterialProviderBrandDTO);
+            rawMaterialProviderBrand = Finisher.FinishToDatabase(rawMaterialProviderBrand, rawMaterialProviderBrand.RawMaterialProviderId);
 
-                var validation = ValidateRawMaterialProviderBrand.ValidateToInsert(rawMaterialProviderBrands);
-                if (!validation.IsSuccess)
-                    return validation;
+            var validation = ValidateRawMaterialProviderBrand.ValidateToInsert(rawMaterialProviderBrand);
+            if (!validation.IsSuccess)
+                return validation;
 
-                var actionResponse = _rawMaterialProviderBrand.Update(rawMaterialProviderBrands, rawMaterialProvidersId);
-                if (actionResponse.IsSuccess)
-                    scope.Complete();
+            var actionResponse = _rawMaterialProviderBrand.Update(rawMaterialProviderBrand);
 
-                return actionResponse;
-            }
+            return actionResponse;
         }
 
-        public ObjectResponse<bool> Delete(List<int> rawMaterialProviderBrandsId)
+        public ObjectResponse<bool> Delete(int rawMaterialProviderBrandId)
         {
-            using (var scope = new TransactionScope())
-            {
-                var actionResponse = _rawMaterialProviderBrand.Delete(rawMaterialProviderBrandsId);
-                if (actionResponse.IsSuccess)
-                    scope.Complete();
+            var actionResponse = _rawMaterialProviderBrand.Delete(rawMaterialProviderBrandId);
 
-                return actionResponse;
-            }
+            return actionResponse;
         }
 
         public ObjectResponse<List<RawMaterialProviderBrandDTO>> Get(int rawMaterialProviderId)

@@ -7,6 +7,7 @@ using Common;
 using Common.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Transactions;
 
@@ -29,19 +30,24 @@ namespace Business.RawMaterialProviders
 
         public ObjectResponse<bool> InsertList(List<RawMaterialProviderDTO> rawMaterialProvidersDTO, int rawMaterialId)
         {
-            foreach (var rawMaterialProvider in rawMaterialProvidersDTO)
+            using (var scope = new TransactionScope())
             {
-                var actionResponse = Insert(rawMaterialProvider, rawMaterialId);
-                if (!actionResponse.IsSuccess)
-                    return actionResponse;
-            }
+                var currentRawMaterialProvidersDTO = GetCurrentRawMaterialProvidersDTO(rawMaterialId);
+                foreach (var rawMaterialProvider in rawMaterialProvidersDTO)
+                {
+                    var actionResponse = Insert(rawMaterialProvider, rawMaterialId, currentRawMaterialProvidersDTO);
+                    if (!actionResponse.IsSuccess)
+                        return actionResponse;
+                }
 
-            return new ObjectResponse<bool>(true, "Relacion exitosa");
+                scope.Complete();
+                return new ObjectResponse<bool>(true, "Relacion exitosa");
+            }
         }
 
-        public ObjectResponse<bool> Insert(RawMaterialProviderDTO rawMaterialProviderDTO, int rawMaterialId)
+        public ObjectResponse<bool> Insert(RawMaterialProviderDTO rawMaterialProviderDTO, int rawMaterialId, List<RawMaterialProviderDTO> currentRawMaterialProvidersDTO)
         {
-            var validation = PrepareToDataBase(rawMaterialProviderDTO, rawMaterialId, new RawMaterialProvider());
+            var validation = PrepareToDataBase(rawMaterialProviderDTO, rawMaterialId, new RawMaterialProvider(), currentRawMaterialProvidersDTO);
             if (!validation.IsSuccess)
                 return new ObjectResponse<bool>(false, validation.Message);
 
@@ -58,24 +64,107 @@ namespace Business.RawMaterialProviders
             return relationResponse;
         }
 
-        public ObjectResponse<bool> Update(List<RawMaterialProviderDTO> rawMaterialProvidersDTO, int rawMaterialProviderId)
+        public ObjectResponse<bool> RouterUpdate(List<RawMaterialProviderDTO> rawMaterialProvidersDTO, int rawMaterialId)
         {
             using (var scope = new TransactionScope())
             {
-                return new ObjectResponse<bool>(false, "Sin implementar");
+                var currentRawMaterialProviders = GetByRawMaterial(rawMaterialId);
+                if (!currentRawMaterialProviders.IsSuccess)
+                    return new ObjectResponse<bool>(false, "No se puede actualizar la relacion con los proveedores en este momento");
+
+                var rawMaterialProvidersToUpdate = rawMaterialProvidersDTO.Where(x => x.IsEdited && x.RawMaterialProviderId > 0).ToList();
+                var rawMaterialProvidersToInsert = rawMaterialProvidersDTO.Where(y => !currentRawMaterialProviders.Data.Select(x => x.RawMaterialProviderId).Contains(y.RawMaterialProviderId)).ToList();
+                var rawMaterialProvidersToDelete = currentRawMaterialProviders.Data.Where(y => !rawMaterialProvidersDTO.Select(x => x.RawMaterialProviderId).Contains(y.RawMaterialProviderId)).ToList();
+                //obtener listas y dividir: add, delete, update, campo isEdited en DTO se activa onchange en campos
+
+                var insertResponse = InsertList(rawMaterialProvidersToInsert, rawMaterialId);
+                if (!insertResponse.IsSuccess)
+                    return insertResponse;
+
+                var updateResponse = UpdateList(rawMaterialProvidersToUpdate, rawMaterialId);
+                if (!updateResponse.IsSuccess)
+                    return updateResponse;
+
+                var deleteResponse = Delete(rawMaterialProvidersToDelete.Select(x => x.RawMaterialProviderId).ToList());
+                if (!deleteResponse.IsSuccess)
+                    return deleteResponse;
+
+                scope.Complete();
+                return new ObjectResponse<bool>(true, "Actualizacion completada");
             }
+        }
+
+        public ObjectResponse<bool> UpdateList(List<RawMaterialProviderDTO> rawMaterialProvidersDTO, int rawMaterialId)
+        {
+            var currentRawMaterialProvidersDTO = GetCurrentRawMaterialProvidersDTO(rawMaterialId);
+
+            foreach (var rawMaterialProvider in rawMaterialProvidersDTO)
+            {
+                var actionResponse = Update(rawMaterialProvider, currentRawMaterialProvidersDTO);
+                if (!actionResponse.IsSuccess)
+                    return actionResponse;
+            }
+
+            return new ObjectResponse<bool>(true, "Relacion editada exitosamente");
+        }
+
+        public ObjectResponse<bool> Update(RawMaterialProviderDTO rawMaterialProviderDTO, List<RawMaterialProviderDTO> currentRawMaterialProvidersDTO)
+        {
+            var currentRawMaterialProvider = _rawMaterialProvider.GetAll(false).Data.Find(x => x.RawMaterialProviderId == rawMaterialProviderDTO.RawMaterialProviderId);
+
+            var validation = PrepareToDataBase(rawMaterialProviderDTO, rawMaterialProviderDTO.RawMaterialId, currentRawMaterialProvider, currentRawMaterialProvidersDTO);
+            if (!validation.IsSuccess)
+                return new ObjectResponse<bool>(false, validation.Message);
+
+            var rawMaterialProvider = validation.Data;
+
+            var actionResponse = _rawMaterialProvider.Update(rawMaterialProvider);
+            if (!actionResponse.IsSuccess)
+                return new ObjectResponse<bool>(false, actionResponse.Message);
+
+            var relationResponse = _rawMaterialProviderBrand.Update(rawMaterialProviderDTO.RawMaterialProviderBrandDTO);
+
+            return relationResponse;
         }
 
         public ObjectResponse<bool> Delete(List<int> rawMaterialProvidersId)
         {
-            using (var scope = new TransactionScope())
-            {
-                var actionResponse = _rawMaterialProvider.Delete(rawMaterialProvidersId);
-                if (actionResponse.IsSuccess)
-                    scope.Complete();
-
+            var actionResponse = _rawMaterialProvider.Delete(rawMaterialProvidersId);
+            if (!actionResponse.IsSuccess)
                 return actionResponse;
+
+            var rawMaterialProviderBrandsToDelete = GetRelationsToDelete(rawMaterialProvidersId);
+            if (!rawMaterialProviderBrandsToDelete.IsSuccess)
+                return new ObjectResponse<bool>(false, rawMaterialProviderBrandsToDelete.Message);
+
+            var actionRelations = DeleteRelations(rawMaterialProviderBrandsToDelete.Data);
+            if (!actionRelations.IsSuccess)
+                return actionRelations;
+
+            return actionResponse;
+        }
+
+        public ObjectResponse<List<RawMaterialProviderBrandDTO>> GetRelationsToDelete(List<int> rawMaterialProvidersId)
+        {
+            var rawMaterialProviderBrands = _rawMaterialProviderBrand.GetAll(false);
+            if (!rawMaterialProviderBrands.IsSuccess)
+                return new ObjectResponse<List<RawMaterialProviderBrandDTO>>(false, rawMaterialProviderBrands.Message);
+
+            var rawMaterialProviderBrandsToDelete = rawMaterialProviderBrands.Data.Where(x => rawMaterialProvidersId.Contains(x.RawMaterialProviderId)).ToList();
+            
+            return new ObjectResponse<List<RawMaterialProviderBrandDTO>>(true, "Consulta exitosa", rawMaterialProviderBrandsToDelete);
+        }
+
+        public ObjectResponse<bool> DeleteRelations(List<RawMaterialProviderBrandDTO> rawMaterialProviderBrands)
+        {
+            foreach (var rawMaterialProviderBrand in rawMaterialProviderBrands)
+            {
+                var response = _rawMaterialProviderBrand.Delete(rawMaterialProviderBrand.RawMaterialProviderBrandId);
+                if (!response.IsSuccess)
+                    return response;
             }
+
+            return new ObjectResponse<bool>(true, "Relacion eliminada");
         }
 
         public ObjectResponse<List<RawMaterialProviderDTO>> GetByRawMaterial(int rawMaterialId)
@@ -153,13 +242,19 @@ namespace Business.RawMaterialProviders
             return new ObjectResponse<List<RawMaterialProviderDTO>>(true, actionResponse.Message, rawMaterialProvidersDTO);
         }
 
-        public ObjectResponse<RawMaterialProvider> PrepareToDataBase(RawMaterialProviderDTO rawMaterialProviderDTO, int rawMaterialId, RawMaterialProvider currentRawMaterialProvider)
+        public List<RawMaterialProviderDTO> GetCurrentRawMaterialProvidersDTO(int rawMaterialId)
         {
             var rawMaterialProvidersDTO = GetAll(false);
             if (!rawMaterialProvidersDTO.IsSuccess)
-                return new ObjectResponse<RawMaterialProvider>(false, rawMaterialProvidersDTO.Message);
+                return new List<RawMaterialProviderDTO>();
 
-            var validateDontRepeatProviderBrand = ValidateRawMaterialProvider.ValidateDontRepeatBrandByProvider(rawMaterialProviderDTO, rawMaterialProvidersDTO.Data);
+            return rawMaterialProvidersDTO.Data.Where(x => x.RawMaterialId == rawMaterialId).ToList();
+        }
+
+        public ObjectResponse<RawMaterialProvider> PrepareToDataBase(RawMaterialProviderDTO rawMaterialProviderDTO, int rawMaterialId,
+                                                                    RawMaterialProvider currentRawMaterialProvider, List<RawMaterialProviderDTO> currentRawMaterialProvidersDTO)
+        {
+            var validateDontRepeatProviderBrand = ValidateRawMaterialProvider.ValidateDontRepeatBrandByProvider(rawMaterialProviderDTO, currentRawMaterialProvidersDTO);
             if (!validateDontRepeatProviderBrand.IsSuccess)
                 return new ObjectResponse<RawMaterialProvider>(false, validateDontRepeatProviderBrand.Message);
 

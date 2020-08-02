@@ -9,7 +9,7 @@
     </span>
     <div class="form-group col-md-12">
         <label class="font-weight-bolder">Proveedor:</label>
-        <select @bind="RawMaterialProvider.ProviderId" class="form-control">
+        <select @bind="RawMaterialProvider.ProviderId" class="form-control" @onclick="ChangeModel">
             <option value="0" selected disabled>Seleccionar proveedor...</option>
             @foreach (var provider in Providers)
             {
@@ -19,22 +19,22 @@
     </div>
     <div class="form-group col-md-12">
         <label for="name" class="font-weight-bolder">Precio</label>
-        <InputNumber id="name" @bind-Value="RawMaterialProvider.Price" class="form-control col-lg-12" />
+        <InputNumber id="name" @bind-Value="RawMaterialProvider.Price" class="form-control col-lg-12" @onkeyup="ChangeModel"/>
         <ValidationMessage For="@(() => RawMaterialProvider.Price)" class="text-danger" />
     </div>
     <div class="form-group col-md-12">
         <label for="name" class="font-weight-bolder">Peso</label>
-        <InputNumber id="name" @bind-Value="RawMaterialProvider.Weight" class="form-control col-lg-12" />
+        <InputNumber id="name" @bind-Value="RawMaterialProvider.Weight" class="form-control col-lg-12" @onkeyup="ChangeModel"/>
         <ValidationMessage For="@(() => RawMaterialProvider.Weight)" class="text-danger" />
     </div>
     <div class="form-group col-md-12">
         <label for="name" class="font-weight-bolder">Cantidad</label>
-        <InputNumber id="name" @bind-Value="RawMaterialProvider.Quantity" class="form-control col-lg-12" />
+        <InputNumber id="name" @bind-Value="RawMaterialProvider.Quantity" class="form-control col-lg-12" @onkeyup="ChangeModel"/>
         <ValidationMessage For="@(() => RawMaterialProvider.Quantity)" class="text-danger" />
     </div>
     <div class="form-group col-md-12">
         <label class="font-weight-bolder">Unidad de medida:</label>
-        <select @bind="RawMaterialProvider.MeasureId" class="form-control">
+        <select @bind="RawMaterialProvider.MeasureId" class="form-control" @onclick="ChangeModel">
             <option value="0" selected disabled>Seleccionar medida...</option>
             @foreach (var measure in Measures)
             {
@@ -44,7 +44,7 @@
     </div>
     <div class="form-group col-md-12">
         <label class="font-weight-bolder">Marca:</label>
-        <select @bind="RawMaterialProvider.RawMaterialProviderBrandDTO.BrandId" class="form-control">
+        <select @bind="RawMaterialProvider.RawMaterialProviderBrandDTO.BrandId" class="form-control" @onclick="ChangeModel">
             <option value="0" selected disabled>Seleccionar marca...</option>
             @foreach (var brand in Brands)
             {
@@ -54,7 +54,7 @@
     </div>
     <div class="form-group col-md-12">
         <label for="currentProvider" class="font-weight-bolder">Proveedor actual</label>
-        <InputCheckbox id="currentProvider" @bind-Value="RawMaterialProvider.CurrentProvider" @onclick="@(() => SetCurrentProvider.InvokeAsync(RawMaterialProvider))" class="form-control col-1" />
+        <InputCheckbox @onmousedown="ChangeModel"  id="currentProvider" @bind-Value="RawMaterialProvider.CurrentProvider" @onclick="@(() => SetCurrentProvider.InvokeAsync(RawMaterialProvider))" class="form-control col-1" />
         <ValidationMessage For="@(() => RawMaterialProvider.CurrentProvider)" class="text-danger" />
     </div>
 </div>
@@ -73,6 +73,12 @@
         {
             RawMaterialProvider.RawMaterialProviderBrandDTO = new RawMaterialProviderBrandDTO();
         }
+    }
+
+
+    private void ChangeModel()
+    {
+        RawMaterialProvider.IsEdited = true;
     }
 
 

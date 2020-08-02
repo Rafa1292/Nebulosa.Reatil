@@ -69,7 +69,7 @@ namespace Business.RawMaterials
                 if (!actionResponse.IsSuccess)
                     return actionResponse;
 
-                var editRealtionshipResponse = _rawMaterialProvider.Update(rawMaterialDTO.rawMaterialProvidersDTO, rawMaterial.RawMaterialId);
+                var editRealtionshipResponse = _rawMaterialProvider.RouterUpdate(rawMaterialDTO.rawMaterialProvidersDTO, rawMaterial.RawMaterialId);
                 if (!editRealtionshipResponse.IsSuccess)
                     return editRealtionshipResponse;
 

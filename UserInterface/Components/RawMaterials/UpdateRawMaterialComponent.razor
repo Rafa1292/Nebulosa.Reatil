@@ -14,7 +14,7 @@
 
 
 <span class="col-12 h4 text-center font-weight-bolder mt-5 mb-5">
-    Agregar nuevo insumo
+    Actualizar insumo
 </span>
 <EditForm class="col-md-6 d-flex flex-wrap justify-content-center" OnValidSubmit="Save" Model="@oRawMaterial">
     <DataAnnotationsValidator />
@@ -46,7 +46,7 @@
     <div class="form-group justify-content-center d-flex col-12 flex-wrap">
         <span class="col-12 text-danger text-center h5">@Message</span>
         <span class="col-12 justify-content-center d-flex" style="height: 35px">
-            <input type="submit" value="Agregar insumo" class="form-control col-8 btn btn-dark button-animation" style="height: 35px" />
+            <input type="submit" value="Actualizar insumo" class="form-control col-8 btn btn-dark button-animation" style="height: 35px" />
         </span>
         <span class="col-12 justify-content-center mt-3 d-flex" style="height: 35px">
             <a href="RawMaterials/Index" class=" button-animation btn btn-outline-secondary col-8" style="height: 35px">Regresar</a>
@@ -59,7 +59,7 @@
 @code {
 
     #region Variables
-
+    [Parameter] public string RawMaterialId { get; set; }
     RawMaterialDTO oRawMaterial = new RawMaterialDTO();
     public string Message;
     List<ProviderDTO> providers = new List<ProviderDTO>();
@@ -74,11 +74,8 @@
     {
         try
         {
-            brands = _brand.GetAll(false).Data;
-            providers = _provider.GetAll(false).Data;
-            measures = _measure.GetAll(false).Data;
-            rawMaterialProvidersDTO.Add(new RawMaterialProviderDTO());
-
+            GetRelations();
+            GetRawMaterial();
         }
         catch (Exception e)
         {
@@ -87,9 +84,37 @@
         }
     }
 
+    private void GetRawMaterial()
+    {
+        var actionResponse = _router.Get(Int32.Parse(RawMaterialId));
+        if (actionResponse.IsSuccess)
+        {
+            oRawMaterial = actionResponse.Data;
+            rawMaterialProvidersDTO = oRawMaterial.rawMaterialProvidersDTO;
+        }
+        else
+        {
+            Message = actionResponse.Message;
+        }
+    }
+
+    private void GetRelations()
+    {
+        brands = _brand.GetAll(false).Data;
+        providers = _provider.GetAll(false).Data;
+        measures = _measure.GetAll(false).Data;
+    }
+
     private void SetProvider(RawMaterialProviderDTO rawMaterialProvider)
     {
-        rawMaterialProvidersDTO.Where(x => x != rawMaterialProvider).ToList().ForEach(x => x.CurrentProvider = false);
+        foreach (var rawMaterialProviderDTO in rawMaterialProvidersDTO)
+        {
+            if(rawMaterialProviderDTO != rawMaterialProvider)
+            {
+                rawMaterialProviderDTO.CurrentProvider = false;
+                rawMaterialProviderDTO.IsEdited = true;
+            }
+        }
 
         if (!rawMaterialProvider.CurrentProvider)
         {
@@ -115,7 +140,7 @@
                     rawMaterialProvidersDTO.ForEach(x => SetProvider(x));
 
                 oRawMaterial.rawMaterialProvidersDTO = rawMaterialProvidersDTO;
-                var actionResponse = _router.Insert(oRawMaterial);
+                var actionResponse = _router.Update(oRawMaterial);
 
                 if (actionResponse.IsSuccess)
                 {
@@ -137,6 +162,8 @@
 
     private ObjectResponse<bool> ValidateProviders()
     {
+        FixProviders();
+
         var providersNull = rawMaterialProvidersDTO.Select(x => x.ProviderId).Contains(0);
         if (providersNull)
             return new ObjectResponse<bool>(false, "En cada formulario debes seleccionar un proveedor, si no lo necesitas elimina el formulario.");
@@ -146,6 +173,18 @@
             return new ObjectResponse<bool>(false, "Debes seleccionar un proveedor actual.");
 
         return new ObjectResponse<bool>(true, "Validacion correcta");
+    }
+
+    private void FixProviders()
+    {
+        foreach (var rawMaterialProvider in rawMaterialProvidersDTO)
+        {
+            if(rawMaterialProvider.IsEdited)
+            {
+                rawMaterialProvider.ProviderDTO = providers.Find(x => x.ProviderId == rawMaterialProvider.ProviderId);
+                rawMaterialProvider.RawMaterialProviderBrandDTO.Brand = brands.Find(x => x.BrandId == rawMaterialProvider.RawMaterialProviderBrandDTO.BrandId);
+            }
+        }
     }
 
 

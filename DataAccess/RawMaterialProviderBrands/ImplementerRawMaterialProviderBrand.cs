@@ -13,65 +13,21 @@ namespace DataAccess.RawMaterialProviderBrands
         public ObjectResponse<bool> Insert(RawMaterialProviderBrand rawMaterialProviderBrand)
         {
             var response = Repository.Insert(rawMaterialProviderBrand);
-            if (!response.IsSuccess)
-                return response;
 
-            return new ObjectResponse<bool>(true, "Relacion creada exitosamente");
+            return response;
         }
 
-        public ObjectResponse<bool> RouteUpdateActions(List<RawMaterialProviderBrand> editRawMaterialProviderBrands, List<RawMaterialProviderBrand> addRawMaterialProviderBrands, List<RawMaterialProviderBrand> deleteRawMaterialProviderBrands)
+        public ObjectResponse<bool> Update(RawMaterialProviderBrand rawMaterialProviderBrand)
         {
-            foreach (var rawMaterialProviderBrand in addRawMaterialProviderBrands)
-            {
-                var insertResponse = Insert(rawMaterialProviderBrand);
-                if (!insertResponse.IsSuccess)
-                    return insertResponse;
-            }
+            var response = Repository.Update(rawMaterialProviderBrand);
 
-
-            var deleteResponse = Delete(deleteRawMaterialProviderBrands.Select(x => x.RawMaterialProviderId).ToList());
-            if (!deleteResponse.IsSuccess)
-                return deleteResponse;
-
-            foreach (var rawMaterialProvider in editRawMaterialProviderBrands)
-            {
-                var editResponse = Repository.Update(rawMaterialProvider);
-                if (!editResponse.IsSuccess)
-                    return editResponse;
-            }
-
-            return new ObjectResponse<bool>(true, "Relacion editada exitosamente");
-
+            return response;
         }
 
-        public ObjectResponse<bool> Update(List<RawMaterialProviderBrand> rawMaterialProviderBrands, List<int> rawMaterialProvidersId)
+        public ObjectResponse<bool> Delete(int rawMaterialProviderBrandId)
         {
-            var currentRawMaterialProviderBrands = Get(rawMaterialProvidersId);
-            if (!currentRawMaterialProviderBrands.IsSuccess)
-                return new ObjectResponse<bool>(false, currentRawMaterialProviderBrands.Message);
-
-            var rawMaterialProviderBrandsId = currentRawMaterialProviderBrands.Data.Select(x => x.RawMaterialProviderBrandId).ToList();
-            var editRawMaterialProviderBrands = rawMaterialProviderBrands.Where(x => rawMaterialProviderBrandsId.Contains(x.RawMaterialProviderBrandId)).ToList();
-            var addRawMaterialProviderBrands = rawMaterialProviderBrands.Where(x => x.RawMaterialProviderBrandId == 0).ToList();
-            var deleteRawMaterialProviderBrands = currentRawMaterialProviderBrands.Data.Where(x => !rawMaterialProviderBrands.Select(y => y.RawMaterialProviderBrandId).Contains(x.RawMaterialProviderBrandId)).ToList();
-
-            var actionResponse = RouteUpdateActions(editRawMaterialProviderBrands, addRawMaterialProviderBrands, deleteRawMaterialProviderBrands);
-            if (actionResponse.Data)
-                return actionResponse;
-
-            return new ObjectResponse<bool>(true, "Relacion actualizada exitosamente");
-        }
-
-        public ObjectResponse<bool> Delete(List<int> rawMaterialProviderBrandsId)
-        {
-            foreach (var rawMaterialProviderBrandId in rawMaterialProviderBrandsId)
-            {
-                var actionResponse = Repository.Delete(rawMaterialProviderBrandId);
-                if (!actionResponse.IsSuccess)
-                    return actionResponse;
-            }
-
-            return new ObjectResponse<bool>(true, "Eliminacion exitos");
+            var actionResponse = Repository.Delete(rawMaterialProviderBrandId);
+            return actionResponse;
         }
 
         public ObjectResponse<List<RawMaterialProviderBrand>> Get(List<int> rawMaterialProvidersId)
