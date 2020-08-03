@@ -211,3 +211,7 @@ C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor
 C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\RawMaterials\UpdateRawMaterialPage.razor.g.cs
 C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor\Components\RawMaterials\UpdateRawMaterialComponent.razor.g.cs
 C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor\Pages\RawMaterials\UpdateRawMaterialPage.razor.g.cs
+C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\RazorDeclaration\Components\RawMaterials\DeleteRawMaterialComponent.razor.g.cs
+C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor\Components\RawMaterials\DeleteRawMaterialComponent.razor.g.cs
+C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\RawMaterials\DeleteRawMaterialPage.razor.g.cs
+C:\Users\rvill\source\repos\Nebulosa\UserInterface\obj\Debug\netcoreapp3.1\Razor\Pages\RawMaterials\DeleteRawMaterialPage.razor.g.cs
