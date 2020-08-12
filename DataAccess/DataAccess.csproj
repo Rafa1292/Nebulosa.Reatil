@@ -18,4 +18,8 @@
     <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Preparation\" />
+  </ItemGroup>
+
 </Project>

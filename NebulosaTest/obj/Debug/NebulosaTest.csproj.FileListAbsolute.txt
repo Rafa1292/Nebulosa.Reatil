@@ -1,0 +1,13 @@
+C:\Users\rvill\source\repos\Nebulosa\NebulosaTest\bin\Debug\NebulosaTest.dll
+C:\Users\rvill\source\repos\Nebulosa\NebulosaTest\bin\Debug\NebulosaTest.pdb
+C:\Users\rvill\source\repos\Nebulosa\NebulosaTest\bin\Debug\Microsoft.Analytics.Interfaces.dll
+C:\Users\rvill\source\repos\Nebulosa\NebulosaTest\bin\Debug\Microsoft.Analytics.Interfaces.Streaming.dll
+C:\Users\rvill\source\repos\Nebulosa\NebulosaTest\bin\Debug\Microsoft.Analytics.Types.dll
+C:\Users\rvill\source\repos\Nebulosa\NebulosaTest\bin\Debug\Microsoft.Analytics.UnitTest.dll
+C:\Users\rvill\source\repos\Nebulosa\NebulosaTest\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\rvill\source\repos\Nebulosa\NebulosaTest\bin\Debug\es\Microsoft.VisualStudio.QualityTools.UnitTestFramework.resources.dll
+C:\Users\rvill\source\repos\Nebulosa\NebulosaTest\obj\Debug\NebulosaTest.csprojAssemblyReference.cache
+C:\Users\rvill\source\repos\Nebulosa\NebulosaTest\obj\Debug\NebulosaTest.csproj.CoreCompileInputs.cache
+C:\Users\rvill\source\repos\Nebulosa\NebulosaTest\obj\Debug\NebulosaTest.csproj.CopyComplete
+C:\Users\rvill\source\repos\Nebulosa\NebulosaTest\obj\Debug\NebulosaTest.dll
+C:\Users\rvill\source\repos\Nebulosa\NebulosaTest\obj\Debug\NebulosaTest.pdb

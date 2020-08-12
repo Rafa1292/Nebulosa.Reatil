@@ -30,11 +30,9 @@ namespace DataAccess
 
         public DbSet<RawMaterialProviderBrand> RawMaterialProviderBrands { get; set; }
 
+        public DbSet<Preparation> Preparations { get; set; }
 
-
-
-
-
+        public DbSet<PreparationItem> PreparationItems { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
