@@ -89,10 +89,25 @@ namespace DataAccess.Migrations
                     b.Property<int>("Cost")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateUpdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Delete")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserCreate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserUpdate")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Weight")
@@ -113,6 +128,15 @@ namespace DataAccess.Migrations
                     b.Property<int>("Cost")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateUpdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Delete")
+                        .HasColumnType("bit");
+
                     b.Property<int>("MeasureId")
                         .HasColumnType("int");
 
@@ -124,6 +148,12 @@ namespace DataAccess.Migrations
 
                     b.Property<int>("RawMaterialId")
                         .HasColumnType("int");
+
+                    b.Property<string>("UserCreate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserUpdate")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Weight")
                         .HasColumnType("int");

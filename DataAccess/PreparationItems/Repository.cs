@@ -10,6 +10,16 @@ namespace DataAccess.PreparationItems
 {
     public class Repository
     {
+        public static ObjectResponse<bool> Insert(PreparationItem preparationItem)
+        {
+            using (var db = new DataContext())
+            {
+                db.PreparationItems.Add(preparationItem);
+                db.SaveChanges();
+                return new ObjectResponse<bool>(true, "Item agregado");
+            }
+        }
+
         public static ObjectResponse<List<PreparationItem>> GetAll()
         {
             using (var db = new DataContext())

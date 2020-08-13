@@ -1,0 +1,58 @@
+﻿@using Business.Preparations
+@using Business.ModelsDTO
+
+@inject RouterPreparation router
+
+<span class="col-12 h4 text-center font-weight-bolder mt-5 mb-5">
+    Preparaciones
+</span>
+<p class="col-12 p-1 d-flex justify-content-center">
+    <a class="btn btn-primary " href="Categories/Create">Agregar nueva preparacion</a>
+</p>
+<label class="text-danger h5 ">@Message</label>
+
+<div class="col-12 p-0 d-flex flex-wrap justify-content-center">
+    <table id="preparationsTable" class="display col-6 table text-center table-hover">
+
+        <tbody>
+            @foreach (var preparation in preparations)
+            {
+            <tr>
+                <td>@preparation.Name</td>
+                <td>@preparation.Cost</td>
+                <td>
+                    <a class="btn btn-secondary" href="Preparations/Update/@preparation.PreparationId">Editar</a>
+                    <a class="btn btn-outline-danger" href="Preparations/Delete/@preparation.PreparationId">Eliminar</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+@code {
+    private List<PreparationDTO> preparations = new List<PreparationDTO>();
+    private string Message;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var response = router.GetAll(false);
+            if (response.IsSuccess)
+            {
+                preparations = response.Data.ToList();
+            }
+            else
+            {
+                Message = response.Message;
+            }
+        }
+        catch (Exception e)
+        {
+
+            Message = e.Message;
+        }
+    }
+}

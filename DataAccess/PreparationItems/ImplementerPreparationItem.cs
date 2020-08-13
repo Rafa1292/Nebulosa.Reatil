@@ -10,6 +10,11 @@ namespace DataAccess.PreparationItems
 {
     public class ImplementerPreparationItem : IPreparationItem
     {
+        public ObjectResponse<bool> Insert(PreparationItem preparationItem)
+        {
+            return Repository.Insert(preparationItem);
+        }
+
         public ObjectResponse<List<PreparationItem>> GetAll(bool deleteItems)
         {
             var preparationItems = Repository.GetAll();

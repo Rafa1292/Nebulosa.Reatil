@@ -34,6 +34,10 @@ using Business.Brands;
 using DataAccess.Brands;
 using Business.RawMaterialProviderBrands;
 using DataAccess.RawMaterialProviderBrands;
+using Business.Preparations;
+using Business.PreparationItems;
+using DataAccess.Preparations;
+using DataAccess.PreparationItems;
 
 namespace UserInterface
 {
@@ -53,6 +57,8 @@ namespace UserInterface
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddScoped<RouterBrand>();
+            services.AddScoped<RouterPreparation>();
+            services.AddScoped<RouterPreparationItem>();
             services.AddScoped<RouterRoute>();
             services.AddScoped<RouterMeasure>();
             services.AddScoped<RouterRawMaterialProvider>();
@@ -76,7 +82,8 @@ namespace UserInterface
             services.AddScoped<IMeasure, ImplementerMeasure>();
             services.AddScoped<IBrand, ImplementerBrand>();
             services.AddScoped<IRawMaterialProviderBrand, ImplementerRawMaterialProviderBrand>();
-
+            services.AddScoped<IPreparation, ImplementerPreparation>();
+            services.AddScoped<IPreparationItem, ImplementerPreparationItem>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
