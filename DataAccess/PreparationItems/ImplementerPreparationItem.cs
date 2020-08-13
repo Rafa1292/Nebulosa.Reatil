@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using Business.PreparationItems;
+using Common;
 using Common.Models;
 using System;
 using System.Collections.Generic;
@@ -7,9 +8,9 @@ using System.Text;
 
 namespace DataAccess.PreparationItems
 {
-    public class ImplementerPreparationItem
+    public class ImplementerPreparationItem : IPreparationItem
     {
-        public static ObjectResponse<List<PreparationItem>> GetAll(bool deleteItems)
+        public ObjectResponse<List<PreparationItem>> GetAll(bool deleteItems)
         {
             var preparationItems = Repository.GetAll();
 
