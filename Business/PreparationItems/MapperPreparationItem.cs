@@ -8,6 +8,18 @@ namespace Business.PreparationItems
 {
     public class MapperPreparationItem
     {
+        public static PreparationItem MapFromDTO(PreparationItemDTO preparationItemDTO, PreparationItem preparationItem)
+        {
+            preparationItem.Cost = preparationItemDTO.Cost;
+            preparationItem.MeasureId = preparationItemDTO.MeasureId;
+            preparationItem.PreparationId = preparationItemDTO.PreparationId;
+            preparationItem.PreparationItemId = preparationItemDTO.PreparationItemId;
+            preparationItem.Quantiy = preparationItemDTO.Quantiy;
+            preparationItem.RawMaterialId = preparationItemDTO.RawMaterialId;
+            preparationItem.Weight = preparationItemDTO.Weight;
+
+            return preparationItem;
+        }
 
         public static List<PreparationItemDTO> MapToDTO(List<PreparationItem> preparationItems)
         {

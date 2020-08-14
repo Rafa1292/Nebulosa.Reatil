@@ -2,6 +2,7 @@
 using Business.ModelsDTO;
 using Business.RawMaterials;
 using Common;
+using Common.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,6 +22,19 @@ namespace Business.PreparationItems
             _rawMaterial = rawMaterial;
         }
 
+        public ObjectResponse<bool> Insert(PreparationItemDTO preparationItemDTO)
+        {
+            var validation = PrepareToDataBase(preparationItemDTO, new PreparationItem());
+            if (!validation.IsSuccess)
+                return new ObjectResponse<bool>(false, validation.Message);
+
+            var preparationItem = validation.Data;
+
+            var actionResponse = _preparationItem.Insert(preparationItem);
+
+            return actionResponse;
+
+        }
 
         public ObjectResponse<List<PreparationItemDTO>> GetAll(bool deleteItems)
         {
@@ -42,6 +56,23 @@ namespace Business.PreparationItems
 
             return new ObjectResponse<List<PreparationItemDTO>>(true,"Consulta exitosa", preparationItemsDTO);
         }
+
+        public ObjectResponse<PreparationItem> PrepareToDataBase(PreparationItemDTO preparationItemDTO, PreparationItem currentPreparationItem)
+        {
+            var preparationItem = MapperPreparationItem.MapFromDTO(preparationItemDTO, currentPreparationItem);
+            preparationItem = Finisher.FinishToDatabase(preparationItem);
+
+            var currentPreparationItems = _preparationItem.GetAll(false);
+            if (!currentPreparationItems.IsSuccess)
+                return new ObjectResponse<PreparationItem>(false, currentPreparationItems.Message);
+
+            var validate = ValidatePreparationItem.ValidateToInsert(preparationItem, currentPreparationItems.Data);
+            if (!validate.IsSuccess)
+                return new ObjectResponse<PreparationItem>(false, validate.Message);
+
+            return new ObjectResponse<PreparationItem>(true, "Listo para Base de datos", preparationItem);
+        }
+
 
     }
 }
