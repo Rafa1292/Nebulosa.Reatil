@@ -8,6 +8,8 @@ namespace Business.Preparations
 {
     public interface IPreparation
     {
+        public ObjectResponse<int> Insert(Preparation preparation);
+
         public ObjectResponse<List<Preparation>> GetAll(bool deleteItems);
 
     }
