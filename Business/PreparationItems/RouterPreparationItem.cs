@@ -67,7 +67,7 @@ namespace Business.PreparationItems
                 return new ObjectResponse<PreparationItem>(false, currentPreparationItems.Message);
 
             var validate = ValidatePreparationItem.ValidateToInsert(preparationItem, currentPreparationItems.Data);
-            if (!validate.IsSuccess)
+            if(!validate.IsSuccess)
                 return new ObjectResponse<PreparationItem>(false, validate.Message);
 
             return new ObjectResponse<PreparationItem>(true, "Listo para Base de datos", preparationItem);

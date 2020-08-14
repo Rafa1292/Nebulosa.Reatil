@@ -8,6 +8,16 @@ namespace Business.Preparations
 {
     public class MapperPreparation
     {
+        public static Preparation MapFromDTO(PreparationDTO preparationDTO, Preparation preparation)
+        {
+            preparation.Description = preparationDTO.Description;
+            preparation.Name = preparationDTO.Name;
+            preparation.PreparationId = preparationDTO.PreparationId;
+            preparation.Weight = preparationDTO.Weight;
+
+            return preparation;
+        }
+
         public static List<PreparationDTO> MapToDTO(List<Preparation> preparations)
         {
             var preparationsDTO = new List<PreparationDTO>();
